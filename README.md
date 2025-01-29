@@ -19,3 +19,9 @@ pip install -r requirements.txt
 python3 test_ollama.py
 ```
 
+## Running the debate:
+To run the debate:
+```
+python3 debate/debate_runner.py
+```
+You may change the debate topic in  debate/debate_runner.py, the format in the DebateManager, and the agents in DebateAgent
