@@ -1,6 +1,6 @@
 # comp0087-agent-debate
 Purpose of this investigation - Getting opinionated agents to debate, and seeing how that influences a neutral default model observer
-
+[Project Github](https://github.com/comp0087-echo-chamber)
 ## Setup instructions - MacOS
 https://hadna.space/jv/notes/41-ollama-macos
 1) Install [Ollama](https://ollama.com/)
