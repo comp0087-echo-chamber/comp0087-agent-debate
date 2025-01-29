@@ -7,7 +7,6 @@ https://hadna.space/jv/notes/41-ollama-macos
 2) run a model:
 ```
 ollama run llama3.2:3b
-ollama run deepseek-r1:8b
 ```
 3) Create a python virtual environment and install requirements
 ```

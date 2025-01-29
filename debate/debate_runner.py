@@ -8,8 +8,9 @@ from agents.DebateAgent import DebateAgent
 from debate.DebateManager import DebateManager
 
 if __name__ == "__main__":
-    agent1 = DebateAgent(name= "Bob (Republican)", model="llama3.2:3b", prompt="You are an American who supports the Republican party")
-    agent2 = DebateAgent(name= "Mike (Democrat)", model="llama3.2:3b", prompt="You are an American who supports the Democrat Party")
+    model = "llama3.2:3b"
+    agent1 = DebateAgent(name= "Bob (Republican)", model=model, prompt="You are an American who supports the Republican party")
+    agent2 = DebateAgent(name= "Mike (Democrat)", model=model, prompt="You are an American who supports the Democrat Party")
     topic = "Economic Policy"
 
     debate = DebateManager(agent1, agent2, topic)
