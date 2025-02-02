@@ -1,4 +1,3 @@
-import sys
 import os
 import json
 import ollama
@@ -128,7 +127,7 @@ class DebateEvaluator:
         turns = list(range(1, debate_turns + 1))
 
         plt.figure(figsize=(10, 5))
-        plt.plot(turns, scores["neutral"], marker="o", label="Neutral Attitude", linestyle="dashed", color="blue")
+        plt.plot(turns, scores["neutral"], marker="o", label="Neutral Attitude", linestyle="dashed", color="green")
         plt.plot(turns, scores["republican"], marker="s", label="Republican Attitude", linestyle="solid", color="red")
 
         plt.xlabel("Debate Turns")
