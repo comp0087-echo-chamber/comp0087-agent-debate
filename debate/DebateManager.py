@@ -3,16 +3,17 @@ import json
 
 class DebateManager:
 
-    def __init__(self, agent1, agent2, topic):
+    def __init__(self, agent1, agent2, topic_name, topic_question):
         self.agent1 = agent1
         self.agent2 = agent2
-        self.topic = topic
         self.debate_data = {  # used for evaluation
-            "topic": topic,
+            ""
+            "topic_name": topic_name,
+            "topic_question": topic_question,
             "neutral": {},
             "republican": {}
         }
-        self.ordered_debate_history = [topic]  # incrementally build debate log to give agents
+        self.ordered_debate_history = [topic_question]  # incrementally build debate log to give agents
         self.neutral_turn_count = 1
         self.republican_turn_count = 1
 
@@ -26,10 +27,10 @@ class DebateManager:
         response = agent.respond(conversation_history)  
 
         if agent_key == "neutral":
-            self.debate_data[agent_key][f"turn {self.neutral_turn_count}"] = response
+            self.debate_data[agent_key][f"turn_{self.neutral_turn_count}"] = response
             self.neutral_turn_count += 1
         else:
-            self.debate_data[agent_key][f"turn {self.republican_turn_count}"] = response
+            self.debate_data[agent_key][f"turn_{self.republican_turn_count}"] = response
             self.republican_turn_count += 1
 
         self.ordered_debate_history.append(f"{agent.name}: {response}")
@@ -37,7 +38,7 @@ class DebateManager:
 
     def start(self, rounds=5):
         for _ in range(rounds):
-            self.debate_round(self.agent2)  # opinionated agent start the debate
+            self.debate_round(self.agent2)  # opinionated agent starts the debate
             self.debate_round(self.agent1)
 
     def save_transcript(self, filename):
