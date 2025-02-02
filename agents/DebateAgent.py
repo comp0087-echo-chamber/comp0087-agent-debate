@@ -6,9 +6,9 @@ class DebateAgent:
         self.model = model
         self.prompt = prompt
 
-    def respond(self, input_message):
+    def respond(self, conversation_history):
         response = ollama.chat(
             model=self.model,
-            messages=[{"role": "user", "content": f"{self.prompt} and are having a conversation with someone, context:{input_message}"}]
+            messages=[{"role": "user", "content": f"{self.prompt}. Keep your response within 50 words. Conversation history: {conversation_history}"}]
         )
         return response["message"]["content"]
