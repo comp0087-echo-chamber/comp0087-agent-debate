@@ -17,10 +17,11 @@ if __name__ == "__main__":
     }
 
     for topic_name, topic_question in debate_topics.items():
-        agent1 = DebateAgent(name="Bob (Neutral American)", model=model, prompt="You are Bob, an American with a neutral stance on political issues. You are participating in a debate on a political topic with Mike.")  # Update your views on the topic based on Mike's responses.
-        agent2 = DebateAgent(name="Mike (Republican)", model=model, prompt="You are Mike, an American who supports the Republican party. You are participating in a debate on a political topic with Bob. Convince Bob of your viewpoint.")
+        agent1 = DebateAgent(name="Bob (Neutral American)", model=model, prompt="You are Bob, an American. You are participating in a debate on a political topic with Mike. Update your views on the topic based on Mike's responses.")
+
+        agent2 = DebateAgent(name="Mike (Republican)", model=model, prompt="You are Mike, an American who supports the Republican party. You are participating in a debate on a political topic with Bob. Your goal is to convince Bob of your viewpoint.")
     
-        debate = DebateManager(agent1, agent2, topic_question)
+        debate = DebateManager(agent1, agent2, topic_name, topic_question)
         debate.start(rounds=10)
 
         save_folder = "debate_transcripts"
