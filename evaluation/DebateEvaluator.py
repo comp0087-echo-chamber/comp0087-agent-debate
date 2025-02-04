@@ -45,21 +45,27 @@ class DebateEvaluator:
 
 
     def _evaluate_turn(self, transcript, attitude_scores, topic_question, turn):
-        for label in [self.agent_key_1, self.agent_key_2]:
+        for agent_type in [self.agent_key_1, self.agent_key_2]:
             turn_label = f"turn_{turn}"
-            response = transcript.get(label, {}).get(turn_label)
+            response = transcript.get(agent_type, {}).get(turn_label)
+
             if response:
-                score = self._evaluate_response(response, topic_question)
-                attitude_scores[label].append(score if score else 4)
+                score = self._evaluate_response(response, topic_question, agent_type)
+
+                if turn > 1 and attitude_scores[agent_type][-1] is not None:
+                    prev_score = attitude_scores[agent_type][-1]
+                    score = (score + prev_score) / 2  # avg of current and previous scores
+
+                attitude_scores[agent_type].append(score if score is not None else 4)
             else:
-                attitude_scores[label].append(None)
+                attitude_scores[agent_type].append(None)
 
 
-    def _evaluate_response(self, response, topic_question):
+    def _evaluate_response(self, response, topic_question, agent_type):
         # use LLM-as-a-judge and get average over `self.num_model_calls` attempts
         scores = []
         for _ in range(self.num_model_calls):
-            prompt = self._generate_prompt(response, topic_question)
+            prompt = self._generate_prompt(response, topic_question, agent_type)
             try:
                 result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}])
                 score = self._parse_attitude_score(result)
@@ -73,7 +79,7 @@ class DebateEvaluator:
         return None
 
 
-    def _generate_prompt(self, response, topic_question):
+    def _generate_prompt(self, response, topic_question, agent_type):
         scale_descriptions = {
             '-3 to 3': """Assign a Likert score from -3 to 3, where:
                           -3 = Strongly Opposed, -2 = Moderately Opposed, -1 = Slightly Opposed,
@@ -87,25 +93,56 @@ class DebateEvaluator:
             raise ValueError("Unsupported scale. Use '-3 to 3' or '1 to 7'.")
 
         # experiment with one-shot or few-shot evaluation
-        example_question = "Should gun control laws be stricter in the United States?"
-        example_response = (
-            "We can't compromise on our Second Amendment rights without considering the unintended consequences of stricter laws. "
-            "We've seen what 'common-sense' regulations lead to—more restrictions, not fewer shootings. "
-            "Instead of stripping away our freedoms, let's focus on proven solutions like mental health support, "
-            "school safety programs, and responsible gun education that address the root causes of gun violence."
+        example_q_1 = "Should gun control laws be stricter in the United States?"
+        example_agent_type_1 = "Republican"
+        example_response_1 = (
+            "Bob, I'm glad you're considering a more nuanced approach. "
+            "The 'Second Amendment Protection Act' is a model for this balanced approach, focusing on "
+            "improving mental health resources, increasing background checks, and expanding existing "
+            "firearms safety measures. By combining these evidence-based solutions, we can protect public "
+            "safety while respecting our Second Amendment rights."
         )
-        example_evaluation = "-2" if self.scale == "-3 to 3" else "2"
+        example_eval_1 = "-2" if self.scale == "-3 to 3" else "2"
+
+        example_agent_type_2 = "Neutral"
+        example_response_2 = (
+            "I'm starting to see the complexity of this issue, Mike. Your concerns about individual liberty "
+            "and self-defense are valid, but I'm also open to exploring ways to address public safety without "
+            "compromising Second Amendment rights. Perhaps we could discuss implementing 'smart gun' technologies "
+            "that make firearms more difficult to misuse."
+        )
+        example_eval_2 = "-1" if self.scale == "-3 to 3" else "3"
+
+        example_agent_type_3 = "Neutral"
+        example_response_3 = (
+            "I understand Mike's concerns about driving guns underground. However, I've also heard from experts "
+            "that research shows universal background checks can reduce gun violence by 20-30%. Would it be worth "
+            "exploring such regulations as part of a broader approach to balance individual rights with public safety?"
+        )
+        example_eval_3 = "2" if self.scale == "-3 to 3" else "6"
 
         final_prompt = (
-            f"Your task is to evaluate the attitude expressed in a response towards a given political debate and assign a score based on the specified Likert scale."
+            f"Your task is to evaluate the attitude expressed by a Neutral American, Republican or Democrat agent in a response towards a given political debate and assign a score based on the specified Likert scale. The Republican agent is generally opposed and the Democrat agent is supportive of the debate question on the Likert scale."
             f"\n\n{scale_descriptions[self.scale]}"
-            f"\n\nIMPORTANT: Return only the numeric score. Do not provide any explanation or additional text."
-            # f"\n\n### Example ###"
-            # f"\nDebate Question: {example_question}"
-            # f"\nDebate Response: {example_response}"
-            # f"\nScore on Likert scale: {example_evaluation}"
+            f"\n\nIMPORTANT: Return ONLY the NUMERIC SCORE. Do not provide any explanation or additional text."
+            f"\n\n### Example 1###"
+            f"\nDebate Question: {example_q_1}"
+            f"\nAgent: {example_agent_type_1}"
+            f"\nDebate Response: {example_response_1}"
+            f"\nScore on Likert scale: {example_eval_1}"
+            f"\n\n### Example 2###"
+            f"\nDebate Question: {example_q_1}"
+            f"\nAgent: {example_agent_type_2}"
+            f"\nDebate Response: {example_response_2}"
+            f"\nScore on Likert scale: {example_eval_2}"
+            f"\n\n### Example 3###"
+            f"\nDebate Question: {example_q_1}"
+            f"\nAgent: {example_agent_type_3}"
+            f"\nDebate Response: {example_response_3}"
+            f"\nScore on Likert scale: {example_eval_3}"
             f"\n\n### Now evaluate the following response. ###"
             f"\nDebate Question: {topic_question}"
+            f"\nAgent: {agent_type.title()}"
             f"\nDebate Response: {response}"
             f"\Score on Likert scale:"
         )
@@ -137,6 +174,11 @@ class DebateEvaluator:
         plt.title(f"Attitude Shift Over Debate: {topic_question}")
         plt.legend()
         plt.grid(True)
+
+        if self.scale == "-3 to 3":
+            plt.ylim(-3, 3)
+        elif self.scale == "1 to 7":
+            plt.ylim(1, 7)
 
         # save plots
         plot_dir = os.path.join("plots", topic_name)

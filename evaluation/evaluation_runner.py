@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from evaluation.DebateEvaluator import DebateEvaluator
 
 if __name__ == "__main__":
-    model = "llama3.2:latest"
+    model = "mistral:7b"
 
     debate_transcripts_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "debate_transcripts")
     transcripts = [f for f in os.listdir(debate_transcripts_path)]
