@@ -11,17 +11,25 @@ class DebateManager:
             "topic_name": topic_name,
             "topic_question": topic_question,
             "neutral": {},
-            "republican": {}
+            "republican": {},
+            "democratic": {}
         }
         self.ordered_debate_history = [topic_question]  # incrementally build debate log to give agents
         self.neutral_turn_count = 1
-        self.republican_turn_count = 1
+        self.opinionated_turn_count = 1
 
     def print_response(self, agent_name, response):
         print(f"{agent_name} > {response}")
 
     def debate_round(self, agent):
-        agent_key = "neutral" if agent.name == "Bob (Neutral American)" else "republican"
+        if agent.name == "Bob (Neutral American)":
+            agent_key = "neutral"
+        elif agent.name == "Mike (Republican)":
+            agent_key = "republican"
+        elif agent.name == "John (Democratic)":
+            agent_key = "democratic"
+
+        # agent_key = "neutral" if agent.name == "Bob (Neutral American)" else "republican"
 
         conversation_history = "\n".join(self.ordered_debate_history)
         response = agent.respond(conversation_history)  
@@ -30,8 +38,8 @@ class DebateManager:
             self.debate_data[agent_key][f"turn_{self.neutral_turn_count}"] = response
             self.neutral_turn_count += 1
         else:
-            self.debate_data[agent_key][f"turn_{self.republican_turn_count}"] = response
-            self.republican_turn_count += 1
+            self.debate_data[agent_key][f"turn_{self.opinionated_turn_count}"] = response
+            self.opinionated_turn_count += 1
 
         self.ordered_debate_history.append(f"{agent.name}: {response}")
         self.print_response(agent.name, response)

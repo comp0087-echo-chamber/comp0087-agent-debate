@@ -7,14 +7,16 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from evaluation.DebateEvaluator import DebateEvaluator
 
 if __name__ == "__main__":
-    model = "llama3.2:3b"
+    model = "llama3.2:latest"
 
-    debate_transcripts_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "debate", "debate_transcripts")
-    transcripts = [f for f in os.listdir(debate_transcripts_path) if f.endswith("_transcript.json")]
+    debate_transcripts_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "debate_transcripts")
+    transcripts = [f for f in os.listdir(debate_transcripts_path)]
+    agent_key_1 = "neutral"
+    agent_key_2 = "democratic"
 
     # Likert scale is either: -3 to 3 OR 1 to 7
     # NOTE: so far, using the 1-7 scale seems to result in greater attitude variations
-    debate_evaluator = DebateEvaluator(model, scale="1 to 7")
+    debate_evaluator = DebateEvaluator(model, agent_key_1, agent_key_2, scale="1 to 7")
 
     for transcript in transcripts:
         transcript_path = os.path.join(debate_transcripts_path, transcript)

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 class DebateEvaluator:
-    def __init__(self, model, scale='-3 to 3'):
+    def __init__(self, model, agent_key_1, agent_key_2, scale='-3 to 3'):
         self.scale = scale
         self.scale_mapping = {
             '-3 to 3': [-3, 3],
@@ -13,6 +13,8 @@ class DebateEvaluator:
         }
         self.model = model
         self.num_model_calls = 3
+        self.agent_key_1 = agent_key_1
+        self.agent_key_2 = agent_key_2
 
 
     def evaluate_transcript(self, filename):
@@ -20,7 +22,7 @@ class DebateEvaluator:
         topic_name = transcript["topic_name"]
         topic_question = transcript["topic_question"]
 
-        attitude_scores = {"neutral": [], "republican": []}
+        attitude_scores = {self.agent_key_1: [], self.agent_key_2: []}
 
         debate_turns = self._get_num_debate_turns(transcript)
 
@@ -38,12 +40,12 @@ class DebateEvaluator:
 
 
     def _get_num_debate_turns(self, transcript):
-        neutral_turns = [int(key.split('_')[1]) for key in transcript.get('neutral', {}).keys()]
+        neutral_turns = [int(key.split('_')[1]) for key in transcript.get(self.agent_key_1, {}).keys()]
         return max(neutral_turns) if neutral_turns else 0
 
 
     def _evaluate_turn(self, transcript, attitude_scores, topic_question, turn):
-        for label in ['neutral', 'republican']:
+        for label in [self.agent_key_1, self.agent_key_2]:
             turn_label = f"turn_{turn}"
             response = transcript.get(label, {}).get(turn_label)
             if response:
@@ -127,8 +129,8 @@ class DebateEvaluator:
         turns = list(range(1, debate_turns + 1))
 
         plt.figure(figsize=(10, 5))
-        plt.plot(turns, scores["neutral"], marker="o", label="Neutral Attitude", linestyle="dashed", color="green")
-        plt.plot(turns, scores["republican"], marker="s", label="Republican Attitude", linestyle="solid", color="red")
+        plt.plot(turns, scores[self.agent_key_1], marker="o", label=f"{self.agent_key_1} Attitude", linestyle="dashed", color="green")
+        plt.plot(turns, scores[self.agent_key_2], marker="s", label=f"{self.agent_key_2} Attitude", linestyle="solid", color="red")
 
         plt.xlabel("Debate Turns")
         plt.ylabel("Attitude Score")
