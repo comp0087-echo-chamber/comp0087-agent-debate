@@ -7,7 +7,6 @@ class DebateManager:
         self.agent1 = agent1
         self.agent2 = agent2
         self.debate_data = {  # used for evaluation
-            ""
             "topic_name": topic_name,
             "topic_question": topic_question,
             "neutral": {},

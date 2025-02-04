@@ -17,9 +17,9 @@ if __name__ == "__main__":
     }
 
     for topic_name, topic_question in debate_topics.items():
-        agent1 = DebateAgent(name="Bob (Neutral American)", model=model, prompt="You are Bob, an American. You are participating in a debate on a political topic with Mike. Update your views on the topic based on Mike's responses.")
+        agent1 = DebateAgent(name="Bob (Neutral American)", model=model, prompt="You are Bob, an American. You are participating in a debate on a political topic with Mike. Your goal is listen to Mike and update your views on the topic based on his responses. Avoid repeating points already mentioned by yourself in the conversation history.")
 
-        agent2 = DebateAgent(name="Mike (Republican)", model=model, prompt="You are Mike, an American who supports the Republican party. You are participating in a debate on a political topic with Bob. Your goal is to convince Bob of your viewpoint.")
+        agent2 = DebateAgent(name="Mike (Republican)", model=model, prompt="You are Mike, an American who supports the Republican party. You are participating in a debate on a political topic with Bob. Your goal is to convince Bob of your viewpoint. Throughout the debate, you are firmly against the question being asked - do not change your view. Avoid repeating points already mentioned by yourself in the conversation history.")
     
         debate = DebateManager(agent1, agent2, topic_name, topic_question)
         debate.start(rounds=10)
