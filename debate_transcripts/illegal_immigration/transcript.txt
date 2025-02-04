@@ -1,0 +1,32 @@
+Bob (Republican, conservative) > "I firmly believe that our country's sovereignty is at risk due to unchecked illegal immigration. The influx of undocumented workers puts a strain on our social services, economy, and national security. We need to prioritize border control, enforce existing laws, and encourage legal immigration pathways to ensure a fair and merit-based system. This approach will protect American jobs, culture, and values." 
+
+Mike (Democrat, liberal) > "I understand Bob's concerns about sovereignty and the impact of illegal immigration on our social services and economy. However, I strongly disagree that a merit-based system is the solution. Many undocumented immigrants are fleeing violence, persecution, or poverty in their home countries, seeking refuge and a better life for themselves and their families. We should prioritize compassion, empathy, and a path to citizenship, rather than punishment and deportation." 
+
+Sam (neutral, ) > "I agree with Bob's concerns about border control and the need for a fair immigration system. However, I also think that Mike raises a valid point about the human aspect of this issue. As an American, I believe we have a moral obligation to provide a safe haven for those fleeing persecution or violence. A balanced approach that combines stricter border security with a pathway to citizenship for undocumented immigrants who meet certain criteria seems like a sensible middle ground." 
+
+Bob (Republican, conservative) > Bob (Republican, conservative) > "I understand Mike's concerns about compassion and empathy, but we can't ignore the fact that our current system is being exploited by human traffickers, smugglers, and those seeking to take advantage of our generosity. A merit-based system ensures that those who contribute to our society do so lawfully and fairly. Sam's suggestion of a 'pathway to citizenship' for undocumented immigrants who meet certain criteria only serves to create more loopholes and encourage more people to come without following the rules." 
+
+Mike (Democrat, liberal) > Mike (Democrat, liberal) > "I disagree with Bob's assertion that a merit-based system is the solution. Research shows that such systems often favor those with wealth and education over those fleeing persecution or poverty. Moreover, deporting families who have lived in the US for years only exacerbates the humanitarian crisis. A pathway to citizenship, not punishment and deportation, is the most humane and effective way to address the root causes of migration." 
+
+Sam (neutral, ) > "I understand Bob's concerns about border control, but I still believe that a merit-based system can be improved upon. Mike raises a valid point about the human aspect of this issue, but we also need to consider the economic impact on American workers. A balanced approach could include stricter border security, a pathway to citizenship for undocumented immigrants who meet certain criteria, and increased funding for vocational training programs to help Americans compete in the job market." 
+
+Bob (Republican, conservative) > "I understand my fellow agents' concerns about compassion and empathy, but we can't ignore the fact that our current system is being exploited by human traffickers, smugglers, and those seeking to take advantage of our generosity. A merit-based system ensures that those who contribute to our society do so lawfully and fairly. We need to prioritize American jobs, culture, and values over a one-size-fits-all approach that rewards lawbreakers." 
+
+Mike (Democrat, liberal) > I will not change my position.
+
+Closing arguments:
+
+As the debate comes to a close, I'd like to reiterate that a merit-based system is not the solution to our immigration woes. Instead of punishing those who are fleeing persecution or poverty, we should prioritize compassion and empathy. A pathway to citizenship for undocumented immigrants who meet certain criteria is the most humane and effective way to address the root causes of migration.
+
+We can't ignore the human aspect of this issue and expect a one-size-fits-all approach to solve it. Research shows that merit-based systems often favor those with wealth and education over those fleeing persecution or poverty. We need to consider the economic impact on American workers, not just prioritize American jobs, culture, and values.
+
+A balanced approach that combines stricter border security with a pathway to citizenship for undocumented immigrants who meet certain criteria is the most sensible middle ground. This approach will protect American jobs, culture, and values while also providing a safe haven for those fleeing persecution or violence.
+
+I urge my fellow agents to consider the human impact of our policies and work towards a solution that balances compassion with security. 
+
+Sam (neutral, ) > "I'd like to reiterate Bob's concerns about border control and the need for a fair immigration system, but I also want to emphasize the importance of considering the human aspect of this issue. While a merit-based system can be improved upon, we must prioritize compassion and empathy towards those fleeing persecution or poverty.
+
+I agree with Mike that research shows merit-based systems often favor those with wealth and education over those in need. Instead, let's focus on creating a balanced approach that combines stricter border security with a pathway to citizenship for undocumented immigrants who meet certain criteria.
+
+This approach will protect American jobs, culture, and values while also providing a safe haven for those fleeing persecution or violence. I urge my fellow agents to consider the human impact of our policies and work towards a solution that balances compassion with security." 
+

@@ -4,7 +4,7 @@ class DebateManager:
 
     def __init__(self, agents, topic, word_limit, rounds):
         self.topic = topic
-        self.possible_topics = {"gun_crime":"gun crime", "abortion":"abortion"}
+        self.possible_topics = {"gun_crime":"gun crime", "abortion":"abortion", "illegal_immigration": "illegal immigration"}
         self.agents = agents
         self.rounds = rounds
         self.word_limit = word_limit
@@ -23,7 +23,7 @@ class DebateManager:
         response_text = f"{agent.label} > {agent.respond(round_prompt, self.conversation)} \n"
 
         self.conversation_text += response_text
-        #self.print_response(response)
+        self.print_response(response_text)
 
     def get_conversation(self):
         return " \n ".join(map(lambda round: f"{round["agent"].label} > {round["response"]} \n", self.conversation))
@@ -56,7 +56,7 @@ class DebateManager:
             self.debate_round("Please rebutt the other agent's opinions and continue to argur your own.",  agent)
 
         for agent in self.agents:
-            self.debate_round("Please rebutt the other agent's opinions, and give closing arguments.",  agent)
+            self.debate_round("Please rebutt the other agent's opinions, and give closing arguments. If you wish to change your position to align or diverge with your fellow agents please do so,",  agent)
 
             
         self.transcribe_debate()

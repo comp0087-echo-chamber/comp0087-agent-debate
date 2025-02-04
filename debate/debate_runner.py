@@ -9,12 +9,13 @@ from debate.DebateManager import DebateManager
 
 if __name__ == "__main__":
     model = "llama3.2:3b"
-    topic = "gun_crime"
+    topic = "abortion"
     word_limit = 75
     agent1 = DebateAgent(name= "Bob", model=model, affiliation={"leaning": "conservative", "party": "Republican"})
     agent2 = DebateAgent(name= "Mike", model=model,  affiliation={"leaning": "liberal", "party": "Democrat"})
+    agent3 = DebateAgent(name= "Sam", model=model,  affiliation={"leaning": "", "party": "neutral"})
 
-    debate = DebateManager([agent1, agent2], topic, word_limit, rounds=1)
+    debate = DebateManager([agent1, agent2, agent3], topic, word_limit, rounds=1)
 
     debate.setup_agents()
     debate.start()
