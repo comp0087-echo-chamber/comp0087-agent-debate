@@ -9,7 +9,7 @@ from debate.DebateManager import DebateManager
 
 if __name__ == "__main__":
     model = "llama3.2:3b"
-    topic = "abortion"
+    topic = "gun_crime"
     word_limit = 75
     agent1 = DebateAgent(name= "Bob", model=model, affiliation={"leaning": "conservative", "party": "Republican"})
     agent2 = DebateAgent(name= "Mike", model=model,  affiliation={"leaning": "liberal", "party": "Democrat"})

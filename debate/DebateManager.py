@@ -1,5 +1,5 @@
 import ollama
-
+from eval.Eval import Eval
 class DebateManager:
 
     def __init__(self, agents, topic, word_limit, rounds):
@@ -11,6 +11,7 @@ class DebateManager:
         self.conversation = []
         self.conversation_text = f""
         self.word_limit
+        self.eval = Eval()
 
     def print_response(self, response):
         print(response)
@@ -20,7 +21,9 @@ class DebateManager:
         response = agent.respond(round_prompt, conversation)
         self.conversation.append({"agent": agent, "response": response})
 
-        response_text = f"{agent.label} > {agent.respond(round_prompt, self.conversation)} \n"
+        response_text = f"{agent.label} > {response} \n"
+
+        # Incorporate eval
 
         self.conversation_text += response_text
         self.print_response(response_text)
