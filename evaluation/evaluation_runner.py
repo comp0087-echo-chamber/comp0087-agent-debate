@@ -9,10 +9,12 @@ from evaluation.DebateEvaluator import DebateEvaluator
 if __name__ == "__main__":
     model = "mistral:7b"
 
-    debate_transcripts_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "debate", "debate_transcripts")
-    transcripts = [f for f in os.listdir(debate_transcripts_path)]
     agent_key_1 = "neutral"
-    agent_key_2 = "democratic"
+    agent_key_2 = "democrat"
+    # agent_key_2 = "republican"
+
+    debate_transcripts_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "debate", f"debate_transcripts_{agent_key_2}")
+    transcripts = [f for f in os.listdir(debate_transcripts_path)]
 
     # Likert scale is either: -3 to 3 OR 1 to 7
     # NOTE: so far, using the 1-7 scale seems to result in greater attitude variations

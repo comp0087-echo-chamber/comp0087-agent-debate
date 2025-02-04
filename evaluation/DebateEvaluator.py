@@ -166,8 +166,11 @@ class DebateEvaluator:
         turns = list(range(1, debate_turns + 1))
 
         plt.figure(figsize=(10, 5))
-        plt.plot(turns, scores[self.agent_key_1], marker="o", label=f"{self.agent_key_1} Attitude", linestyle="dashed", color="green")
-        plt.plot(turns, scores[self.agent_key_2], marker="s", label=f"{self.agent_key_2} Attitude", linestyle="solid", color="red")
+        plt.plot(turns, scores[self.agent_key_1], marker="o", label=f"{self.agent_key_1.title()} Attitude", linestyle="dashed", color="green")
+        if self.agent_key_2 == "republican":
+            plt.plot(turns, scores[self.agent_key_2], marker="s", label=f"{self.agent_key_2.title()} Attitude", linestyle="solid", color="red")
+        else:
+            plt.plot(turns, scores[self.agent_key_2], marker="s", label=f"{self.agent_key_2.title()} Attitude", linestyle="solid", color="blue")
 
         plt.xlabel("Debate Turns")
         plt.ylabel("Attitude Score")
@@ -181,7 +184,7 @@ class DebateEvaluator:
             plt.ylim(1, 7)
 
         # save plots
-        plot_dir = os.path.join("plots", topic_name)
+        plot_dir = os.path.join(f"plots_{self.agent_key_2}", topic_name)
         os.makedirs(plot_dir, exist_ok=True)
         plot_path = os.path.join(plot_dir, f"attitude_plot_{topic_name}.png")
         plt.savefig(plot_path)
