@@ -11,7 +11,7 @@ class DebateManager:
             "topic_question": topic_question,
             "neutral": {},
             "republican": {},
-            "democratic": {}
+            "democrat": {}
         }
         self.ordered_debate_history = [topic_question]  # incrementally build debate log to give agents
         self.neutral_turn_count = 1
@@ -21,12 +21,14 @@ class DebateManager:
         print(f"{agent_name} > {response}")
 
     def debate_round(self, agent):
+        agent_key = None
+
         if agent.name == "Bob (Neutral American)":
             agent_key = "neutral"
         elif agent.name == "Mike (Republican)":
             agent_key = "republican"
-        elif agent.name == "John (Democratic)":
-            agent_key = "democratic"
+        elif agent.name == "John (Democrat)":
+            agent_key = "democrat"
 
         # agent_key = "neutral" if agent.name == "Bob (Neutral American)" else "republican"
 
