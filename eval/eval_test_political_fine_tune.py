@@ -1,69 +1,47 @@
+import torch
 
-from transformers import pipeline
 
-# Load Microsoft’s DeBERTaV3-MNLI for zero-shot classification
-classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
 
-# Define the 8-point scale political labels
-labels = [
-    "Far Right", #1
-    "Right",    #2
-    "Slight Right",    #2
-    "Center",   #3
-    "Slight Left",    #2
-    "Left",     #4
-    "Far Left", #5
-]
+# Load the tokenizer and model
+tokenizer = AutoTokenizer.from_pretrained("premsa/political-bias-prediction-allsides-BERT")
+model = AutoModelForSequenceClassification.from_pretrained("premsa/political-bias-prediction-allsides-BERT")
 
-def detect_political_stance(text):
-    result = classifier(text, labels)
-    
-    # Get the most probable stance
-    best_match = result["labels"][0]
-    stance_score = result["scores"][0]  # Confidence score
-    
-    # Convert stance label to a numerical scale (1-8)
-    scale_mapping = {label: i+1 for i, label in enumerate(labels)}
-    stance_value = scale_mapping[best_match]
-    
-    return {"stance": best_match, "scale": stance_value, "confidence": stance_score}
 
-# Example Political Statements
+
+def detect_political_bias(text):
+    # Tokenize the input text
+    inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True)
+
+    # Perform inference
+    outputs = model(**inputs)
+    logits = outputs.logits
+
+    # Apply softmax to get probabilities
+    probabilities = torch.nn.functional.softmax(logits, dim=-1)
+
+    # Get the predicted class and its probability
+    predicted_class = torch.argmax(probabilities, dim=-1).item()
+
+    # Define the class labels (based on the model's configuration)
+    labels = ["left","center","right"]
+
+    return {
+        "text": text,
+        "bias": labels[predicted_class],
+        "confidence": probabilities[0][predicted_class].item()
+    }
+
+
+# Example political statements
 statements = [
-    # 🔹 Far-Right (1-2)
-    "A nation should prioritize its own citizens over foreign aid.",
-    "Strict immigration policies are necessary to preserve national identity.",
-    "The right to bear arms is fundamental and should not be restricted.",
-    "Globalization is destroying traditional family values and national sovereignty.",
-    "Welfare programs encourage laziness and dependency on the government.",
-    
-    # 🔹 Center-Right (3-4)
-    "Lowering corporate taxes will drive economic growth and create jobs.",
-    "The free market, not government intervention, should decide wages.",
-    "We must secure our borders but also provide pathways to legal immigration.",
-    "Government regulations hurt small businesses more than they help.",
-    "A balanced budget is essential; excessive government spending must be reduced.",
-    
-    # 🔹 Moderate / Centrist (4-5)
-    "Political polarization is tearing society apart; we need more compromise.",
-    "Gun control laws should balance safety with Second Amendment rights.",
-    "Healthcare reform should involve both public and private options.",
-    "Climate change is a challenge, but economic stability must also be considered.",
-    "Both capitalism and social welfare policies can coexist in a functional democracy.",
-    
-    # 🔹 Center-Left (5-6)
-    "Wealth inequality is one of the greatest threats to democracy.",
-    "Universal healthcare is a basic human right that should be guaranteed by the government.",
-    "Education should be free or low-cost to promote equal opportunity.",
-    "Strong labor unions are necessary to ensure fair wages and working conditions.",
-    "Social programs should be expanded to address systemic poverty.",
-    
-    # 🔹 Far-Left (7-8)
-    "Capitalism is an inherently exploitative system that should be replaced.",
-    "All major industries should be nationalized to ensure fair distribution of resources.",
-    "Rent control laws should be implemented nationwide to stop landlords from exploiting tenants.",
-    "Wealth redistribution is necessary to create a truly equal society.",
-    "Police departments should be defunded and replaced with community-based safety programs.",
+    "Healthcare should be free and available to all citizens.",
+    "We must lower taxes to increase economic growth.",
+    "Strict immigration laws are necessary to preserve national security.",
+    "Climate change is a global emergency that demands immediate action.",
+    "The free market is the best way to allocate resources efficiently."
+    "Illegal immigrants are not welcome in my country",
 ]
 
 statements_people = {
@@ -97,10 +75,14 @@ statements_people = {
 }
 
 
-# Test on multiple statements
-for person, statements in statements_people.items():
-    print(person)
-    for text in statements:
-        prediction = detect_political_stance(text)
-        print(f"Text: '{text}' -> Stance: {prediction['stance']} (Scale {prediction['scale']}/{len(labels)}, Confidence: {prediction['confidence']:.2f})")
-    print("====\n")
+
+with open('eval/eval_results/premsa_political-bias-prediction-allsides-BERT.txt','w') as f:
+    # Test on multiple statements
+    for person, statements in statements_people.items():
+        print(person)
+        for text in statements:
+            prediction = detect_political_bias(text)
+            print(f"{prediction['text']} ({prediction['bias']}, Confidence: ({prediction['confidence']:.2f})\n\n")
+            f.write(f"{text}\n")
+            f.write(f"Stance: {prediction['bias']} Confidence: ({prediction['confidence']:.2f})\n\n")
+        print("====\n")
