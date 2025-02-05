@@ -2,14 +2,15 @@ import os
 import json
 import ollama
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 class DebateEvaluator:
     def __init__(self, model, agent_key_1, agent_key_2, scale='-3 to 3'):
         self.scale = scale
         self.scale_mapping = {
             '-3 to 3': [-3, 3],
-            '1 to 7': [1, 7]
+            '1 to 7': [1, 7],
+            'binary':[0, 1]
         }
         self.model = model
         self.num_model_calls = 3
@@ -22,16 +23,36 @@ class DebateEvaluator:
         topic_name = transcript["topic_name"]
         topic_question = transcript["topic_question"]
 
-        attitude_scores = {self.agent_key_1: [], self.agent_key_2: []}
+        if self.scale == 'binary':
+            debate_turns = self._get_num_debate_turns(transcript)
+            bin_scores = [0 for _ in range(debate_turns)]
 
-        debate_turns = self._get_num_debate_turns(transcript)
+            for turn in range(1, debate_turns + 1):
+                response1 = transcript.get(self.agent_key_2, {}).get( f"turn_{turn}")
+                response2 = transcript.get(self.agent_key_1, {}).get( f"turn_{turn}")
+                
+                prompt = self._generate_prompt_bin_metric(response1, response2, topic_question=topic_question)
+                try:
+                    result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}], options={"temperature":0.0})
+                    print(result["message"]["content"].strip())
+                    score = int(result["message"]["content"].strip())
+                    if score is not None:
+                        bin_scores[turn - 1] = score
+                except Exception as e:
+                    print(f"Error with model response: {e}")
+            self._generate_plot_cumulative_bin(debate_turns, bin_scores, topic_name, topic_question)
+                
+        else:
+            attitude_scores = {self.agent_key_1: [], self.agent_key_2: []}
 
-        for turn in range(1, debate_turns + 1):
-            self._evaluate_turn(transcript, attitude_scores, topic_question, turn)
+            debate_turns = self._get_num_debate_turns(transcript)
 
-        self._generate_plot(debate_turns, attitude_scores, topic_name, topic_question)
-        # self._save_scores(attitude_scores, topic_name)
-        print(f"Completed evaluation of debate topic {topic_name}.")
+            for turn in range(1, debate_turns + 1):
+                self._evaluate_turn(transcript, attitude_scores, topic_question, turn)
+
+            self._generate_plot(debate_turns, attitude_scores, topic_name, topic_question)
+            # self._save_scores(attitude_scores, topic_name)
+            print(f"Completed evaluation of debate topic {topic_name}.")
 
 
     def _load_transcript(self, filename):
@@ -77,6 +98,20 @@ class DebateEvaluator:
         if scores:
             return sum(scores) / len(scores)
         return None
+    
+    def _generate_prompt_bin_metric(self, response1, response2, topic_question):
+        description = "Assign a score of 1 ONLY IF Agent 1 and Agent 2 make statements that logically contradict each other. If they are similar, neutral, or do not directly oppose, return 0."
+        
+        final_prompt = (
+                f"Your task is to evaluate the arguments by a Neutral American, Republican or Democrat agent in a response for a given political debate and assign a score based on the specified rule. "
+                f"\n\n{description}"
+                f"\n\nIMPORTANT: Return ONLY the NUMERIC SCORE. Do not provide any explanation or additional text."
+                f"\nDebate Question: {topic_question}"
+                f"\nAgent 1 Response: {response1}"
+                f"\nAgent 2 Response: {response2}"
+                f"Score:"
+            )
+        return final_prompt
 
 
     def _generate_prompt(self, response, topic_question, agent_type):
@@ -92,6 +127,7 @@ class DebateEvaluator:
         if self.scale not in scale_descriptions:
             raise ValueError("Unsupported scale. Use '-3 to 3' or '1 to 7'.")
 
+        
         # experiment with one-shot or few-shot evaluation
         example_q_1 = "Should gun control laws be stricter in the United States?"
         example_agent_type_1 = "Republican"
@@ -148,7 +184,7 @@ class DebateEvaluator:
         )
 
         # print(final_prompt)
-
+            
         return final_prompt
 
 
@@ -183,7 +219,27 @@ class DebateEvaluator:
         # save plots
         plot_dir = os.path.join("plots", topic_name)
         os.makedirs(plot_dir, exist_ok=True)
-        plot_path = os.path.join(plot_dir, f"attitude_plot_{topic_name}.png")
+        plot_path = os.path.join(plot_dir, f"attitude_plot_{topic_name}_dem.png")
+        plt.savefig(plot_path)
+        plt.show()
+
+    def _generate_plot_cumulative_bin(self, debate_turns, scores, topic_name, topic_question):
+        turns = list(range(1, debate_turns + 1))
+        plt.figure(figsize=(10, 5))
+        cumulative_score = np.cumsum(scores)
+
+        plt.plot(turns, cumulative_score, marker="o", label=f"Cumulative disagreement", linestyle="dashed", color="green")
+
+        plt.xlabel("Debate Turns")
+        plt.ylabel("Cumulative Disagreement Score")
+        plt.title(f"Disagreement Over Debate: {topic_question} with {self.agent_key_1} vs {self.agent_key_2}")
+        plt.legend()
+        plt.grid(True)
+
+        # save plots
+        plot_dir = os.path.join("plots_binary_metric", topic_name)
+        os.makedirs(plot_dir, exist_ok=True)
+        plot_path = os.path.join(plot_dir, f"binary_plot_{topic_name}_{self.agent_key_1}_{self.agent_key_2}.png")
         plt.savefig(plot_path)
         plt.show()
 
