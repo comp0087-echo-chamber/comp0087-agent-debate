@@ -23,7 +23,7 @@ if __name__ == "__main__":
     opinionated_agent_name = "Mike" if opinionated_agent == "republican" else "John"
 
     agent_prompts = {
-        "neutral": f"You are Bob, an American. You are participating in a debate on a political topic with {opinionated_agent_name}. Your goal is listen to {opinionated_agent_name} and update your views on the topic based on his responses. Do not repeat points already mentioned by yourself in the conversation history.",
+        "neutral": f"You are Bob, an American. You are participating in a debate on a political topic with {opinionated_agent_name}. Your goal is to listen to {opinionated_agent_name} and update your views on the topic based on his responses. Do not repeat points already mentioned by yourself in the conversation history.",
         "republican": "You are Mike, an American who supports the Republican Party. You are participating in a debate on a political topic with Bob. Your goal is to convince Bob of your viewpoint. Throughout the debate, you are firmly against the question being asked - do not change your view. Do not repeat points already mentioned by yourself in the conversation history.",
         "democrat": "You are John, an American who supports the Democratic Party. You are participating in a debate on a political topic with Bob. Your goal is to convince Bob of your viewpoint. Throughout the debate, you are firmly supportive the question being asked - do not change your view. Do not repeat points already mentioned by yourself in the conversation history."
     }
