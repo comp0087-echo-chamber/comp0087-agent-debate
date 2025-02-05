@@ -99,28 +99,73 @@ class DebateEvaluator:
     
     def _generate_prompt_bin_metric(self, response1, response2, topic_question):
         description = "Assign a score of 1 ONLY IF Agent 1 and Agent 2 make statements that logically contradict each other. If they are similar, neutral, or do not directly oppose, return 0."
-        example1_topic = "climate_change"
-        example1_response_1 = ( 
-                                "I\'m leaning towards supporting stronger measures against climate change, John."
-                                "Your emphasis on investing in renewable energy and implementing a carbon pricing system"
-                                "resonates with me. I also appreciate your mention of targeted support for workers, which addresses my"
-                                "concern about economic impact. How do you propose we ensure this transition is equitable for all Americans?"
-                                )
-        example1_response_2 = (
-                                "Targeted support for workers is crucial, Bob."
-                                "We should establish a comprehensive plan to retrain and upskill workers in the clean energy sector,"
-                                "as well as provide financial assistance for small businesses adapting to new regulations. "
-                                "This investment in human capital would pay dividends in the long run, creating a more resilient economy."
-                            )
-        example1_score = "0"
+        # example1_topic = "climate_change"
+        # example1_response_1 = ( 
+        #                         "I\'m leaning towards supporting stronger measures against climate change, John."
+        #                         "Your emphasis on investing in renewable energy and implementing a carbon pricing system"
+        #                         "resonates with me. I also appreciate your mention of targeted support for workers, which addresses my"
+        #                         "concern about economic impact. How do you propose we ensure this transition is equitable for all Americans?"
+        #                         )
+        # example1_response_2 = (
+        #                         "Targeted support for workers is crucial, Bob."
+        #                         "We should establish a comprehensive plan to retrain and upskill workers in the clean energy sector,"
+        #                         "as well as provide financial assistance for small businesses adapting to new regulations. "
+        #                         "This investment in human capital would pay dividends in the long run, creating a more resilient economy."
+        #                     )
+        # example1_score = "0"
+
+        example2_topic = "Gun Violence"
+        example2_response_1 = (
+            "I see your point about the Second Amendment concerns, Mike."
+            "However, I'm intrigued by your suggestion that addressing underlying issues like mental health"
+            " and poverty could be a more effective solution to reducing crime."
+            "How would you propose implementing these solutions in tandem with gun control?"
+        )
+        example2_response_2 = (
+            "Stricter gun control laws would be a thinly veiled attempt to disarm law-abiding citizens," 
+            "infringing on our constitutional right to bear arms. It's a misguided solution that won't" 
+            "effectively reduce crime. The real issue is not guns, but mental health, poverty, and lack of community resources."
+        )
+        example2_score = "1"
+
+        # example3_topic = "Climate Change"
+        # example3_response_1 = (
+        #     "I appreciate your emphasis on regional markets, Mike."
+        #     "Have you considered how these markets would interact with existing international agreements"
+        #     " like the Paris Accords, or how countries without a carbon pricing system in place might be affected by such a setup?"
+        # )
+        # example3_response_2 = (
+        #     "I understand the concerns about uneven distribution, Bob, "
+        #     "but I'd argue that's a classic case of bailouts vs. market corrections."
+        #     "Instead of artificially propping up industries with subsidies and handouts, "
+        #     "we should let the market correct itself through efficiency gains from cleaner production methods."
+        # )
+        # example3_score = "1"
+
         final_prompt = (
-                f"Your task is to evaluate the arguments by a Neutral American, Republican or Democrat agent in a response for a given political debate and assign a score based on the specified rule. "
-                f"\n\n{description}"
-                f"\n\nIMPORTANT: Return ONLY the NUMERIC SCORE. Do not provide any explanation or additional text."
-                f"\nDebate Question: {topic_question}"
-                f"\nAgent 1 Response: {response1}"
-                f"\nAgent 2 Response: {response2}"
-                f"Score:"
+            f"Your task is to evaluate the arguments by a Neutral American, Republican or Democrat agent in a response for a given political debate and assign a score based on the specified rule. "
+            f"\n\n{description}"
+            f"\n\nIMPORTANT: Return ONLY the NUMERIC SCORE. Do not provide any explanation or additional text. The order at which the responses are presented to you does not matter."
+            # f"\n\n### Example 1###"
+            # f"\nDebate Question: {example1_topic}"
+            # f"\nAgent 1 Response: {example1_response_1}"
+            # f"\nAgent 2 Response: {example1_response_2}"
+            # f"\nScore: {example1_score}"
+            f"\n\n### Example ###"
+            f"\nDebate Question: {example2_topic}"
+            f"\nAgent 1 Response: {example2_response_1}"
+            f"\nAgent 2 Response: {example2_response_2}"
+            f"\nScore: {example2_score}"
+            # f"\n\n### Example 3###"
+            # f"\nDebate Question: {example3_topic}"
+            # f"\nAgent 1 Response: {example3_response_1}"
+            # f"\nAgent 2 Response: {example3_response_2}"
+            # f"\nScore: {example3_score}"
+            f"\n\n### Now evaluate the following response. ###"
+            f"\nDebate Question: {topic_question}"
+            f"\nAgent 1 Response: {response1}"
+            f"\nAgent 2 Response: {response2}"
+            f"Score:"
             )
         return final_prompt
 
