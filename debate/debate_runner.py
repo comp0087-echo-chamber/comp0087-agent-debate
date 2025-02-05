@@ -23,16 +23,16 @@ if __name__ == "__main__":
     opinionated_agent_name = "Mike" if opinionated_agent == "republican" else "John"
 
     agent_prompts = {
-        "Neutral American": f"You are Bob, an American. You are participating in a debate on a political topic with Mike. Your goal is listen to {opinionated_agent_name} and update your views on the topic based on his responses. Do not repeat points already mentioned by yourself in the conversation history.",
+        "neutral": f"You are Bob, an American. You are participating in a debate on a political topic with {opinionated_agent_name}. Your goal is listen to {opinionated_agent_name} and update your views on the topic based on his responses. Do not repeat points already mentioned by yourself in the conversation history.",
         "republican": "You are Mike, an American who supports the Republican Party. You are participating in a debate on a political topic with Bob. Your goal is to convince Bob of your viewpoint. Throughout the debate, you are firmly against the question being asked - do not change your view. Do not repeat points already mentioned by yourself in the conversation history.",
         "democrat": "You are John, an American who supports the Democratic Party. You are participating in a debate on a political topic with Bob. Your goal is to convince Bob of your viewpoint. Throughout the debate, you are firmly supportive the question being asked - do not change your view. Do not repeat points already mentioned by yourself in the conversation history."
     }
 
     for topic_name, topic_question in debate_topics.items():
-        agent1 = DebateAgent(name="Bob (Neutral American)", model=model, prompt=agent_prompts["Neutral American"])
+        agent1 = DebateAgent(name="Bob (Neutral American)", model=model, prompt=agent_prompts["neutral"])
 
         if opinionated_agent == "republican":
-            agent2 = DebateAgent(name="Mike (Republican)", model=model, prompt=agent_prompts["democrat"])
+            agent2 = DebateAgent(name="Mike (Republican)", model=model, prompt=agent_prompts["republican"])
         else:
             agent2 = DebateAgent(name="John (Democrat)", model=model, prompt=agent_prompts["democrat"])
     
