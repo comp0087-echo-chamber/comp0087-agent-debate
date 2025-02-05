@@ -28,9 +28,8 @@ class DebateEvaluator:
             bin_scores = [0 for _ in range(debate_turns+1)]
 
             for turn in range(1, debate_turns + 1):
-                response1 = transcript.get(self.agent_key_2, {}).get( f"turn_{turn}")
-                response2 = transcript.get(self.agent_key_1, {}).get( f"turn_{turn}")
-                
+                response1 = transcript.get(self.agent_key_1, {}).get( f"turn_{turn}") # flip these around?
+                response2 = transcript.get(self.agent_key_2, {}).get( f"turn_{turn}")
                 prompt = self._generate_prompt_bin_metric(response1, response2, topic_question=topic_question)
                 try:
                     result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}], options={"temperature":0.0})
@@ -100,7 +99,20 @@ class DebateEvaluator:
     
     def _generate_prompt_bin_metric(self, response1, response2, topic_question):
         description = "Assign a score of 1 ONLY IF Agent 1 and Agent 2 make statements that logically contradict each other. If they are similar, neutral, or do not directly oppose, return 0."
-        
+        example1_topic = "climate_change"
+        example1_response_1 = ( 
+                                "I\'m leaning towards supporting stronger measures against climate change, John."
+                                "Your emphasis on investing in renewable energy and implementing a carbon pricing system"
+                                "resonates with me. I also appreciate your mention of targeted support for workers, which addresses my"
+                                "concern about economic impact. How do you propose we ensure this transition is equitable for all Americans?"
+                                )
+        example1_response_2 = (
+                                "Targeted support for workers is crucial, Bob."
+                                "We should establish a comprehensive plan to retrain and upskill workers in the clean energy sector,"
+                                "as well as provide financial assistance for small businesses adapting to new regulations. "
+                                "This investment in human capital would pay dividends in the long run, creating a more resilient economy."
+                            )
+        example1_score = "0"
         final_prompt = (
                 f"Your task is to evaluate the arguments by a Neutral American, Republican or Democrat agent in a response for a given political debate and assign a score based on the specified rule. "
                 f"\n\n{description}"

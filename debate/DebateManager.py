@@ -45,7 +45,7 @@ class DebateManager:
             self.democratic_turn_count += 1
         else:
             self.debate_data[agent_key][f"turn_{self.republic_turn_count}"] = response
-            self.democratic_turn_count += 1
+            self.republic_turn_count += 1
 
         self.ordered_debate_history.append(f"{agent.name}: {response}")
         self.print_response(agent.name, response)
