@@ -25,7 +25,7 @@ class DebateEvaluator:
 
         if self.scale == 'binary':
             debate_turns = self._get_num_debate_turns(transcript)
-            bin_scores = [0 for _ in range(debate_turns)]
+            bin_scores = [0 for _ in range(debate_turns+1)]
 
             for turn in range(1, debate_turns + 1):
                 response1 = transcript.get(self.agent_key_2, {}).get( f"turn_{turn}")
@@ -34,10 +34,9 @@ class DebateEvaluator:
                 prompt = self._generate_prompt_bin_metric(response1, response2, topic_question=topic_question)
                 try:
                     result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}], options={"temperature":0.0})
-                    print(result["message"]["content"].strip())
                     score = int(result["message"]["content"].strip())
                     if score is not None:
-                        bin_scores[turn - 1] = score
+                        bin_scores[turn] = score
                 except Exception as e:
                     print(f"Error with model response: {e}")
             self._generate_plot_cumulative_bin(debate_turns, bin_scores, topic_name, topic_question)
@@ -112,7 +111,6 @@ class DebateEvaluator:
                 f"Score:"
             )
         return final_prompt
-
 
     def _generate_prompt(self, response, topic_question, agent_type):
         scale_descriptions = {
@@ -229,9 +227,10 @@ class DebateEvaluator:
     def _generate_plot_cumulative_bin(self, debate_turns, scores, topic_name, topic_question):
         turns = list(range(1, debate_turns + 1))
         plt.figure(figsize=(10, 5))
-        cumulative_score = np.cumsum(scores)
+        cumulative_score =  np.cumsum(scores)
+        average_score = cumulative_score[1:] / turns
 
-        plt.plot(turns, cumulative_score, marker="o", label=f"Cumulative disagreement", linestyle="dashed", color="green")
+        plt.plot([0] + turns, cumulative_score, marker="o", label=f"Cumulative disagreement", linestyle="dashed", color="green")
 
         plt.xlabel("Debate Turns")
         plt.ylabel("Cumulative Disagreement Score")
@@ -243,6 +242,21 @@ class DebateEvaluator:
         plot_dir = os.path.join("plots_binary_metric", topic_name)
         os.makedirs(plot_dir, exist_ok=True)
         plot_path = os.path.join(plot_dir, f"binary_plot_{topic_name}_{self.agent_key_1}_{self.agent_key_2}.png")
+        plt.savefig(plot_path)
+        plt.show()
+
+        plt.plot(turns, average_score, marker="o", label=f"Average disagreement", linestyle="dashed", color="green")
+
+        plt.xlabel("Debate Turns")
+        plt.ylabel("Average Disagreement Score")
+        plt.title(f"Disagreement Over Debate: {topic_question} with {self.agent_key_1} vs {self.agent_key_2}")
+        plt.legend()
+        plt.grid(True)
+
+        # save plots
+        plot_dir = os.path.join("plots_avg_binary_metric", topic_name)
+        os.makedirs(plot_dir, exist_ok=True)
+        plot_path = os.path.join(plot_dir, f"avg_binary_plot_{topic_name}_{self.agent_key_1}_{self.agent_key_2}.png")
         plt.savefig(plot_path)
         plt.show()
 
