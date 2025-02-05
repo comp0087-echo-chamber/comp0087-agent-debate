@@ -11,9 +11,9 @@ if __name__ == "__main__":
     model = "llama3.2:3b"
     topic = "gun_crime"
     word_limit = 75
-    agent1 = DebateAgent(name= "Bob", model=model, affiliation={"leaning": "conservative", "party": "Republican"})
-    agent2 = DebateAgent(name= "Mike", model=model,  affiliation={"leaning": "liberal", "party": "Democrat"})
-    agent3 = DebateAgent(name= "Sam", model=model,  affiliation={"leaning": "", "party": "neutral"})
+    agent1 = DebateAgent(name= "Bob", model=model, affiliation={"leaning": "conservative", "party": "Republican"}, age="21", gender="male")
+    agent2 = DebateAgent(name= "Mike", model=model,  affiliation={"leaning": "liberal", "party": "Democrat"}, age="21", gender="male")
+    agent3 = DebateAgent(name= "Sam", model=model,  affiliation={"leaning": "", "party": "neutral"}, age="21", gender="Male")
 
     debate = DebateManager([agent1, agent2, agent3], topic, word_limit, rounds=1)
 

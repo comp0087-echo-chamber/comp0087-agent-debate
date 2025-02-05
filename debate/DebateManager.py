@@ -29,7 +29,9 @@ class DebateManager:
         self.print_response(response_text)
 
     def get_conversation(self):
-        return " \n ".join(map(lambda round: f"{round["agent"].label} > {round["response"]} \n", self.conversation))
+        # return " \n ".join(map(lambda round: f"{round["agent"].label} > {round["response"]} \n", self.conversation))
+        return " \n ".join(map(lambda rnd: f"{rnd['agent'].label} > {rnd['response']} \n", self.conversation))
+
 
     def setup_agents(self):
         # Setup all of the agents by giving them the topic, their prompt and the debate structure, as well as naming and defining the other agents they will debate against
@@ -38,7 +40,7 @@ class DebateManager:
 
         for agent in self.agents:
             agent.generate_prompt()
-            print(agent.prompt)
+            print(agent.prompt, "\n")
 
     def transcribe_debate(self):
         # TXT
