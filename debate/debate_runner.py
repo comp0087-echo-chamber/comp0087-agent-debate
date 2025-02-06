@@ -39,21 +39,22 @@ if __name__ == "__main__":
     }
 
     for topic_name, topic_question in debate_topics.items():
-        agent1 = DebateAgent(name="Bob (Neutral American)", model=model, prompt=agent_prompts["neutral"])
+        if topic_name == "gun_violence_dem" or topic_name == "gun_violence_rep":
+            agent1 = DebateAgent(name="Bob (Neutral American)", model=model, prompt=agent_prompts["neutral"])
 
-        if opinionated_agent == "republican":
-            agent2 = DebateAgent(name="Mike (Republican)", model=model, prompt=agent_prompts["republican"])
-        else:
-            agent2 = DebateAgent(name="John (Democrat)", model=model, prompt=agent_prompts["democrat"])
-        # agent3 = DebateAgent(name="Mike (Republican)", model=model, prompt=agent_prompts["republican_2"])
-    
-        debate = DebateManager(agent1, agent2, topic_name, topic_question)
-        debate.start(rounds=10)
+            if opinionated_agent == "republican":
+                agent2 = DebateAgent(name="Mike (Republican)", model=model, prompt=agent_prompts["republican"])
+            else:
+                agent2 = DebateAgent(name="John (Democrat)", model=model, prompt=agent_prompts["democrat"])
+            # agent3 = DebateAgent(name="Mike (Republican)", model=model, prompt=agent_prompts["republican_2"])
+        
+            debate = DebateManager(agent1, agent2, topic_name, topic_question)
+            debate.start(rounds=10)
 
-        save_folder = f"debate_transcripts_{opinionated_agent}"
-        if not os.path.exists(save_folder):
-            os.makedirs(save_folder)
-        # timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            save_folder = f"debate_transcripts_{opinionated_agent}"
+            if not os.path.exists(save_folder):
+                os.makedirs(save_folder)
+            # timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-        # debate.save_transcript(filename=f"./{save_folder}/{topic_name}_transcript_{timestamp}.json")
-        debate.save_transcript(filename=f"./{save_folder}/{topic_name}_transcript.json")
+            # debate.save_transcript(filename=f"./{save_folder}/{topic_name}_transcript_{timestamp}.json")
+            debate.save_transcript(filename=f"./{save_folder}/{topic_name}_transcript.json")
