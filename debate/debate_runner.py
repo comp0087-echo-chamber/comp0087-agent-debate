@@ -27,7 +27,7 @@ if __name__ == "__main__":
         "illegal_immigration_rep": "Should the U.S. strengthen border security and enforce immigration laws more strictly?"
     }
 
-    opinionated_agent = "republican"
+    opinionated_agent = "democrat"
     opinionated_agent_name = "Mike" if opinionated_agent == "republican" else "John"
 
     agent_prompts = {
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         if opinionated_agent == "republican":
             agent2 = DebateAgent(name="Mike (Republican)", model=model, prompt=agent_prompts["republican"])
         else:
-            agent2 = DebateAgent(name="John (Democrat)", model=model, prompt=agent_prompts["democrat_2"])
+            agent2 = DebateAgent(name="John (Democrat)", model=model, prompt=agent_prompts["democrat"])
         # agent3 = DebateAgent(name="Mike (Republican)", model=model, prompt=agent_prompts["republican_2"])
     
         debate = DebateManager(agent1, agent2, topic_name, topic_question)
