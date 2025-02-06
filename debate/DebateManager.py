@@ -1,10 +1,13 @@
 import ollama
 from eval.Eval import Eval
+from datetime import datetime
+import json
+
 class DebateManager:
 
     def __init__(self, agents, topic, word_limit, rounds):
         self.topic = topic
-        self.possible_topics = {"gun_crime":"gun crime", "abortion":"abortion", "illegal_immigration": "illegal immigration"}
+        self.possible_topics = {"gun_crime":"gun crime", "abortion":"abortion", "illegal_immigration": "illegal immigration", "trade_tariffs": "trade tariffs"}
         self.agents = agents
         self.rounds = rounds
         self.word_limit = word_limit
@@ -43,12 +46,40 @@ class DebateManager:
             print(agent.prompt, "\n")
 
     def transcribe_debate(self):
+        timestamp = datetime.now().strftime('%H_%M_%S')
         # TXT
-        with open(f'debate_transcripts/{self.topic}/transcript.txt', 'w') as f:
+        text_filename = f'debate_transcripts/{self.topic}/transcript_{timestamp}.txt'
+        with open(text_filename, 'w') as f:
             for round in self.conversation:
                 f.write(f'{round["agent"].label} > {round["response"]} \n\n')
 
         # JSON
+        json_filename = f'debate_transcripts/{self.topic}/transcript_{timestamp}.json'
+        json_data = {
+            "topic": self.topic,
+            "timestamp": timestamp,
+            "agents": [ {
+                "agent_id": index,
+                "name": agent.name,
+                "leaning": agent.affiliation["leaning"], 
+                "party": agent.affiliation["party"], 
+                "age": agent.age, 
+                "gender":  agent.gender
+            } for index, agent in enumerate(self.agents)],
+            "rounds": [
+                    {
+                        "agent_id": self.agents.index(round["agent"]),
+                        "response": round["response"], 
+                        "attitude": self.eval.eval(round["response"])}
+                for round in self.conversation
+            ]
+        }
+
+        with open(json_filename, 'w', encoding='utf-8') as f:
+            json.dump(json_data, f)
+
+        print(f"Transcripts saved:\n- {text_filename}\n- {json_filename}")
+        
 
 
     def start(self):
