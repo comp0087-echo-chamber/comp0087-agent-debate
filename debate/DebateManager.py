@@ -2,11 +2,8 @@ import ollama
 from eval.Eval import Judge
 from datetime import datetime
 import json
-<<<<<<< HEAD
 import matplotlib.pyplot as plt
-=======
 import os
->>>>>>> 1c2a9c37930a8bb58f133774bc8111431d14d6f4
 
 class DebateManager:
 
@@ -74,7 +71,7 @@ class DebateManager:
                     {
                         "agent_id": self.agents.index(round["agent"]),
                         "response": round["response"], 
-                        "attitude": self.eval.score_argument(round["response"])}
+                        "attitude": round["score"]}
                 for round in self.conversation
             ]
         }
