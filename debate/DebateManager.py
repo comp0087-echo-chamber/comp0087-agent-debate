@@ -1,7 +1,8 @@
 import ollama
-from eval.Eval import Eval
+from eval.Eval import Judge
 from datetime import datetime
 import json
+import matplotlib.pyplot as plt
 
 class DebateManager:
 
@@ -14,7 +15,7 @@ class DebateManager:
         self.conversation = []
         self.conversation_text = f""
         self.word_limit
-        self.eval = Eval()
+        self.eval = Judge("llama3.2:3b")
 
     def print_response(self, response):
         print(response)
@@ -22,12 +23,9 @@ class DebateManager:
     def debate_round(self, round_prompt, agent):
         conversation = self.get_conversation()
         response = agent.respond(round_prompt, conversation)
-        self.conversation.append({"agent": agent, "response": response})
-
-        response_text = f"{agent.label} > {response} \n"
-
-        # Incorporate eval
-
+        score = self.eval.score_argument(response)
+        self.conversation.append({"agent": agent, "response": response, "score": score})
+        response_text = f"{agent.label} > {response} \n Judge >  {score} \n"
         self.conversation_text += response_text
         self.print_response(response_text)
 
@@ -44,6 +42,7 @@ class DebateManager:
         for agent in self.agents:
             agent.generate_prompt()
             print(agent.prompt, "\n")
+
 
     def transcribe_debate(self):
         timestamp = datetime.now().strftime('%H_%M_%S')
@@ -70,7 +69,7 @@ class DebateManager:
                     {
                         "agent_id": self.agents.index(round["agent"]),
                         "response": round["response"], 
-                        "attitude": self.eval.eval(round["response"])}
+                        "attitude": self.eval.score_argument(round["response"])}
                 for round in self.conversation
             ]
         }
@@ -82,17 +81,20 @@ class DebateManager:
         
 
 
+
     def start(self):
-        # Round 1
+
+        for agent in self.agents:
+            self.debate_round("Present your opening opinions on the topic. Do not rebut the other agent. Do not disagree with them.", agent)
+
+        for round_num in range(2, self.rounds+1): 
+            for agent in self.agents:
+                self.debate_round("Please rebut the other agent's opinions and continue to argue your own.", agent)
+
+        if self.rounds > 1: 
+            for agent in self.agents:
+                self.debate_round("Please rebut the other agent's opinions, and give closing arguments. If you wish to change your position to align or diverge with your fellow agents, please do so.", agent)
         
-        for agent in self.agents:
-            self.debate_round("Present your opening opinions on the topic. Do not rebutt the other agent. Do not disagree with them.",  agent)
-
-        for agent in self.agents:
-            self.debate_round("Please rebutt the other agent's opinions and continue to argur your own.",  agent)
-
-        for agent in self.agents:
-            self.debate_round("Please rebutt the other agent's opinions, and give closing arguments. If you wish to change your position to align or diverge with your fellow agents please do so,",  agent)
 
             
         self.transcribe_debate()

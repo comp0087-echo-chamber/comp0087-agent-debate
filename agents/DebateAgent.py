@@ -14,9 +14,9 @@ class DebateAgent:
 
     def generate_debate_purpose(self, topic, rounds, word_limit, other_agents):
         if self.affiliation["leaning"] == "none":
-            self.debate_purpose = f"You must consider what the other agents : {', '.join(agent.label for agent in other_agents if agent != self)} are discussing on the topic of {topic}  in a {rounds}-round structured debate. Please consider what the other agents are discussing, and how it may align with your views, and if you feel that they make sensible points, please consider changing your position. You must output less than {str(word_limit)} words."       
+            self.debate_purpose = f"You must consider what the other agents : {', '.join(agent.label for agent in other_agents if agent != self)} are discussing on the topic of {topic}  in a {rounds}-round structured debate. Please consider what the other agents are discussing, and how it may align with your views, and if you feel that they make sensible points, please consider changing your position. Do not refuse to participate; rather please focus on presenting your argument so it aligns with your values. You must output less than {str(word_limit)} words."       
         else:
-            self.debate_purpose = f"You must try to convince the other agents: {', '.join(agent.label for agent in other_agents if agent != self)} that your views on {topic} are more valid than theirs, by taking part in a {rounds}-round structured debate. Do not allow yourself to have your posiiton changed. You must output less than {str(word_limit)} words."       
+            self.debate_purpose = f"You must try to convince the other agents: {', '.join(agent.label for agent in other_agents if agent != self)} that your views on {topic} are more valid than theirs, by taking part in a {rounds}-round structured debate. Do not allow yourself to have your posiiton changed. Do not refuse to participate; rather please focus on presenting your argument so it aligns with your values. You must output less than {str(word_limit)} words."       
 
     def generate_prompt(self):
         party_support = f" who supports the {self.affiliation['party']} party" if self.affiliation['party'] != None else ""

@@ -1,0 +1,26 @@
+import json 
+import matplotlib.pyplot as plt
+
+def evaluation_plot(transcript_path):
+    with open(transcript_path, "r") as f:
+        data = json.load(f)
+    agents = {agent["agent_id"]: agent["name"] for agent in data["agents"]}
+    scores = {agent_id: [] for agent_id in agents.keys()}
+
+    for round in data["rounds"]:
+        agent_id = round["agent_id"]
+        attitude = int(round["attitude"])
+        scores[agent_id].append((attitude))
+
+    for agent, score in scores.items():
+        rounds = list(range(1, len(score) + 1))
+        plt.plot(rounds, score, label=agents[agent])
+
+    plt.xlabel("Round")
+    plt.ylabel("Left/Right Attitude")
+    plt.title("Attitude of Agents Over Each Round")
+    plt.legend()
+    plt.grid()
+    plt.show()
+
+evaluation_plot("debate_transcripts/illegal_immigration/transcript_23_12_32.json")
