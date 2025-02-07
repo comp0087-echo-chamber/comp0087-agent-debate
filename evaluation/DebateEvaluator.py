@@ -184,62 +184,33 @@ class DebateEvaluator:
 
         
         # experiment with one-shot or few-shot evaluation
-        example_q_1 = "Should gun control laws be stricter in the United States?"
-        example_agent_type_1 = "Republican"
-        example_response_1 = (
-            "Bob, I'm glad you're considering a more nuanced approach. "
-            "The 'Second Amendment Protection Act' is a model for this balanced approach, focusing on "
-            "improving mental health resources, increasing background checks, and expanding existing "
-            "firearms safety measures. By combining these evidence-based solutions, we can protect public "
-            "safety while respecting our Second Amendment rights."
-        )
-        example_eval_1 = "-2" if self.scale == "-3 to 3" else "2"
+        with open("few_shot_examples.json", 'r') as file:
+            examples = json.load(file)
+        
+        example_texts = []
 
-        example_agent_type_2 = "Neutral"
-        example_response_2 = (
-            "I'm starting to see the complexity of this issue, Mike. Your concerns about individual liberty "
-            "and self-defense are valid, but I'm also open to exploring ways to address public safety without "
-            "compromising Second Amendment rights. Perhaps we could discuss implementing 'smart gun' technologies "
-            "that make firearms more difficult to misuse."
-        )
-        example_eval_2 = "-1" if self.scale == "-3 to 3" else "3"
-
-        example_agent_type_3 = "Neutral"
-        example_response_3 = (
-            "I understand Mike's concerns about driving guns underground. However, I've also heard from experts "
-            "that research shows universal background checks can reduce gun violence by 20-30%. Would it be worth "
-            "exploring such regulations as part of a broader approach to balance individual rights with public safety?"
-        )
-        example_eval_3 = "2" if self.scale == "-3 to 3" else "6"
+        for i, ex in enumerate(examples, start=1):
+            score = ex['attitude_score']['-3 to 3'] if self.scale == '-3 to 3' else ex['attitude_score']['1 to 7']
+            example_texts.append(
+                f"### Example {i}###\n"
+                f"Debate Question: {ex['topic_question']}\n"
+                f"Agent: {ex['agent_type']}\n"
+                f"Debate Response: {ex['response']}\n"
+                f"Score on Likert scale: {score}\n"
+            )
 
         final_prompt = (
             f"Your task is to evaluate the attitude expressed by a Neutral American, Republican or Democrat agent in a response towards a given political debate and assign a score based on the specified Likert scale. The Republican agent is generally opposed and the Democrat agent is supportive of the debate question on the Likert scale."
             f"\n\n{scale_descriptions[self.scale]}"
             f"\n\nIMPORTANT: Return ONLY the NUMERIC SCORE. Do not provide any explanation or additional text."
-            f"\n\n### Example 1###"
-            f"\nDebate Question: {example_q_1}"
-            f"\nAgent: {example_agent_type_1}"
-            f"\nDebate Response: {example_response_1}"
-            f"\nScore on Likert scale: {example_eval_1}"
-            f"\n\n### Example 2###"
-            f"\nDebate Question: {example_q_1}"
-            f"\nAgent: {example_agent_type_2}"
-            f"\nDebate Response: {example_response_2}"
-            f"\nScore on Likert scale: {example_eval_2}"
-            f"\n\n### Example 3###"
-            f"\nDebate Question: {example_q_1}"
-            f"\nAgent: {example_agent_type_3}"
-            f"\nDebate Response: {example_response_3}"
-            f"\nScore on Likert scale: {example_eval_3}"
+            f"\n\n" + "\n".join(example_texts) +
             f"\n\n### Now evaluate the following response. ###"
             f"\nDebate Question: {topic_question}"
             f"\nAgent: {agent_type.title()}"
             f"\nDebate Response: {response}"
-            f"\Score on Likert scale:"
+            f"\nScore on Likert scale:"
         )
 
-        # print(final_prompt)
-            
         return final_prompt
 
 
@@ -276,8 +247,9 @@ class DebateEvaluator:
 
         # save plots
         plot_dir = os.path.join(f"plots_{self.agent_key_2}", topic_name)
+        # plot_dir = os.path.join(f"plots_{self.agent_key_2}_varying_qs", topic_name)  # for testing diff topic Qs
         os.makedirs(plot_dir, exist_ok=True)
-        plot_path = os.path.join(plot_dir, f"attitude_plot_{topic_name}_dem.png")
+        plot_path = os.path.join(plot_dir, f"attitude_plot_{topic_name}.png")
         plt.savefig(plot_path)
         plt.show()
 
