@@ -9,7 +9,7 @@ from debate.DebateManager import DebateManager
 
 if __name__ == "__main__":
     model = "llama3.2:3b"
-    topic = "illegal_immigration"
+    topic = "evolution"
     word_limit = 75
     temperature = 0
     agent1 = DebateAgent(name= "Bob", model=model, affiliation={"leaning": "conservative", "party": "Republican"}, age="21", gender="male", temperature=temperature)
