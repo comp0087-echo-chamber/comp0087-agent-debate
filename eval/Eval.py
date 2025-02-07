@@ -46,6 +46,7 @@ class Judge:
     
 
 
+<<<<<<< HEAD
     def Arg_quality_score(self, response):
         response = ollama.chat(
             model=self.model,
@@ -115,3 +116,9 @@ class GPT_Judge:
         )
         return response.choices[0].message["content"]
 """
+=======
+    def eval(self, text):
+        # Perform evaluation on the text
+        
+        return randint(0,10)
+>>>>>>> 1c2a9c37930a8bb58f133774bc8111431d14d6f4

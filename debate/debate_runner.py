@@ -10,7 +10,11 @@ from eval.Eval import Judge
 
 if __name__ == "__main__":
     model = "llama3.2:3b"
+<<<<<<< HEAD
     topic = "trade_tariffs"
+=======
+    topic = "evolution"
+>>>>>>> 1c2a9c37930a8bb58f133774bc8111431d14d6f4
     word_limit = 75
     temperature = 0.5
     agent1 = DebateAgent(name= "Bob", model=model, affiliation={"leaning": "conservative", "party": "Republican"}, age="21", gender="male", temperature=temperature)

@@ -2,13 +2,17 @@ import ollama
 from eval.Eval import Judge
 from datetime import datetime
 import json
+<<<<<<< HEAD
 import matplotlib.pyplot as plt
+=======
+import os
+>>>>>>> 1c2a9c37930a8bb58f133774bc8111431d14d6f4
 
 class DebateManager:
 
     def __init__(self, agents, topic, word_limit, rounds):
         self.topic = topic
-        self.possible_topics = {"gun_crime":"gun crime", "abortion":"abortion", "illegal_immigration": "illegal immigration", "trade_tariffs": "trade tariffs"}
+        self.possible_topics = {"gun_crime":"gun crime", "abortion":"abortion", "illegal_immigration": "illegal immigration", "trade_tariffs": "trade tariffs", "the_sky": "what colour is the sky", "evolution": "evolution", "climate_change": "climate change"}
         self.agents = agents
         self.rounds = rounds
         self.word_limit = word_limit
@@ -47,6 +51,7 @@ class DebateManager:
     def transcribe_debate(self):
         timestamp = datetime.now().strftime('%H_%M_%S')
         # TXT
+        os.makedirs(f'debate_transcripts/{self.topic}', exist_ok=True)
         text_filename = f'debate_transcripts/{self.topic}/transcript_{timestamp}.txt'
         with open(text_filename, 'w') as f:
             for round in self.conversation:
