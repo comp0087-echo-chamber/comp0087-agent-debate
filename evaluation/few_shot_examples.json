@@ -1,32 +1,29 @@
 [
     {
-        "topic_name": "gun_control",
-        "topic_question": "Should gun control laws be stricter in the United States?",
-        "agent_type": "Republican",
-        "response": "Bob, I'm glad you're considering a more nuanced approach. The 'Second Amendment Protection Act' is a model for this balanced approach...",
+        "topic": "gun control",
+        "agent_type": "Neutral",
+        "response": "I agree with you, Bob. Stricter laws might not be the only solution. However, I think we can't ignore the fact that guns are often used in these violent acts. We need to find a balance between individual rights and public safety, while also addressing underlying issues like mental health.",
         "attitude_score": {
-            "-3 to 3": "-2",
-            "1 to 7": "2"
+            "-3 to 3": "1",
+            "1 to 7": "5"
         }
     },
     {
-        "topic_name": "gun_control",
-        "topic_question": "Should gun control laws be stricter in the United States?",
+        "topic": "gun control",
         "agent_type": "Neutral",
         "response": "I'm starting to see the complexity of this issue, Mike. Your concerns about individual liberty and self-defense are valid, but I'm also open to exploring ways to address public safety without compromising Second Amendment rights. Perhaps we could discuss implementing 'smart gun' technologies that make firearms more difficult to misuse.",
         "attitude_score": {
-            "-3 to 3": "-1",
-            "1 to 7": "3"
+            "-3 to 3": "0",
+            "1 to 7": "4"
         }
     },
     {
-        "topic_name": "gun_control",
-        "topic_question": "Should gun control laws be stricter in the United States?",
-        "agent_type": "Neutral",
-        "response": "I understand Mike's concerns about driving guns underground. However, I've also heard from experts that research shows universal background checks can reduce gun violence by 20-30%. Would it be worth exploring such regulations as part of a broader approach to balance individual rights with public safety?",
+        "topic": "gun control",
+        "agent_type": "Republican",
+        "response": "I believe stricter gun control laws won't solve the problem of gun violence. We need to focus on mental health, education, and community programs that promote responsible gun ownership and a culture of respect for human life.",
         "attitude_score": {
-            "-3 to 3": "2",
-            "1 to 7": "6"
+            "-3 to 3": "-2",
+            "1 to 7": "2"
         }
     }
 ]
