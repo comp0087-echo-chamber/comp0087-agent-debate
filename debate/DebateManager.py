@@ -1,62 +1,148 @@
+import os
 import json
+from datetime import datetime
+
+# TODO: Work on combining eval data into debate transcription
+# to avoid saving two copies of the agents' responses
+
+# TODO: Update structured debate prompts in line with debate prompts in prev papers
 
 
 class DebateManager:
 
-    def __init__(self, agent1, agent2, topic_name, topic_question, agent3=None):
-        self.agent1 = agent1
-        self.agent2 = agent2
-        self.agent3 = agent3
-        self.debate_data = {  # used for evaluation
-            "topic_name": topic_name,
-            "topic_question": topic_question,
+    def __init__(self, agents, topic, rounds, debate_structure, debate_group):
+        self.topic = topic
+        self.agents = agents
+        self.rounds = rounds
+        self.debate_structure = debate_structure
+        self.debate_group = debate_group  # used for filenames when saving files
+
+        self.data_for_evaluation = {  # used for evaluation
+            "topic": self.topic,
             "neutral": {},
             "republican": {},
             "democrat": {}
         }
-        self.ordered_debate_history = [topic_question]  # incrementally build debate log to give agents
-        self.neutral_turn_count = 1
-        self.democratic_turn_count = 1
-        self.republic_turn_count = 1
 
-    def print_response(self, agent_name, response):
-        print(f"{agent_name} > {response}")
+        self.ordered_conversation_history = []  # conversation history to pass to agents
+        self.conversation_for_transcription = []
 
-    def debate_round(self, agent):
-        agent_key = None
+        self.round_num_counts = {"neutral": 0, "democrat": 0, "republican": 0}
 
-        if agent.name == "Bob (Neutral American)":
-            agent_key = "neutral"
-        elif agent.name == "Mike (Republican)":
-            agent_key = "republican"
-        elif agent.name == "John (Democrat)":
-            agent_key = "democrat"
 
-        # agent_key = "neutral" if agent.name == "Bob (Neutral American)" else "republican"
+    def _print_response(self, agent_details, response):
+        print(f"{agent_details} > {response}")
 
-        conversation_history = "\n".join(self.ordered_debate_history)
-        response = agent.respond(conversation_history)  
 
-        if agent_key == "neutral":
-            self.debate_data[agent_key][f"turn_{self.neutral_turn_count}"] = response
-            self.neutral_turn_count += 1
-        elif agent_key == "democratic":
-            self.debate_data[agent_key][f"turn_{self.democratic_turn_count}"] = response
-            self.democratic_turn_count += 1
+    def generate_agent_prompts(self):
+        for agent in self.agents:
+            agent.generate_debate_purpose(self.topic, self.rounds, self.agents)
+
+        for agent in self.agents:
+            agent.generate_prompt()
+            print(agent.prompt, "\n")
+
+
+    def debate_round(self, agent, debate_phase_prompt=None):
+
+        conversation = "\n".join(self.ordered_conversation_history)
+        response = agent.respond(debate_phase_prompt, conversation)
+        self._print_response(agent.get_agent_details(), response)
+
+        # update data related to convo history for transcribing & evaluation
+        self.ordered_conversation_history.append(f"{agent.name}: {response}")
+        self.conversation_for_transcription.append({"agent": agent, "response": response})
+
+        agent_type = agent.affiliation['party'].lower() if agent.affiliation['party'] != None else "neutral"
+        round_num = self.round_num_counts[agent_type]
+        self.data_for_evaluation[agent_type][f"round_{round_num}"] = response
+        self.round_num_counts[agent_type] += 1
+
+
+    def start(self):
+        self.generate_agent_prompts()
+
+        if self.debate_structure == "structured":
+            self.start_structured_debate()
         else:
-            self.debate_data[agent_key][f"turn_{self.republic_turn_count}"] = response
-            self.republic_turn_count += 1
+            self.start_unstructured_debate()
 
-        self.ordered_debate_history.append(f"{agent.name}: {response}")
-        self.print_response(agent.name, response)
+        self.save_debate_transcription()
+        self.save_evaluation_data()
 
-    def start(self, rounds=5):
-        for _ in range(rounds):
-            self.debate_round(self.agent2)  # opinionated agent starts the debate
-            if self.agent3:
-                self.debate_round(self.agent3)
-            self.debate_round(self.agent1)
 
-    def save_transcript(self, filename):
+    def start_structured_debate(self):
+        for agent in self.agents:
+            # self.debate_round(agent, "Present your opening opinions on the topic. Do not rebut the other agent. Do not disagree with them.")
+            self.debate_round(agent, "Present your opening opinions on the topic.")
+
+        for _ in range(1, self.rounds+1): 
+            for agent in self.agents:
+                # self.debate_round("Please rebut the other agent's opinions and continue to argue your own.", agent)
+                self.debate_round(agent, "Complete your next reply.")  # NOTE: This takes the prompt used in baseline paper
+
+        if self.rounds > 1: 
+            for agent in self.agents:
+                # self.debate_round(agent, "Please rebut the other agent's opinions, and give closing arguments. If you wish to change your position to align or diverge with your fellow agents, please do so.")
+                self.debate_round(agent, "Give your closing arguments on the topic.")
+
+
+    def start_unstructured_debate(self):
+        for _ in range(self.rounds):
+            self.debate_round(self.agents[1], "Complete your next reply.")  # opinionated agent starts the debate
+
+            if len(self.agents) > 2:  # if there are 3 agents, let 3rd agent speak
+                self.debate_round(self.agents[2], "Complete your next reply.")
+
+            self.debate_round(self.agents[0], "Complete your next reply.")
+
+
+    def save_evaluation_data(self):
+        timestamp = datetime.now().strftime('%H_%M_%S')
+        save_folder = f"eval_data/{self.debate_group}/{self.debate_structure}/{self.topic.replace(' ', '_')}"
+        os.makedirs(save_folder, exist_ok=True)
+        filename = f"{save_folder}/transcript_{timestamp}.json"
+    
         with open(filename, "w") as file:
-            json.dump(self.debate_data, file, indent=4)
+            json.dump(self.data_for_evaluation, file, indent=4)
+
+        print(f"Evaluation data saved:\n- {filename}")
+
+
+    def save_debate_transcription(self):
+        timestamp = datetime.now().strftime('%H_%M_%S')
+
+        save_folder = f"debate_transcripts/{self.debate_group}/{self.debate_structure}/{self.topic.replace(' ', '_')}"
+        os.makedirs(save_folder, exist_ok=True)
+
+        # TXT
+        text_filename = f'{save_folder}/transcript_{timestamp}.txt'
+        with open(text_filename, 'w') as f:
+            for round in self.conversation_for_transcription:
+                f.write(f'{round["agent"].label} > {round["response"]} \n\n')
+
+        # JSON
+        json_filename = f'{save_folder}/transcript_{timestamp}.json'
+        json_data = {
+            "topic": self.topic,
+            "timestamp": timestamp,
+            "agents": [ {
+                "agent_id": index,
+                "name": agent.name,
+                "leaning": agent.affiliation["leaning"], 
+                "party": agent.affiliation["party"], 
+                "age": agent.age, 
+                "gender":  agent.gender
+            } for index, agent in enumerate(self.agents)],
+            "rounds": [
+                    {
+                        "agent_id": self.agents.index(round["agent"]),
+                        "response": round["response"]}
+                for round in self.conversation_for_transcription
+            ]
+        }
+
+        with open(json_filename, 'w', encoding='utf-8') as f:
+            json.dump(json_data, f)
+
+        print(f"Transcripts saved:\n- {text_filename}\n- {json_filename}")
