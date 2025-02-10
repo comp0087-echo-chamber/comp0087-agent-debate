@@ -1,9 +1,14 @@
 import os
 import re
+import sys
 import json
 import ollama
 import matplotlib.pyplot as plt
 import numpy as np
+
+
+# Add the project root to the Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class DebateEvaluator:
@@ -106,7 +111,14 @@ class DebateEvaluator:
         if self.scale not in scale_descriptions:
             raise ValueError("Unsupported scale. Use '-3 to 3' or '1 to 7'.")
 
-        with open("few_shot_examples.json", 'r') as file:
+        # read few shot examples from JSON
+        evaluation_folder = "evaluation"
+        if os.path.basename(os.getcwd()) == evaluation_folder:
+            file_path = "few_shot_examples.json"  # no `evaluation/` prefix
+        else:
+            file_path = os.path.join(evaluation_folder, "few_shot_examples.json")
+
+        with open(file_path, 'r') as file:
             examples = json.load(file)
 
         example_texts = []
