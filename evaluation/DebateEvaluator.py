@@ -3,6 +3,7 @@ import json
 import ollama
 import matplotlib.pyplot as plt
 import numpy as np
+import pickle
 
 class DebateEvaluator:
     def __init__(self, model, agent_key_1, agent_key_2, scale='-3 to 3'):
@@ -12,51 +13,159 @@ class DebateEvaluator:
             '1 to 7': [1, 7],
             'binary':[0, 1]
         }
+        self.evaluate_transcript = {
+            '-3 to 3': self.evaluate_transcript_using_attitude,
+            '1 to 7': self.evaluate_transcript_using_attitude,
+            'binary': self.evaluate_transcript_using_binary
+        }
+       
         self.model = model
         self.num_model_calls = 3
         self.agent_key_1 = agent_key_1
         self.agent_key_2 = agent_key_2
 
 
-    def evaluate_transcript(self, filename):
+    def evaluate_transcript_using_attitude(self, filename):
+        transcript = self._load_transcript(filename)
+        topic_name = transcript["topic_name"]
+        topic_question = transcript["topic_question"]
+                
+        attitude_scores = {self.agent_key_1: [], self.agent_key_2: []}
+
+        debate_turns = self._get_num_debate_turns(transcript)
+
+        for turn in range(1, debate_turns + 1):
+            self._evaluate_turn(transcript, attitude_scores, topic_question, turn)
+
+        # self._generate_plot(debate_turns, attitude_scores, topic_name, topic_question)
+        # self._save_scores(attitude_scores, topic_name)
+        print(f"Completed evaluation of debate topic {topic_name}.")
+        return attitude_scores
+
+    def evaluate_transcript_using_binary(self, filename):
         transcript = self._load_transcript(filename)
         topic_name = transcript["topic_name"]
         topic_question = transcript["topic_question"]
 
-        if self.scale == 'binary':
-            debate_turns = self._get_num_debate_turns(transcript)
-            bin_scores = [0 for _ in range(debate_turns+1)]
+        debate_turns = self._get_num_debate_turns(transcript)
+        bin_scores = [0 for _ in range(debate_turns)]
 
-            for turn in range(1, debate_turns + 1):
-                response1 = transcript.get(self.agent_key_1, {}).get( f"turn_{turn}") # flip these around?
-                response2 = transcript.get(self.agent_key_2, {}).get( f"turn_{turn}")
-                prompt = self._generate_prompt_bin_metric(response1, response2, topic_question=topic_question)
-                try:
-                    result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}], options={"temperature":0.0})
-                    score = int(result["message"]["content"].strip())
-                    if score is not None:
-                        bin_scores[turn] = score
-                except Exception as e:
-                    print(f"Error with model response: {e}")
-            self._generate_plot_cumulative_bin(debate_turns, bin_scores, topic_name, topic_question)
+        for turn in range(1, debate_turns + 1):
+            response1 = transcript.get(self.agent_key_1, {}).get( f"turn_{turn}") # flip these around?
+            response2 = transcript.get(self.agent_key_2, {}).get( f"turn_{turn}")
+            prompt = self._generate_prompt_bin_metric(response1, response2, topic_question=topic_question)
+            try:
+                result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}], options={"temperature":0.0})
+                score = int(result["message"]["content"].strip())
+                if score is not None:
+                    bin_scores[turn-1] = score
+            except Exception as e:
+                print(f"Error with model response: {e}")
+        # self._generate_plot_cumulative_bin(debate_turns, bin_scores, topic_name, topic_question)
+        return bin_scores
+
+    def evaluate_debates(self, debate_transcripts_path, num_rounds):
+        topics = [f for f in os.listdir(debate_transcripts_path) if os.path.isdir(os.path.join(debate_transcripts_path, f))]
+        transcripts = {topic: os.listdir(os.path.join(debate_transcripts_path, topic)) for topic in topics}
+
+        for topic, transcript_list in transcripts.items():  # Loop through each topic and its transcripts
+            score_mat_agent_1 = [[] for _ in range(num_rounds)]
+            score_mat_agent_2 = [[] for _ in range(num_rounds)]
+            for debate, transcript in enumerate(transcript_list):  # Loop through each transcript
+                transcript_path = os.path.join(debate_transcripts_path, topic, transcript)  # Get full path
+                scores = self.evaluate_transcript[self.scale](transcript_path)  # Evaluate transcript
                 
-        else:
-            attitude_scores = {self.agent_key_1: [], self.agent_key_2: []}
+                if self.scale == '1 to 3' or self.scale == '1 to 7':
+                    score_mat_agent_1[debate] = scores[self.agent_key_1]  # Store scores
+                    score_mat_agent_2[debate] = scores[self.agent_key_2]
+                else:
+                    score_mat_agent_1[debate] = scores
+            if self.scale == 'binary':
+                self._generate_bin_box_plot(score_mat_agent_1, topic)
+            else:   
+                self._generate_attitude_box_plot(score_mat_agent_1, topic, scores_agent_2=score_mat_agent_2)
 
-            debate_turns = self._get_num_debate_turns(transcript)
+    def _generate_bin_box_plot(self, bin_scores, topic_name):
 
-            for turn in range(1, debate_turns + 1):
-                self._evaluate_turn(transcript, attitude_scores, topic_question, turn)
+        turns = np.arange(1, len(bin_scores[1]) + 1, dtype=np.float32)        
+        cumulative_score =  np.cumsum(bin_scores, axis=1)
+        average_score = cumulative_score / turns
 
-            self._generate_plot(debate_turns, attitude_scores, topic_name, topic_question)
-            # self._save_scores(attitude_scores, topic_name)
-            print(f"Completed evaluation of debate topic {topic_name}.")
+        print(cumulative_score)
+        print(average_score)
+        print(turns)
 
+        plt.figure(figsize=(10, 5))
+
+        plt.boxplot(average_score, positions=turns, widths=0.5, 
+                    boxprops=dict(color="green"), 
+                    medianprops=dict(color="black"),
+                    flierprops=dict(marker="o", color="green", alpha=0.5))
+
+        plt.plot(turns, np.mean(average_score.T, axis=1), marker="o", linestyle="dashed", color="green")
+       
+        plt.xlabel("Debate Turns")
+        plt.ylabel(f"Cumulative Avg Disagreement Score")
+        
+        plt.title(f"Disagreement Shift Over Debate: {topic_name}")
+        plt.legend([f"{self.agent_key_1.title()} Avg Disagreement", f"{self.agent_key_2.title()} Avg Disagreement"])
+        plt.grid(True)
+
+        # save plots
+        plot_dir = os.path.join(f"plots_{self.agent_key_2}", topic_name)
+        os.makedirs(plot_dir, exist_ok=True)
+        plot_path = os.path.join(plot_dir, f"box_disagreement_plot_{topic_name}.png")
+        plt.savefig(plot_path)
+        plt.show()
+
+    def _generate_attitude_box_plot(self, scores_agent_1, scores_agent_2, topic_name):  
+
+        turns = np.array(range(1, len(scores_agent_1[1]) + 1), dtype=np.float32)
+        mean_scores_agent_1 = np.mean(np.array(scores_agent_1).T, axis=1)  
+        mean_scores_agent_2 = np.mean(np.array(scores_agent_2).T, axis=1)  
+
+        plt.figure(figsize=(10, 5))
+
+         # Box plot for agent 1
+        plt.boxplot(np.array(scores_agent_1), positions=turns, widths=0.5, 
+                    boxprops=dict(color="green"), 
+                    medianprops=dict(color="black"),
+                    flierprops=dict(marker="o", color="green", alpha=0.5))
+
+        # Box plot for agent 2
+        if scores_agent_2:
+            color = "red" if self.agent_key_2 == "republican" else "blue"
+            plt.boxplot(np.array(scores_agent_2), positions=turns, widths=0.5, 
+                        boxprops=dict(color=color), 
+                        medianprops=dict(color="black"),
+                        flierprops=dict(marker="s", color=color, alpha=0.5))
+            
+        plt.plot(turns, mean_scores_agent_1, marker="o", linestyle="dashed", color="green")
+        if scores_agent_2:
+            plt.plot(turns, mean_scores_agent_2, marker="s", linestyle="solid", color=color)
+
+        plt.xlabel("Debate Turns")
+        plt.ylabel(f"Attitude Score")
+        
+        plt.title(f"Attitude Shift Over Debate: {topic_name}")
+        plt.legend([f"{self.agent_key_1.title()} Attitude", f"{self.agent_key_2.title()} Attitude"])
+        plt.grid(True)
+
+        if self.scale == "-3 to 3":
+            plt.ylim(-3, 3)
+        elif self.scale == "1 to 7":
+            plt.ylim(1, 7)
+
+        # save plots
+        plot_dir = os.path.join(f"plots_{self.agent_key_2}", topic_name)
+        os.makedirs(plot_dir, exist_ok=True)
+        plot_path = os.path.join(plot_dir, f"box_attitude_plot_{topic_name}.png")
+        plt.savefig(plot_path)
+        plt.show()
 
     def _load_transcript(self, filename):
         with open(filename, "r") as file:
             return json.load(file)
-
 
     def _get_num_debate_turns(self, transcript):
         neutral_turns = [int(key.split('_')[1]) for key in transcript.get(self.agent_key_1, {}).keys()]
@@ -92,7 +201,7 @@ class DebateEvaluator:
                     scores.append(score)
             except Exception as e:
                 print(f"Error with model response: {e}")
-
+           
         if scores:
             return sum(scores) / len(scores)
         return None
@@ -184,33 +293,62 @@ class DebateEvaluator:
 
         
         # experiment with one-shot or few-shot evaluation
-        with open("few_shot_examples.json", 'r') as file:
-            examples = json.load(file)
-        
-        example_texts = []
+        example_q_1 = "Should gun control laws be stricter in the United States?"
+        example_agent_type_1 = "Republican"
+        example_response_1 = (
+            "Bob, I'm glad you're considering a more nuanced approach. "
+            "The 'Second Amendment Protection Act' is a model for this balanced approach, focusing on "
+            "improving mental health resources, increasing background checks, and expanding existing "
+            "firearms safety measures. By combining these evidence-based solutions, we can protect public "
+            "safety while respecting our Second Amendment rights."
+        )
+        example_eval_1 = "-2" if self.scale == "-3 to 3" else "2"
 
-        for i, ex in enumerate(examples, start=1):
-            score = ex['attitude_score']['-3 to 3'] if self.scale == '-3 to 3' else ex['attitude_score']['1 to 7']
-            example_texts.append(
-                f"### Example {i}###\n"
-                f"Debate Question: {ex['topic_question']}\n"
-                f"Agent: {ex['agent_type']}\n"
-                f"Debate Response: {ex['response']}\n"
-                f"Score on Likert scale: {score}\n"
-            )
+        example_agent_type_2 = "Neutral"
+        example_response_2 = (
+            "I'm starting to see the complexity of this issue, Mike. Your concerns about individual liberty "
+            "and self-defense are valid, but I'm also open to exploring ways to address public safety without "
+            "compromising Second Amendment rights. Perhaps we could discuss implementing 'smart gun' technologies "
+            "that make firearms more difficult to misuse."
+        )
+        example_eval_2 = "-1" if self.scale == "-3 to 3" else "3"
+
+        example_agent_type_3 = "Neutral"
+        example_response_3 = (
+            "I understand Mike's concerns about driving guns underground. However, I've also heard from experts "
+            "that research shows universal background checks can reduce gun violence by 20-30%. Would it be worth "
+            "exploring such regulations as part of a broader approach to balance individual rights with public safety?"
+        )
+        example_eval_3 = "2" if self.scale == "-3 to 3" else "6"
 
         final_prompt = (
             f"Your task is to evaluate the attitude expressed by a Neutral American, Republican or Democrat agent in a response towards a given political debate and assign a score based on the specified Likert scale. The Republican agent is generally opposed and the Democrat agent is supportive of the debate question on the Likert scale."
             f"\n\n{scale_descriptions[self.scale]}"
             f"\n\nIMPORTANT: Return ONLY the NUMERIC SCORE. Do not provide any explanation or additional text."
-            f"\n\n" + "\n".join(example_texts) +
+            f"\n\n### Example 1###"
+            f"\nDebate Question: {example_q_1}"
+            f"\nAgent: {example_agent_type_1}"
+            f"\nDebate Response: {example_response_1}"
+            f"\nScore on Likert scale: {example_eval_1}"
+            f"\n\n### Example 2###"
+            f"\nDebate Question: {example_q_1}"
+            f"\nAgent: {example_agent_type_2}"
+            f"\nDebate Response: {example_response_2}"
+            f"\nScore on Likert scale: {example_eval_2}"
+            f"\n\n### Example 3###"
+            f"\nDebate Question: {example_q_1}"
+            f"\nAgent: {example_agent_type_3}"
+            f"\nDebate Response: {example_response_3}"
+            f"\nScore on Likert scale: {example_eval_3}"
             f"\n\n### Now evaluate the following response. ###"
             f"\nDebate Question: {topic_question}"
             f"\nAgent: {agent_type.title()}"
             f"\nDebate Response: {response}"
-            f"\nScore on Likert scale:"
+            f"\Score on Likert scale:"
         )
 
+        # print(final_prompt)
+            
         return final_prompt
 
 
@@ -247,9 +385,8 @@ class DebateEvaluator:
 
         # save plots
         plot_dir = os.path.join(f"plots_{self.agent_key_2}", topic_name)
-        # plot_dir = os.path.join(f"plots_{self.agent_key_2}_varying_qs", topic_name)  # for testing diff topic Qs
         os.makedirs(plot_dir, exist_ok=True)
-        plot_path = os.path.join(plot_dir, f"attitude_plot_{topic_name}.png")
+        plot_path = os.path.join(plot_dir, f"attitude_plot_{topic_name}_dem.png")
         plt.savefig(plot_path)
         plt.show()
 

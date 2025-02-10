@@ -1,30 +1,23 @@
 import sys
 import os
-from datetime import datetime
+# from datetime import datetime
 # Add the project root to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from agents.DebateAgent import DebateAgent
 from debate.DebateManager import DebateManager
 
+NUM_DEBATES = 2
 
 if __name__ == "__main__":
-    model = "llama3.2:3b"
-    # model = "llama3.2:latest"
+    # model = "llama3.2:3b"
+    model = "llama3.2:latest"
 
     debate_topics = {
         "gun_violence": "Should gun control laws be stricter in the United States?",
-        # "gun_violence_dem": "Should the U.S. strengthen gun control laws to reduce gun violence?",
-        # "gun_violence_rep": "Would stricter gun control laws violate Second Amendment rights and fail to stop crime?",
-        "racism": "Is systemic racism a significant issue in America today?",
-        # "racism_dem": "Does systemic racism continue to affect opportunities and equality in America?",
-        # "racism_rep": "Is the focus on systemic racism in America exaggerated and divisive?",
-        "climate_change": "Should the US take stronger measures to combat climate change?",
-        # "climate_change_dem": "Should the U.S. take bold action to combat climate change and transition to clean energy?",
-        # "climate_change_rep": "Would stronger government regulations on climate change hurt the economy and American jobs?",
-        "illegal_immigration": "Should the US implement more lenient immigration policies?",
-        # "illegal_immigration_dem": "Should the U.S. adopt more humane and inclusive immigration policies?",
-        # "illegal_immigration_rep": "Should the U.S. strengthen border security and enforce immigration laws more strictly?"
+        # "racism": "Is systemic racism a significant issue in America today?",
+        # "climate_change": "Should the US take stronger measures to combat climate change?",
+        # "illegal_immigration": "Should the US implement more lenient immigration policies?",
     }
 
     opinionated_agent = "democrat"
@@ -39,7 +32,6 @@ if __name__ == "__main__":
     }
 
     for topic_name, topic_question in debate_topics.items():
-        # if topic_name == "gun_violence_dem" or topic_name == "gun_violence_rep":
 
         agent1 = DebateAgent(name="Bob (Neutral American)", model=model, prompt=agent_prompts["neutral"])
 
@@ -48,14 +40,15 @@ if __name__ == "__main__":
         else:
             agent2 = DebateAgent(name="John (Democrat)", model=model, prompt=agent_prompts["democrat"])
         # agent3 = DebateAgent(name="Mike (Republican)", model=model, prompt=agent_prompts["republican_2"])
-    
-        debate = DebateManager(agent1, agent2, topic_name, topic_question)
-        debate.start(rounds=10)
 
-        save_folder = f"debate_transcripts_{opinionated_agent}"
-        if not os.path.exists(save_folder):
-            os.makedirs(save_folder)
-        # timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        for n in range(NUM_DEBATES):
+            debate = DebateManager(agent1, agent2, topic_name, topic_question)
+            debate.start(rounds=10)
 
-        # debate.save_transcript(filename=f"./{save_folder}/{topic_name}_transcript_{timestamp}.json")
-        debate.save_transcript(filename=f"./{save_folder}/{topic_name}_transcript.json")
+            save_folder = f"debate_transcripts_{opinionated_agent}"
+            if not os.path.exists(save_folder):
+                os.makedirs(save_folder)
+            # timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+            # debate.save_transcript(filename=f"./{save_folder}/{topic_name}_transcript_{timestamp}.json")
+            debate.save_transcript(filename=f"./{save_folder}/{topic_name}/debate_{n}_transcript.json")
