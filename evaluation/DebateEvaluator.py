@@ -20,10 +20,12 @@ class DebateEvaluator:
         self.transcript_filename = None  # used for saving plots
         self.debate_structure = debate_structure  # used for saving plots
 
+
     def _load_transcript(self, filename):
         self.transcript_filename = filename
         with open(filename, "r") as file:
             return json.load(file)
+
 
     def evaluate_transcript(self, filename):
         transcript = self._load_transcript(filename)
@@ -38,6 +40,7 @@ class DebateEvaluator:
         else:
             self._evaluate_attitude_scores(transcript, topic_name)
 
+
     # Attitude Scoring
     def _evaluate_attitude_scores(self, transcript, topic_name):
         attitude_scores = {agent: [] for agent in self.debate_group}
@@ -49,9 +52,11 @@ class DebateEvaluator:
         self._generate_plot(debate_rounds, attitude_scores, topic_name)
         print(f"Completed attitude evaluation of debate topic {topic_name}.")
 
+
     def _get_num_debate_rounds(self, transcript):
         num_neutral_rounds = [int(key.split('_')[1]) for key in transcript.get(self.debate_group[0], {}).keys()]
         return max(num_neutral_rounds) if num_neutral_rounds else 0
+
 
     def _evaluate_round(self, transcript, attitude_scores, topic_name, round_num):
         for agent_type in self.debate_group:
@@ -69,6 +74,7 @@ class DebateEvaluator:
             else:
                 attitude_scores[agent_type].append(None)
 
+
     def _get_llm_attitude_score(self, response, topic_name, agent_type):
         # Get attitude score using LLM for multiple attempts
         scores = []
@@ -85,6 +91,7 @@ class DebateEvaluator:
         if scores:
             return sum(scores) / len(scores)
         return None
+
 
     def _generate_prompt(self, response, topic_name, agent_type):
         scale_descriptions = {
@@ -127,6 +134,7 @@ class DebateEvaluator:
 
         return final_prompt
 
+
     def _parse_attitude_score(self, result):
         try:
             score = int(result["message"]["content"].strip())
@@ -135,6 +143,7 @@ class DebateEvaluator:
         except ValueError:
             print(f"Unable to parse model response on the attitude score. Response:\n{result}")
             return None
+
 
     def _generate_plot(self, debate_rounds, attitude_scores, topic_name):
         debate_rounds = list(range(0, debate_rounds + 1))
@@ -174,6 +183,7 @@ class DebateEvaluator:
         plt.savefig(plot_path)
         plt.show()
 
+
     # Agreement/Disagreement Scoring
     def _evaluate_binary(self, transcript, topic_name):
         # To compute agreement/ disagreement score
@@ -209,6 +219,7 @@ class DebateEvaluator:
             final_prompt += f"\n{agent}: {responses[agent]}"
 
         return final_prompt
+
 
     def _generate_plot_cumulative_bin(self, debate_rounds, bin_scores, topic_name):
         plt.figure(figsize=(10, 5))

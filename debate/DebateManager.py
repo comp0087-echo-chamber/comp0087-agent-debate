@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 
 # TODO: Work on combining eval data into debate transcription
-# to avoid saving two copies of the agents' responses
+# to avoid saving two copies of the agents' responses (or vice versa)
 
 # TODO: Update structured debate prompts in line with debate prompts in prev papers
 
