@@ -21,18 +21,32 @@ python3 test_ollama.py
 
 ## Running the debate:
 To run the debate:
+1) See the config in debate/debate_config.yaml, and update your settings as required. 
+This includes changing the debate topics, enabling multiprocessing and more.
+
+2) Run the debate with:
 ```
 python3 debate/debate_runner.py
 ```
-You may change the debate topic in  debate/debate_runner.py, the format in the DebateManager, and the agents in DebateAgent
 
+
+## Running the evaluation:
+To run the evaluation:
+1) Download the mistral model:
+```
+ollama pull mistral:7b
+```
+2) Run the evaluation script:
+```
+python3 evaluation/evaluation_runner.py
+```
 
 ## Running on Lab Machines
 Installing ollama on the lab machines is a bit different. Please ask Fabian if you have any questions
-You also may require a project directory, as the existing 10GB is not sufficient
+You also may require a project directory, as the existing 10GB is not sufficient. You must email TSG for them to allocate you this. Again ask Fabian about this if you have questions
 
 Please first run the install scr¡pt, to install ollama in your Home directory.
-You should then add ollama to the path - this can vary by shell which you use - bash, csh, zsh
+You should then add ollama to the path - this can vary by shell which you use - bash, csh, zsh. By default - the lab machines appear to use csh
 
 For bash
 echo 'export PATH=$HOME/ollama/bin:$PATH' >> ~/.bashrc
@@ -46,6 +60,8 @@ For Csh
 echo 'setenv PATH $HOME/ollama/bin:$PATH' >> ~/.cshrc
 source ~/.cshrc
 
-Then follow the instructions above, creating a venv, activating it, and installing the required modules
+Then follow the instructions above, creating a venv, activating it, installing the required modules, and running the required models.
 
 Then run test_ollama.py
+
+Finally, run the debate as before.
