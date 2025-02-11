@@ -69,6 +69,18 @@ class DebateManager:
 
             self.save_debate_transcription()
             self.save_evaluation_data()
+            self.clear_data()
+
+    def clear_data(self):
+        self.ordered_conversation_history = []
+        self.conversation_for_transcription = []
+        self.round_num_counts = {"neutral": 0, "democrat": 0, "republican": 0}
+        self.data_for_evaluation = {  # used for evaluation
+            "topic": self.topic,
+            "neutral": {},
+            "republican": {},
+            "democrat": {}
+        }
 
 
     def start_structured_debate(self):

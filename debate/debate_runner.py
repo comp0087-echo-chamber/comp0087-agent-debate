@@ -8,7 +8,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from agents.DebateAgent import DebateAgent
 from debate.DebateManager import DebateManager
 
-NUM_DEBATES = 2
+NUM_DEBATES = 10
 if __name__ == "__main__":
     # load debate config
     config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "debate_config.yaml")

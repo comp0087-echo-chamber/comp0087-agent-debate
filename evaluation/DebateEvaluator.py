@@ -30,11 +30,11 @@ class DebateEvaluator:
         self.transcript_filename = None  # used for saving plots
         self.debate_structure = debate_structure  # used for saving plots
 
-
     def _load_transcript(self, filename):
         self.transcript_filename = filename
         with open(filename, "r") as file:
             return json.load(file)
+        
 
     def evaluate_debates(self, debate_transcripts_path):
         agent_pairs = []
@@ -54,11 +54,9 @@ class DebateEvaluator:
                 for agent in self.debate_group[1:]:
                     agent_pairs.append(f'neutral_{agent}')
                 all_scores = {agents: [[] for _ in range(num_debates)] for agents in agent_pairs}
-                print(all_scores)
 
             # Assuming all transcripts in this dir have the same number of rounds 
-            # TODO: allow variable num_rounds for attitude box plot?
-            num_rounds = self._get_num_debate_rounds(transcripts)
+            num_rounds = 10
             for debate, transcript in enumerate(transcript_list):  # Loop through each transcript
                 transcript_path = os.path.join(debate_transcripts_path, topic, transcript)  # Get full path
                 scores = self.evaluate_transcript(transcript_path)  # Evaluate transcript
@@ -118,16 +116,10 @@ class DebateEvaluator:
         plt.show()
 
     def _generate_attitude_box_plot(self, scores, topic_name, num_rounds):  
-
-        scores = {key: value[:-1] for key, value in scores.items()}
-
-        print(scores)
         turns = np.array(range(1, num_rounds + 1), dtype=np.float32)
-        print(turns)
         mean_scores = {}
         for agent in self.debate_group:
             mean_scores[agent] = np.mean(np.array(scores[agent]).T, axis=1)
-        print(mean_scores)
         plt.figure(figsize=(10, 5))
 
         # Box plot for agent 1
@@ -153,7 +145,7 @@ class DebateEvaluator:
         elif self.scale == "1 to 7":
             plt.ylim(1, 7)
 
-        # save plots
+        # save plots    
         plot_dir = os.path.join(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}", topic_name)
         os.makedirs(plot_dir, exist_ok=True)
 
@@ -163,16 +155,31 @@ class DebateEvaluator:
 
     def evaluate_transcript(self, filename):
         transcript = self._load_transcript(filename)
+
+        # check if scores already computed
+        score_key = "attitude_scores" if self.scale != "binary" else "bin_scores"
+        scores =  transcript.get(score_key, None)
+        if scores is not None:
+            return scores
+
         topic_name = transcript["topic"]
 
         num_agents = len(self.debate_group)
         if num_agents not in [2, 3]:
             raise ValueError("The evaluation data in JSON file must contain exactly 2 or 3 agents.")
 
+        scores = None
+
         if self.scale == 'binary':
-            return self._evaluate_binary(transcript, topic_name)
+            scores = self._evaluate_binary(transcript, topic_name)
         else:
-            return self._evaluate_attitude_scores(transcript, topic_name)
+            scores = self._evaluate_attitude_scores(transcript, topic_name)
+
+        transcript[score_key] = scores
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(transcript, f, indent=4)
+
+        return scores
 
     # Attitude Scoring
     def _evaluate_attitude_scores(self, transcript, topic_name):
