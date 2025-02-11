@@ -4,6 +4,7 @@ venv/
 __pycache__/
 agents/__pycache__/
 debate/__pycache__/
+evaluation/__pycache__/
 
 debate/debate_transcripts/
 debate/debate_transcripts/**
@@ -17,11 +18,8 @@ debate_transcripts/
 evaluation/attitude_neutral_democrat/
 evaluation/attitude_neutral_democrat/**
 
-evaluation/attitude_neutral_republican/
-evaluation/attitude_neutral_republican/**
-
-evaluation/attitude_neutral_republican_democrat/
-evaluation/attitude_neutral_republican_democrat/**
+evaluation/attitude_neutral_*/
+evaluation/attitude_neutral_*/**
 
 *.pyc
 

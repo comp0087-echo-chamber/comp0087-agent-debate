@@ -154,12 +154,13 @@ class DebateEvaluator:
             plt.ylim(1, 7)
 
         # save plots
-        plot_dir = os.path.join(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}", topic_name)
+        plot_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name}", "evaluation")
         os.makedirs(plot_dir, exist_ok=True)
 
         plot_path = os.path.join(plot_dir, f"box_plot_attitude_{topic_name.replace(' ', '_')}_{num_rounds}_rounds.pdf")
         plt.savefig(plot_path)
         plt.show()
+
 
     def evaluate_transcript(self, filename):
         transcript = self._load_transcript(filename)
@@ -227,6 +228,13 @@ class DebateEvaluator:
         return None
 
 
+    def get_relative_path(self, filename, folder="evaluation"):
+        # to enable running evaluation from root folder or evaluation subfolder
+        if os.path.basename(os.getcwd()) == folder:
+            return filename
+        return os.path.join(folder, filename)
+
+
     def _generate_prompt(self, response, topic_name, agent_type):
         scale_descriptions = {
             '-3 to 3': """Assign a Likert score from -3 to 3, where:
@@ -241,11 +249,7 @@ class DebateEvaluator:
             raise ValueError("Unsupported scale. Use '-3 to 3' or '1 to 7'.")
 
         # read few shot examples from JSON
-        evaluation_folder = "evaluation"
-        if os.path.basename(os.getcwd()) == evaluation_folder:
-            file_path = "few_shot_examples.json"  # no `evaluation/` prefix
-        else:
-            file_path = os.path.join(evaluation_folder, "few_shot_examples.json")
+        file_path = self.get_relative_path("few_shot_examples.json")
 
         with open(file_path, 'r') as file:
             examples = json.load(file)
@@ -307,7 +311,7 @@ class DebateEvaluator:
         elif self.scale == "1 to 7":
             plt.ylim(1, 7)
 
-        plot_dir = os.path.join(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}", topic_name)
+        plot_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name}", "evaluation")
         os.makedirs(plot_dir, exist_ok=True)
 
         datetime_match = re.search(r'transcript_(\d{2}_\d{2}_\d{2})\.json', self.transcript_filename)
