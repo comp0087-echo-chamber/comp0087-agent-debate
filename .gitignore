@@ -10,14 +10,7 @@ debate/debate_transcripts/**
 debate/eval_data/
 debate/eval_data/**
 
-evaluation/attitude_neutral_democrat/
-evaluation/attitude_neutral_democrat/**
-
-evaluation/attitude_neutral_republican/
-evaluation/attitude_neutral_republican/**
-
-evaluation/attitude_neutral_republican_democrat/
-evaluation/attitude_neutral_republican_democrat/**
+evaluation/**/*.pdf
 
 *.pyc
 
