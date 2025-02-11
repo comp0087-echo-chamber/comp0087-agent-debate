@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     print(f"Selected debate group: {debate_group}")
     
-    eval_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "eval_data")
+    eval_data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "debate", "eval_data")
 
     eval_data_path = os.path.join(eval_data_path, config["debate_group"], config["debate_structure"])
 
