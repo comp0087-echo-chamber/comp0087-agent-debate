@@ -59,16 +59,16 @@ class DebateManager:
         self.round_num_counts[agent_type] += 1
 
 
-    def start(self):
+    def start(self, num_debates=10):
         self.generate_agent_prompts()
+        for _ in range(num_debates):
+            if self.debate_structure == "structured":
+                self.start_structured_debate()
+            else:
+                self.start_unstructured_debate()
 
-        if self.debate_structure == "structured":
-            self.start_structured_debate()
-        else:
-            self.start_unstructured_debate()
-
-        self.save_debate_transcription()
-        self.save_evaluation_data()
+            self.save_debate_transcription()
+            self.save_evaluation_data()
 
 
     def start_structured_debate(self):
