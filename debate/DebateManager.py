@@ -67,7 +67,8 @@ class DebateManager:
             else:
                 self.start_unstructured_debate()
 
-            self.save_debate_transcription()
+            # Legacy transcript save
+            #self.save_debate_transcription()
             self.save_evaluation_data()
 
 
