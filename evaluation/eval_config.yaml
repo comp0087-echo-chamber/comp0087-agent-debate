@@ -1,4 +1,8 @@
-model: "mistral:7b"
+# NOTE: If you see a FileNotFoundError, please generate the debate
+# with the below `debate_group` and `debate_structure` first before 
+# running evaluation!
+
+model: "mistral:7b" 
 debate_group: "neutral_republican"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat"
 debate_structure: "unstructured"  # options: "structured", "unstructured"
-scale: "1 to 7"  # Likert scale options: "1 to 7" or "-3 to 3"
+scale: "1 to 7"  # Likert scale options: "1 to 7" or "-3 to 3"; "binary" for disagreement/agreement metric

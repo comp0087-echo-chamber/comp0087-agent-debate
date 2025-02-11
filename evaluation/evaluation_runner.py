@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from evaluation.DebateEvaluator import DebateEvaluator
 
-
+NUM_ROUNDS = 2
 if __name__ == "__main__":
     # load evaluation config from YAML
     config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "eval_config.yaml")
@@ -25,15 +25,20 @@ if __name__ == "__main__":
 
     # Likert scale is either: -3 to 3 OR 1 to 7
     # NOTE: so far, using the 1-7 scale seems to result in greater attitude variations
+    
     debate_evaluator = DebateEvaluator(model, config["debate_group"], config["debate_structure"], scale=config["scale"])
 
-    transcripts_by_topic = [f for f in os.listdir(eval_data_path)]
+    # transcripts_by_topic = [f for f in os.listdir(eval_data_path)]
 
-    for topic in transcripts_by_topic:
-        topic_path = os.path.join(eval_data_path, topic)
-        transcripts_in_topic = [f for f in os.listdir(topic_path)]
+    # for topic in transcripts_by_topic:
+    #     topic_path = os.path.join(eval_data_path, topic)
+    #     transcripts_in_topic = [f for f in os.listdir(topic_path)]
 
-        for transcript in transcripts_in_topic:
-            transcript_path =  os.path.join(topic_path, transcript)
+    #     for transcript in transcripts_in_topic:
+    #         transcript_path =  os.path.join(topic_path, transcript)
 
-            debate_evaluator.evaluate_transcript(transcript_path)
+    #         debate_evaluator.evaluate_transcript(transcript_path)
+
+    # plot candle graphs
+    
+    debate_evaluator.evaluate_debates(debate_transcripts_path=eval_data_path)
