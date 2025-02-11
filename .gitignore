@@ -3,6 +3,7 @@ venv/
 __pycache__/
 agents/__pycache__/
 debate/__pycache__/
+evaluation/__pycache__/
 
 debate/debate_transcripts/
 debate/debate_transcripts/**
@@ -10,7 +11,11 @@ debate/debate_transcripts/**
 debate/eval_data/
 debate/eval_data/**
 
+debate/debate_config.yaml
+
 evaluation/**/*.pdf
+
+evaluation/eval_config.yaml
 
 *.pyc
 
