@@ -119,9 +119,9 @@ class DebateManager:
 
     def save_evaluation_data(self):
         timestamp = datetime.now().strftime('%H_%M_%S')
-        save_folder = f"eval_data/{self.debate_group}/{self.debate_structure}/{self.topic.replace(' ', '_')}"
+        save_folder = self.get_relative_path(f"eval_data/{self.debate_group}/{self.debate_structure}/{self.topic.replace(' ', '_')}")
         os.makedirs(save_folder, exist_ok=True)
-        filename = self.get_relative_path(f"{save_folder}/transcript_{timestamp}.json")
+        filename = f"{save_folder}/transcript_{timestamp}.json"
     
         with open(filename, "w") as file:
             json.dump(self.data_for_evaluation, file, indent=4)
