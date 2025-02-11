@@ -13,14 +13,8 @@ debate/eval_data/**
 
 debate/debate_config.yaml
 
-evaluation/attitude_neutral_democrat/
-evaluation/attitude_neutral_democrat/**
-
-evaluation/attitude_neutral_republican/
-evaluation/attitude_neutral_republican/**
-
-evaluation/attitude_neutral_republican_democrat/
-evaluation/attitude_neutral_republican_democrat/**
+evaluation/attitude_neutral_*/
+evaluation/attitude_neutral_*/**
 
 evaluation/eval_config.yaml
 
