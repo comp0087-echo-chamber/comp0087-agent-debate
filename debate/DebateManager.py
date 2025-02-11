@@ -67,7 +67,8 @@ class DebateManager:
             else:
                 self.start_unstructured_debate()
 
-            self.save_debate_transcription()
+            # Legacy transcript save
+            #self.save_debate_transcription()
             self.save_evaluation_data()
             self.clear_data()
 
@@ -109,11 +110,18 @@ class DebateManager:
             self.debate_round(self.agents[0], "Complete your next reply.")
 
 
+    def get_relative_path(self, filename, folder="debate"):
+        # to enable running from root folder or debate subfolder
+        if os.path.basename(os.getcwd()) == folder:
+            return filename
+        return os.path.join(folder, filename)
+
+
     def save_evaluation_data(self):
         timestamp = datetime.now().strftime('%H_%M_%S')
         save_folder = f"eval_data/{self.debate_group}/{self.debate_structure}/{self.topic.replace(' ', '_')}"
         os.makedirs(save_folder, exist_ok=True)
-        filename = f"{save_folder}/transcript_{timestamp}.json"
+        filename = self.get_relative_path(f"{save_folder}/transcript_{timestamp}.json")
     
         with open(filename, "w") as file:
             json.dump(self.data_for_evaluation, file, indent=4)
@@ -124,7 +132,7 @@ class DebateManager:
     def save_debate_transcription(self):
         timestamp = datetime.now().strftime('%H_%M_%S')
 
-        save_folder = f"debate_transcripts/{self.debate_group}/{self.debate_structure}/{self.topic.replace(' ', '_')}"
+        save_folder = self.get_relative_path(f"debate_transcripts/{self.debate_group}/{self.debate_structure}/{self.topic.replace(' ', '_')}")
         os.makedirs(save_folder, exist_ok=True)
 
         # TXT

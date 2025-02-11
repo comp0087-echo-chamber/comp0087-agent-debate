@@ -1,7 +1,7 @@
 model: "llama3.2:3b"
 
 debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat"
-debate_structure: "unstructured"  # options: "structured", "unstructured"
+debate_structure: "structured"  # options: "structured", "unstructured"
 
 baseline_debate_topics:
   - "gun violence"
@@ -13,5 +13,8 @@ extra_debate_topics:
   - "abortion"
   - "evolution"
   - "trade tariffs"
+
+# Use multiprocessing to run a process for each topic being investigated. Not recommended on local machines, but could speed up lab machine progress
+use_multiprocessing: false
 
 rounds: 10

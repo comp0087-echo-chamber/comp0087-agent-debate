@@ -1,8 +1,26 @@
 venv/
+.DS_Store
 
 __pycache__/
 agents/__pycache__/
 debate/__pycache__/
+evaluation/__pycache__/
+
+debate/debate_transcripts/
+debate/debate_transcripts/**
+
+debate/eval_data/
+debate/eval_data/**
+
+eval_data/
+debate_transcripts/
+
+evaluation/attitude_neutral_democrat/
+evaluation/attitude_neutral_democrat/**
+
+evaluation/attitude_neutral_*/
+evaluation/attitude_neutral_*/**
+
 *.pyc
 
 
