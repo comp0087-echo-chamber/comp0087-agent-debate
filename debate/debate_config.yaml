@@ -15,6 +15,6 @@ extra_debate_topics:
   - "trade tariffs"
 
 # Use multiprocessing to run a process for each topic being investigated. Not recommended on local machines, but could speed up lab machine progress
-use_multiprocessing: true
+use_multiprocessing: false
 
 rounds: 5
