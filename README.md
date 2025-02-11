@@ -21,10 +21,14 @@ python3 test_ollama.py
 
 ## Running the debate:
 To run the debate:
+1) See the config in debate/debate_config.yaml, and update your settings as required. 
+This includes changing the debate topics, enabling multiprocessing and more.
+
+2) Run the debate with:
 ```
 python3 debate/debate_runner.py
 ```
-You may change the debate topic in  debate/debate_runner.py, the format in the DebateManager, and the agents in DebateAgent
+
 
 ## Running the evaluation:
 To run the evaluation:
