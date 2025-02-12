@@ -34,6 +34,25 @@ class DebateEvaluator:
         self.transcript_filename = filename
         with open(filename, "r") as file:
             return json.load(file)
+
+    def _plot_whisker_plot(self, data, title, legend, ):
+        # Calculate the statistics manually for whiskers
+        min_vals = np.min(data, axis=0)
+        max_vals = np.max(data, axis=0)
+
+        # Create a figure and axis
+        fig, ax = plt.subplots()
+
+        # Plot whiskers as lines from min to max values
+        for i in range(len(data[0])):  # Loop over columns (sets of data)
+            ax.plot([i + 1, i + 1], [min_vals[i], max_vals[i]], color='blue', linewidth=3)
+
+        # Customize the plot
+        ax.set_title("Whiskers Only Plot")
+        ax.set_xticks(np.arange(1, len(data[0]) + 1))
+        ax.set_xticklabels([f"Set {i+1}" for i in range(len(data[0]))])
+
+        plt.show()
         
 
     def evaluate_debates(self, debate_transcripts_path):
@@ -88,10 +107,11 @@ class DebateEvaluator:
             average_score = cumulative_score / turns  # Shape: (num_runs, num_turns)
 
             # Plot boxplot
-            plt.boxplot(average_score, positions=turns, widths=0.5, 
-                        boxprops=dict(color=self.color_mapping[agent_type]), 
-                        medianprops=dict(color="black"),
-                        flierprops=dict(marker="o", color=self.color_mapping[agent_type], alpha=0.5))
+            plt.boxplot(average_score, positions=turns, 
+                        boxprops=dict(color="none"), whiskerprops=dict(color=self.color_mapping[agent_type], linewidth=4),  
+                        medianprops=dict(color="none"),  capprops=dict(color=self.color_mapping[agent_type], linewidth=2), 
+                        flierprops=dict(marker="None"))  
+
 
             avg_over_runs = np.mean(average_score, axis=0)  # Shape: (num_turns,)
             plt.plot(turns, avg_over_runs, marker="o", linestyle="dashed", 
@@ -117,26 +137,61 @@ class DebateEvaluator:
 
     def _generate_attitude_box_plot(self, scores, topic_name, num_rounds):  
         turns = np.array(range(1, num_rounds + 1), dtype=np.float32)
+        min_max_upper_lower_scores = {}
+
+        for agent, rounds in scores.items():
+            rounds_array = np.array(rounds)
+            
+            # Compute min and max values per debate (across all agents for each round)
+            min_max_upper_lower_scores[agent] = {
+                'min': np.min(rounds_array, axis=0),  
+                'max': np.max(rounds_array, axis=0),
+                'upper': np.quantile(rounds_array, 0.75, axis=0),
+                'lower': np.quantile(rounds_array, 0.25, axis=0)
+            }
+        
+        plt.figure(figsize=(10, 5))
+
+        # Plot whiskers only
+        for agent, min_max_upper_lower in min_max_upper_lower_scores.items():
+            min_scores = min_max_upper_lower['min']
+            max_scores = min_max_upper_lower['max']
+            upper_scores = min_max_upper_lower['upper']
+            lower_scores = min_max_upper_lower['lower']
+
+            colour = self.color_mapping[agent]
+            
+            for i in range(len(turns)):
+                # vertical line
+                plt.plot([turns[i], turns[i]], [lower_scores[i], upper_scores[i]], color=colour, linewidth=2)
+                
+                # Top cap 
+                plt.plot([turns[i] - 0.1, turns[i] + 0.1], [upper_scores[i], upper_scores[i]], color=colour, linewidth=2)
+                
+                # Bottom cap 
+                plt.plot([turns[i] - 0.1, turns[i] + 0.1], [lower_scores[i], lower_scores[i]], color=colour, linewidth=2)
+
+                plt.scatter(turns[i], max_scores[i], color=colour, marker="x", s=50 )  
+                plt.scatter(turns[i], min_scores[i], color=colour, marker="x", s=50)  
+            
         mean_scores = {}
         for agent in self.debate_group:
             mean_scores[agent] = np.mean(np.array(scores[agent]).T, axis=1)
-        plt.figure(figsize=(10, 5))
 
-        # Box plot for agent 1
-
-        for agent in self.debate_group:
-            plt.boxplot(np.array(scores[agent]), positions=turns, widths=0.5, 
-                        boxprops=dict(color=self.color_mapping[agent]), 
-                        medianprops=dict(color="black"),
-                        flierprops=dict(marker="o", color=self.color_mapping[agent], alpha=0.5))
-
+        # Box plot
+        # for agent in self.debate_group:
+        #     plt.boxplot(np.array(scores[agent]), positions=turns, widths=0.5, 
+        #                 boxprops=dict(color=self.color_mapping[agent]), 
+        #                 medianprops=dict(color="black"),
+        #                 flierprops=dict(marker="none"))
+            
         for agent in self.debate_group:
             plt.plot(turns, mean_scores[agent], marker="o", linestyle="dashed", label = f"{agent.title()} Attitude", color=self.color_mapping[agent])
 
         plt.xlabel("Debate Turns")
         plt.ylabel(f"Attitude Score")
         
-        plt.title(f"Attitude Shift Over Debate: {topic_name}")
+        plt.title(f"Attitude Shift Over Debate: {topic_name.replace('_', ' ')}")
         plt.legend()
         plt.grid(True)
 
@@ -344,7 +399,7 @@ class DebateEvaluator:
             responses = {agent: transcript.get(agent, {}).get(f"round_{round_num}") for agent in self.debate_group}
             prompt = self._generate_prompt_bin_metric(responses, topic_name)
             try:
-                result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}], options={"temperature": 0.0})
+                result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}])
                 score = list(map(int, re.findall(r"\d+", result["message"]["content"].strip())))
                 if score is not None:
                     for i, agents in enumerate(agent_pairs):

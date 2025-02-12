@@ -7,7 +7,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from evaluation.DebateEvaluator import DebateEvaluator
 
-NUM_ROUNDS = 2
 if __name__ == "__main__":
     # load evaluation config from YAML
     config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "eval_config.yaml")
