@@ -11,7 +11,7 @@ from agents.DebateAgent import DebateAgent
 from debate.DebateManager import DebateManager
 
 
-NUM_DEBATES = 10
+NUM_DEBATES = 3
 
 def run_debate_for_topic(topic):
 

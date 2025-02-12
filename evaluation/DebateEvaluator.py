@@ -114,7 +114,8 @@ class DebateEvaluator:
 
         plot_path = os.path.join(plot_dir, f"box_plot_disagreement_{topic_name.replace(' ', '_')}_{max_num_rounds}_rounds.pdf")
         plt.savefig(plot_path)
-        plt.show()
+        #plt.show()
+        plt.close()
 
     def _generate_attitude_box_plot(self, scores, topic_name):  
         turns = np.array(range(1, self.num_rounds + 1), dtype=np.float32)
@@ -182,12 +183,13 @@ class DebateEvaluator:
             plt.ylim(1, 7)
 
         # save plots
-        plot_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace('_', ' ')}", "evaluation")
+        plot_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace(' ', '_')}", "evaluation")
         os.makedirs(plot_dir, exist_ok=True)
 
         plot_path = os.path.join(plot_dir, f"box_plot_attitude_{topic_name.replace(' ', '_')}_{self.num_rounds}_rounds.pdf")
         plt.savefig(plot_path)
-        plt.show()
+        #plt.show()
+        plt.close()
 
 
     def evaluate_transcript(self, filename):
@@ -363,7 +365,8 @@ class DebateEvaluator:
 
         plot_path = os.path.join(plot_dir, f"attitude_plot_{topic_name.replace(' ', '_')}_{max(debate_rounds) + 1}_rounds_{timestamp}.pdf")
         plt.savefig(plot_path)
-        plt.show()
+        #plt.show()
+        plt.close()
 
 
     # Agreement/Disagreement Scoring
@@ -430,4 +433,5 @@ class DebateEvaluator:
         os.makedirs(plot_dir, exist_ok=True)
         plot_path = os.path.join(plot_dir, f"cumulative_plot_{topic_name}.png")
         plt.savefig(plot_path)
-        plt.show()
+        #plt.show()
+        plt.close()

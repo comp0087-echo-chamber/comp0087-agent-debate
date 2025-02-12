@@ -17,4 +17,4 @@ extra_debate_topics:
 # Use multiprocessing to run a process for each topic being investigated. Not recommended on local machines, but could speed up lab machine progress
 use_multiprocessing: false
 
-rounds: 10
+rounds: 3
