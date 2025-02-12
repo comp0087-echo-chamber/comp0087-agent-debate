@@ -12,7 +12,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class DebateEvaluator:
-    def __init__(self, model, debate_group, debate_structure, scale='1 to 7'):
+    def __init__(self, model, debate_group, debate_structure, num_rounds, scale='1 to 7'):
         self.scale = scale
         self.scale_mapping = {
             '-3 to 3': [-3, 3],
@@ -27,34 +27,17 @@ class DebateEvaluator:
         self.model = model
         self.num_model_calls = 3
         self.debate_group = debate_group.split("_")
-        self.transcript_filename = None  # used for saving plots
+        self.transcript_filename = None  # used for saving plots    
         self.debate_structure = debate_structure  # used for saving plots
+        self.num_rounds = num_rounds   # Assuming all transcripts in this dir have the same number of rounds 
+        if self.debate_structure == "structured":
+            self.num_rounds += 2
 
     def _load_transcript(self, filename):
         self.transcript_filename = filename
         with open(filename, "r") as file:
             return json.load(file)
-
-    def _plot_whisker_plot(self, data, title, legend, ):
-        # Calculate the statistics manually for whiskers
-        min_vals = np.min(data, axis=0)
-        max_vals = np.max(data, axis=0)
-
-        # Create a figure and axis
-        fig, ax = plt.subplots()
-
-        # Plot whiskers as lines from min to max values
-        for i in range(len(data[0])):  # Loop over columns (sets of data)
-            ax.plot([i + 1, i + 1], [min_vals[i], max_vals[i]], color='blue', linewidth=3)
-
-        # Customize the plot
-        ax.set_title("Whiskers Only Plot")
-        ax.set_xticks(np.arange(1, len(data[0]) + 1))
-        ax.set_xticklabels([f"Set {i+1}" for i in range(len(data[0]))])
-
-        plt.show()
         
-
     def evaluate_debates(self, debate_transcripts_path):
         agent_pairs = []
 
@@ -74,8 +57,6 @@ class DebateEvaluator:
                     agent_pairs.append(f'neutral_{agent}')
                 all_scores = {agents: [[] for _ in range(num_debates)] for agents in agent_pairs}
 
-            # Assuming all transcripts in this dir have the same number of rounds 
-            num_rounds = 10
             for debate, transcript in enumerate(transcript_list):  # Loop through each transcript
                 transcript_path = os.path.join(debate_transcripts_path, topic, transcript)  # Get full path
                 scores = self.evaluate_transcript(transcript_path)  # Evaluate transcript
@@ -88,7 +69,7 @@ class DebateEvaluator:
                         all_scores[agent][debate] = scores[agent]
 
             if self.scale == "1 to 7" or self.scale == "-3 to 3":
-                self._generate_attitude_box_plot(all_scores, topic, num_rounds)
+                self._generate_attitude_box_plot(all_scores, topic)
             else:
                 self._generate_bin_box_plot(all_scores, topic)
 
@@ -135,8 +116,8 @@ class DebateEvaluator:
         plt.savefig(plot_path)
         plt.show()
 
-    def _generate_attitude_box_plot(self, scores, topic_name, num_rounds):  
-        turns = np.array(range(1, num_rounds + 1), dtype=np.float32)
+    def _generate_attitude_box_plot(self, scores, topic_name):  
+        turns = np.array(range(1, self.num_rounds + 1), dtype=np.float32)
         min_max_upper_lower_scores = {}
 
         for agent, rounds in scores.items():
@@ -201,10 +182,10 @@ class DebateEvaluator:
             plt.ylim(1, 7)
 
         # save plots
-        plot_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name}", "evaluation")
+        plot_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace('_', ' ')}", "evaluation")
         os.makedirs(plot_dir, exist_ok=True)
 
-        plot_path = os.path.join(plot_dir, f"box_plot_attitude_{topic_name.replace(' ', '_')}_{num_rounds}_rounds.pdf")
+        plot_path = os.path.join(plot_dir, f"box_plot_attitude_{topic_name.replace(' ', '_')}_{self.num_rounds}_rounds.pdf")
         plt.savefig(plot_path)
         plt.show()
 
