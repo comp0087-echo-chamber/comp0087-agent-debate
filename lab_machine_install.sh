@@ -34,7 +34,8 @@ case "$ARCH" in
     *) error "Unsupported architecture: $ARCH" ;;
 esac
 
-OLLAMA_INSTALL_DIR="$HOME/ollama"
+USERNAME=$(whoami)  # Get the current username dynamically
+OLLAMA_INSTALL_DIR="/cs/student/projects1/2021/${USERNAME}/ollama"
 
 mkdir -p "$OLLAMA_INSTALL_DIR/bin"
 
