@@ -39,10 +39,10 @@ class DebateAgent:
     def generate_prompt(self):
         party_support = f" who supports the {self.affiliation['party']} party" if self.affiliation['party'] != None else ""
 
-        self.prompt = f"You are {self.name}, " \
-            f"{f'a {self.age} year old' if self.age else ''}" \
-            f"{f', {self.gender}' if self.gender else ''}" \
-            f"{'a ' + self.affiliation['leaning'] if self.affiliation['leaning'] else 'an'} American{party_support}. \n" \
+        self.prompt = f"You are {self.name}, a" \
+            f"{f' {self.age} year old' if self.age else ''}" \
+            f"{f' {self.gender} ' if self.gender else ''}" \
+            f" {self.affiliation['leaning'] if self.affiliation['leaning'] else ''} American{party_support}. \n" \
             f"{self.debate_purpose}"
 
 

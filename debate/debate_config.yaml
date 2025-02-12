@@ -18,4 +18,15 @@ extra_debate_topics:
 use_multiprocessing: false
 
 num_debates: 10
-debate_rounds: 10
+num_rounds: 10
+
+agents:
+  neutral:
+    age: null
+    gender: null
+  republican:
+    age: null
+    gender: null
+  democrat:
+    age: null
+    gender: null
