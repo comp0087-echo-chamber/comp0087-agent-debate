@@ -11,8 +11,6 @@ from agents.DebateAgent import DebateAgent
 from debate.DebateManager import DebateManager
 
 
-NUM_DEBATES = 3
-
 def run_debate_for_topic(topic):
 
     print(f"Starting debate for topic: {topic}")
@@ -23,27 +21,27 @@ def run_debate_for_topic(topic):
         config = yaml.safe_load(file)
 
     # Ensure agent1 is a neutral agent
-    agent1 = DebateAgent(name="Sam", model=config["model"], affiliation={"leaning": None, "party": None}, age=None, gender=None)
+    agent1 = DebateAgent(name="Sam", model=config["model"], affiliation={"leaning": None, "party": None}, age=config["agents"]["neutral"]["age"], gender=config["agents"]["neutral"]["gender"])
 
     # Create agents based on the config
     if config["debate_group"] == "neutral_republican":
-        agents = [agent1, DebateAgent(name="Bob", model=config["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=None, gender=None)]
+        agents = [agent1, DebateAgent(name="Bob", model=config["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"])]
 
     elif config["debate_group"] == "neutral_democrat":
-        agents = [agent1, DebateAgent(name="Mike", model=config["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=None, gender=None)]
+        agents = [agent1, DebateAgent(name="Mike", model=config["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"])]
 
     elif config["debate_group"] == "neutral_republican_democrat":
         agents = [
             agent1,
-            DebateAgent(name="Bob", model=config["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=None, gender=None),
-            DebateAgent(name="Mike", model=config["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=None, gender=None)
+            DebateAgent(name="Bob", model=config["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"]),
+            DebateAgent(name="Mike", model=config["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"])
         ]
     else:
         raise ValueError("Invalid debate group")
 
     # Run the debate for this topic
-    dm = DebateManager(agents, topic, config["rounds"], config["debate_structure"], config["debate_group"])
-    dm.start(NUM_DEBATES)
+    dm = DebateManager(agents, topic, config["num_rounds"], config["debate_structure"], config["debate_group"])
+    dm.start(config["num_debates"])
 
     print(f"Debate completed for topic: {topic}")
 
