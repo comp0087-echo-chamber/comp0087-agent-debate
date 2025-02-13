@@ -191,7 +191,7 @@ class DebateEvaluator:
             plt.ylim(1, 7)
 
         # save plots
-        plot_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace(' ', '_')}", "evaluation")
+        plot_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace('_', ' ')}", "evaluation")
         os.makedirs(plot_dir, exist_ok=True)
 
         plot_path = os.path.join(plot_dir, f"box_plot_attitude_{topic_name.replace(' ', '_')}_{self.num_rounds}_rounds.pdf")
