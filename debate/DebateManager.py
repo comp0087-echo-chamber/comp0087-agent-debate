@@ -97,7 +97,7 @@ class DebateManager:
         if self.rounds > 1: 
             for agent in self.agents:
                 # self.debate_round(agent, "Please rebut the other agent's opinions, and give closing arguments. If you wish to change your position to align or diverge with your fellow agents, please do so.")
-                self.debate_round(agent, "Give your closing arguments on the topic.")
+                self.debate_round(agent, "Give your closing arguments on the topic within 50 words.")
 
 
     def start_unstructured_debate(self):

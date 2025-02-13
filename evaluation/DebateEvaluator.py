@@ -12,7 +12,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class DebateEvaluator:
-    def __init__(self, model, debate_group, debate_structure, num_rounds, scale='1 to 7'):
+    def __init__(self, model, debate_group, debate_structure, num_rounds, num_debates, scale='1 to 7'):
         self.scale = scale
         self.scale_mapping = {
             '-3 to 3': [-3, 3],
@@ -32,6 +32,7 @@ class DebateEvaluator:
         self.num_rounds = num_rounds   # Assuming all transcripts in this dir have the same number of rounds 
         if self.debate_structure == "structured":
             self.num_rounds += 2
+        self.num_debates = num_debates
 
     def _load_transcript(self, filename):
         self.transcript_filename = filename
@@ -42,7 +43,14 @@ class DebateEvaluator:
         agent_pairs = []
 
         topics = [f for f in os.listdir(debate_transcripts_path) if os.path.isdir(os.path.join(debate_transcripts_path, f))]
-        transcripts = {topic: os.listdir(os.path.join(debate_transcripts_path, topic)) for topic in topics}
+        transcripts = {
+            topic: sorted(
+                os.listdir(os.path.join(debate_transcripts_path, topic)),
+                key=lambda x: os.path.getmtime(os.path.join(debate_transcripts_path, topic, x)),
+                reverse=True  # Sort in descending order to get the most recent files first
+            )[:self.num_debates]  
+            for topic in topics
+        }
 
         for topic, transcript_list in transcripts.items():
             num_debates = len(transcript_list)  # Loop through each topic and its transcripts
@@ -327,7 +335,9 @@ class DebateEvaluator:
 
     def _parse_attitude_score(self, result):
         try:
-            score = int(result["message"]["content"].strip())
+            digit = re.findall(r'\d', result["message"]["content"].strip())
+            score = int(digit[0])
+            # score = int(result["message"]["content"].strip())
             min_score, max_score = self.scale_mapping[self.scale]
             return max(min_score, min(max_score, score))
         except ValueError:

@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # Likert scale is either: -3 to 3 OR 1 to 7
     # NOTE: so far, using the 1-7 scale seems to result in greater attitude variations
     
-    debate_evaluator = DebateEvaluator(model, config["debate_group"], config["debate_structure"], config["num_rounds"], scale=config["scale"])
+    debate_evaluator = DebateEvaluator(model, config["debate_group"], config["debate_structure"], config["num_rounds"], config["num_debates"], scale=config["scale"])
 
     # transcripts_by_topic = [f for f in os.listdir(eval_data_path)]
 
