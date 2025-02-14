@@ -20,21 +20,32 @@ def run_debate_for_topic(topic):
     with open(config_path, "r") as file:
         config = yaml.safe_load(file)
 
+    names = {"Male": ["Bob", "Mike", "James"],"Female": ["Sarah", "Stephanie", "Emily"], "Gender-Neutral": ["Sam", "Alex", "Taylor"]}
+    used_names = set()
+
+    def get_name(gender):
+        available_names = [name for name in names.get(gender, names["Gender-Neutral"]) if name not in used_names]
+        if available_names:
+            chosen_name = available_names[0]
+            used_names.add(chosen_name)
+            return chosen_name
+
     # Ensure agent1 is a neutral agent
-    agent1 = DebateAgent(name="Sam", model=config["model"], affiliation={"leaning": None, "party": None}, age=config["agents"]["neutral"]["age"], gender=config["agents"]["neutral"]["gender"])
+    agent1 = DebateAgent(name=get_name(config["agents"]["neutral"]["gender"]), model=config["model"], affiliation={"leaning": None, "party": None}, age=config["agents"]["neutral"]["age"], gender=config["agents"]["neutral"]["gender"])
 
     # Create agents based on the config
     if config["debate_group"] == "neutral_republican":
-        agents = [agent1, DebateAgent(name="Bob", model=config["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"])]
+        agents = [agent1, DebateAgent(name= get_name(config["agents"]["republican"]["gender"]), model=config["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"])]
 
-    elif config["debate_group"] == "neutral_democrat":
-        agents = [agent1, DebateAgent(name="Mike", model=config["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"])]
+
+    elif config["debate_group"] == "neutral_democrat": 
+        agents = [agent1, DebateAgent(name= get_name(config["agents"]["democrat"]["gender"]), model=config["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"])]
 
     elif config["debate_group"] == "neutral_republican_democrat":
         agents = [
             agent1,
-            DebateAgent(name="Bob", model=config["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"]),
-            DebateAgent(name="Mike", model=config["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"])
+            DebateAgent(name= get_name(config["agents"]["republican"]["gender"]), model=config["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"]),
+            DebateAgent(name= get_name(config["agents"]["democrat"]["gender"]), model=config["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"])
         ]
     else:
         raise ValueError("Invalid debate group")
