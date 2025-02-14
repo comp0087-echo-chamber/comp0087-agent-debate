@@ -20,7 +20,7 @@ class DebateEvaluator:
             'binary': [0, 1]
         }
         self.color_mapping = {
-            'neutral': 'green',
+            'neutral': 'tan',
             'republican': 'red',
             'democrat': 'blue'
         }
