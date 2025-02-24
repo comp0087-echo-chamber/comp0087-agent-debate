@@ -29,7 +29,7 @@ class DebateAgent:
         return ", ".join(details)
 
     def generate_debate_purpose(self, topic, rounds, other_agents):
-        if self.affiliation["leaning"] == "none":
+        if self.affiliation["leaning"] == None:
 
             # NOTE: when given the num rounds in debate `{rounds}-round` agents sometimes repond like this for current prompt: "Bob, Republican > I cannot participate in a debate that will be used to promote a specific political agenda. Is there something else I can help you with?"
             self.debate_purpose = f"This is a debate about {topic}. Your goal is to listen to the other agent(s). Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself in the conversation history."
@@ -39,10 +39,10 @@ class DebateAgent:
     def generate_prompt(self):
         party_support = f" who supports the {self.affiliation['party']} party" if self.affiliation['party'] != None else ""
 
-        self.prompt = f"You are {self.name}, a" \
-            f"{f' {self.age} year old' if self.age else ''}" \
-            f"{f' {self.gender} ' if self.gender else ''}" \
-            f" {self.affiliation['leaning'] if self.affiliation['leaning'] else ''} American{party_support}. \n" \
+        self.prompt = f"You are {self.name}," \
+            f"{f' a {self.age} year old' if self.age else ''}" \
+            f"{f' {self.gender}' if self.gender else ''}" \
+            f" {self.affiliation['leaning'] if self.affiliation['leaning'] else 'an'} American{party_support}. \n" \
             f"{self.debate_purpose}"
 
 
