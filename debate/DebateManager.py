@@ -102,12 +102,8 @@ class DebateManager:
 
     def start_unstructured_debate(self):
         for _ in range(self.rounds):
-            self.debate_round(self.agents[1], "Complete your next reply.")  # opinionated agent starts the debate
-
-            if len(self.agents) > 2:  # if there are 3 agents, let 3rd agent speak
-                self.debate_round(self.agents[2], "Complete your next reply.")
-
-            self.debate_round(self.agents[0], "Complete your next reply.")
+            for agent in self.agents:
+                self.debate_round(agent, "Complete your next reply.")
 
 
     def get_relative_path(self, filename, folder="debate"):
