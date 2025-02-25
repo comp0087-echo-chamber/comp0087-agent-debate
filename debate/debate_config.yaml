@@ -1,10 +1,10 @@
 model: "llama3.2:3b"
 
 debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat"
-debate_structure: "unstructured"  # options: "structured", "unstructured"
+debate_structure: "structured"  # options: "structured", "unstructured"
 
 baseline_debate_topics:
-  - "gun violence"
+  - "illegal_immigration"
 
 
 extra_debate_topics:
@@ -20,11 +20,14 @@ num_rounds: 10
 
 agents:
   neutral:
-    age: null
+    age: 67
     gender: null
+    model: "llama3.2:3b"
   republican:
     age: null
     gender: null
+    model: "llama3.2:3b"
   democrat:
     age: null
     gender: null
+    model: "llama3.2:3b"
