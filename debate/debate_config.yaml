@@ -1,4 +1,4 @@
-model: "llama3.2:3b"
+# model: "llama3.2:3b"
 
 debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat"
 debate_structure: "structured"  # options: "structured", "unstructured"
