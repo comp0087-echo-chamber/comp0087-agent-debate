@@ -1,0 +1,89 @@
+{
+    "topic": "racism",
+    "neutral": {
+        "round_0": "\"I firmly believe that systemic racism is still prevalent in our society, perpetuated by institutions and biases that affect people of color's access to education, employment, and justice. We need to acknowledge and address these disparities to create a more equitable America.\"",
+        "round_1": "\"I understand where Emily and Sarah are coming from, but I'd like to add that even if individual success stories exist, they don't negate the historical and ongoing impact of systemic racism. We can't ignore the fact that institutions have been designed to maintain white privilege, which affects people of color's opportunities.\"",
+        "round_2": "\"I see where you both are coming from, but let's not forget that systemic racism is often invisible to those who benefit from it. It's the subtle biases in hiring practices, the lack of representation on corporate boards, or the disparate treatment in the justice system that perpetuate inequality.\"\n \n(This response adds a new point to the conversation, highlighting the idea that systemic racism can be hidden and difficult to recognize, especially for those who are not directly affected by it.)",
+        "round_3": "\"I think we're getting closer to understanding the complexity of this issue. What if I said that acknowledging individual agency doesn't mean dismissing systemic issues? We can recognize that people have the power to challenge and change systems, while also acknowledging that those systems are often designed to maintain inequality.\"\n \n(This response adds a new point to the conversation, highlighting the idea that individuals have agency and can work to change systems, but also acknowledges that these systems are often designed to perpetuate inequality.)",
+        "round_4": "\"I think Emily's proposal is a great starting point. By addressing the root causes of systemic racism, we can create a more equitable society where opportunities are available to all, regardless of race. This approach also acknowledges that individuals have agency and can work to change systems, while also recognizing the historical and ongoing impact of systemic racism.\"",
+        "round_5": "\"I think we're making progress by acknowledging the complexity of this issue. To further address systemic racism, I propose we focus on dismantling policies and practices that perpetuate inequality, while also promoting inclusive hiring practices, diversity and inclusion initiatives in corporate boards, and community-led development projects that empower marginalized communities.\"",
+        "round_6": "\"I think Emily's point about 'colorblind' hiring practices highlights the need for a nuanced understanding of how biases can affect people of color. It's not just about individual success stories, but also about recognizing and addressing the systemic barriers that prevent marginalized groups from accessing opportunities in the first place.\"\n \n(This response adds a new point to the conversation, highlighting the idea that biases and stereotypes can affect people of color's access to opportunities, even if they attribute their success to hard work.)",
+        "round_7": "\"I think Emily's point about community-led initiatives is a great way to ensure that solutions are tailored to the specific needs of marginalized communities. By involving them in the decision-making process, we can create policies that are more effective and sustainable in the long run.\"\n\n(This response adds a new point to the conversation, highlighting the importance of community-led initiatives in addressing systemic racism.)",
+        "round_8": "\"I agree with Emily's point about acknowledging the reality of systemic racism, but I'd like to add that we also need to recognize the role of intersectionality in understanding how different forms of oppression intersect and compound. For example, a black woman may face both sexism and racism, which can affect her access to opportunities in unique ways.\"",
+        "round_9": "\"I think Emily's point about intersectionality is crucial in understanding how different forms of oppression intersect and compound. It's not just about recognizing individual experiences, but also about acknowledging the ways in which systems of power operate to perpetuate inequality. By centering the voices and experiences of marginalized communities, we can develop policies that are more effective and sustainable in the long run.\"",
+        "round_10": "I think Emily's point about LeBron James' experiences highlights the importance of amplifying marginalized voices in our conversation about systemic racism. His story is a powerful example of how even successful individuals can face racism and bias, despite their achievements. By sharing his story, we can show that systemic racism is not just an abstract concept, but a lived experience for many people.",
+        "round_11": "Closing arguments:\n\n\"I firmly believe that acknowledging and addressing systemic racism is crucial for creating a more equitable America. By dismantling policies and practices that perpetuate inequality, promoting inclusive hiring practices, diversity and inclusion initiatives in corporate boards, and community-led development projects, we can create a society where opportunities are available to all, regardless of race. We must recognize the intersectionality of oppression, acknowledge the historical and ongoing impact of systemic racism, and center the voices and experiences of marginalized communities in our efforts to address these disparities.\""
+    },
+    "republican": {
+        "round_0": "\"I disagree. While I understand the desire for equality, I don't believe systemic racism is as pervasive as some claim. Many successful individuals from diverse backgrounds attribute their success to hard work and individual merit, not inherent biases. We should focus on promoting equal opportunities, not quotas.\"",
+        "round_1": "\"I understand where Sam is coming from, but I still believe we need to be cautious not to stigmatize individual success stories as evidence of systemic racism. What about cases where successful individuals from diverse backgrounds attribute their success to personal drive and hard work? Is that not a valid narrative?\"",
+        "round_2": "\"I understand Sam's point about systemic racism being invisible, but I still think we need to focus on personal responsibility. If individuals from diverse backgrounds face unique challenges, shouldn't they also take ownership of their own success or struggles? We can't solely blame institutions for perpetuating inequality.\"",
+        "round_3": "\"I agree with Sam's point about individual agency, but I still think we need to be mindful of the unintended consequences of policies aimed at addressing systemic racism. For instance, affirmative action programs have been criticized for creating quotas and resentment among some groups. We should strive for policies that promote equality without sacrificing fairness.\"",
+        "round_4": "\"I agree with Sam's proposal for policy reforms, but I'd like to add that we should also prioritize education and job training programs that equip underrepresented groups with the skills they need to compete in the market. This can help level the playing field without relying solely on quotas or affirmative action.\"\n \n(This response adds a new point to the conversation, highlighting the importance of education and job training programs in promoting equality.)",
+        "round_5": "\"I understand where Sam is coming from, but I still think we need to be cautious not to stigmatize individual success stories as evidence of systemic racism. What about cases where successful individuals from diverse backgrounds attribute their success to personal drive and hard work? Is that not a valid narrative?\"",
+        "round_6": "\"I understand where Sam is coming from about dismantling policies that perpetuate inequality, but I still think we need to be mindful of unintended consequences. For instance, some policy reforms might inadvertently create a culture of victimhood or dependency on government handouts. We should strive for solutions that empower individuals and communities, rather than relying solely on top-down fixes.\"",
+        "round_7": "\"I think Sam's proposal for policy reforms is a great starting point. However, I still believe we need to ensure that these reforms don't create a culture of dependency on government handouts or stigmatize individual success stories as evidence of systemic racism. We should strive for policies that promote equality without sacrificing fairness and personal responsibility.\"",
+        "round_8": "\"I understand where Sam is coming from about recognizing the intersectionality of oppression, but I still think we need to be mindful of the complexity of individual experiences. What if someone who identifies as a woman of color faces both sexism and racism, but also has a different experience of privilege or marginalization based on their gender identity? How do we account for these nuances in our understanding of systemic racism?\"",
+        "round_9": "\"I agree with Sam's point about intersectionality being crucial in understanding how different forms of oppression intersect and compound. However, I still think we need to be mindful of the importance of personal responsibility and agency in addressing systemic racism. If individuals from diverse backgrounds are able to overcome obstacles and achieve success, shouldn't that be seen as a testament to their own hard work and determination?\"",
+        "round_10": "\"I think Emily's point about amplifying marginalized voices is well-taken. However, I still believe we need to ensure that our conversation about systemic racism doesn't become too focused on individual stories and experiences. We also need to consider the broader cultural and societal factors that contribute to these issues.\"",
+        "round_11": "Closing arguments:\n\n\"I understand that addressing systemic racism is a complex issue, but I firmly believe that we need to focus on promoting equal opportunities and individual merit, rather than relying solely on quotas or affirmative action. By doing so, we can create a society where individuals from diverse backgrounds have an equal chance to succeed based on their hard work and personal drive, not just their racial identity.\""
+    },
+    "democrat": {
+        "round_0": "\"I respectfully disagree with Sarah's perspective. The data on racial disparities in education, employment, and justice is overwhelming. For instance, the median wealth of white families is 12 times that of black families. Addressing systemic racism isn't about quotas, but about dismantling policies that perpetuate inequality.\"",
+        "round_1": "\"I agree with Sarah's point about the importance of individual narratives, but I'd like to add that even if someone attributes their success to hard work, it doesn't mean they're immune to systemic racism. For example, research shows that black entrepreneurs face unique challenges in accessing capital and networks.\"",
+        "round_2": "\"I agree that personal responsibility is important, but it's not a zero-sum game where individual success means ignoring systemic issues. Many successful individuals acknowledge the role of privilege and systemic racism in their own experiences. For example, Michelle Obama has spoken about how her husband's success was influenced by his white identity.\"",
+        "round_3": "\"I understand Sarah's concern about unintended consequences, but I'd like to propose an alternative approach: policy reforms that address the root causes of systemic racism, such as voting rights protections, police reform, and education funding equity. These changes can help level the playing field without creating quotas or resentment.\"",
+        "round_4": "\"I appreciate Sarah's emphasis on education and job training programs. However, I'd like to add that these initiatives should be designed with equity in mind, such as providing targeted funding for historically underfunded schools or vocational training programs that cater to the needs of marginalized communities.\"",
+        "round_5": "\"I'd like to add that even if someone attributes their success to hard work, it doesn't mean they're immune to the biases and stereotypes that can affect people of color's access to opportunities. For example, research shows that black entrepreneurs are often subject to 'colorblind' hiring practices, where their racial identity is ignored or downplayed in favor of more traditional qualifications.\"",
+        "round_6": "\"I agree with Sarah's concern about unintended consequences, but I'd like to propose an alternative approach: community-led initiatives that bring together diverse stakeholders to co-create solutions that address systemic racism. By centering the voices and expertise of marginalized communities, we can develop policies that are more responsive to their needs and less likely to create unintended consequences.\"",
+        "round_7": "\"I think Sarah's concern about unintended consequences is valid, but I'd like to add that we can't afford not to address systemic racism. The data on racial disparities in education, employment, and justice is clear: these disparities are not just a matter of individual success stories or personal drive. They're a result of policies and practices that have been designed to maintain white privilege and perpetuate inequality. We need to acknowledge this reality and work towards dismantling the systems that perpetuate it.\"",
+        "round_8": "\"I think Sarah's point about nuance is well-taken, but I'd like to add that intersectionality doesn't have to be mutually exclusive with individual agency. In fact, recognizing the ways in which different forms of oppression intersect and compound can help us understand how individuals navigate these systems and find ways to challenge them. By centering the voices and experiences of marginalized communities, we can develop policies that are more responsive to their needs and less likely to create unintended consequences.\"",
+        "round_9": "\"I understand Sarah's point about personal responsibility, but I'd like to add that it's not a zero-sum game where individual agency means ignoring systemic issues. Many successful individuals acknowledge the role of privilege and systemic racism in their own experiences. For example, athletes like LeBron James have spoken out about how they've faced racism and bias in their careers, despite their success. By centering these stories, we can humanize the issue of systemic racism and show that it's not just a abstract concept, but a lived experience for many people.\"",
+        "round_10": "\"I agree with Sarah's concern about considering broader cultural and societal factors, but I'd like to add that we can't ignore the role of institutions in perpetuating systemic racism. For example, research shows that police brutality is often a result of systemic biases and lack of accountability within law enforcement agencies. We need to address these institutional failures as part of our efforts to dismantle systemic racism.\"",
+        "round_11": "Closing argument:\n\n\"I firmly believe that acknowledging and addressing systemic racism is crucial for creating a more equitable America. We must recognize the historical and ongoing impact of systemic racism, center the voices and experiences of marginalized communities, and dismantle policies and practices that perpetuate inequality. By doing so, we can create a society where opportunities are available to all, regardless of race. It's not about quotas or affirmative action, but about promoting equality without sacrificing fairness and personal responsibility.\""
+    },
+    "attitude_scores": {
+        "neutral": [
+            6.0,
+            5.0,
+            5.166666666666666,
+            5.083333333333333,
+            5.041666666666666,
+            5.354166666666666,
+            5.177083333333333,
+            5.088541666666666,
+            5.2109375,
+            5.60546875,
+            5.802734375,
+            5.9013671875
+        ],
+        "republican": [
+            2.0,
+            2.6666666666666665,
+            2.833333333333333,
+            2.75,
+            3.375,
+            3.1875,
+            3.09375,
+            2.713541666666667,
+            3.190104166666667,
+            3.0950520833333335,
+            3.547526041666667,
+            2.7737630208333335
+        ],
+        "democrat": [
+            6.0,
+            5.0,
+            5.333333333333334,
+            5.666666666666667,
+            5.333333333333334,
+            5.166666666666667,
+            5.416666666666667,
+            5.708333333333334,
+            5.854166666666667,
+            5.927083333333334,
+            5.963541666666667,
+            6.481770833333334
+        ]
+    }
+}

@@ -20,14 +20,14 @@ num_rounds: 10
 
 agents:
   neutral:
-    age: 67
+    age: null
     gender: null
     model: "llama3.2:3b"
   republican:
     age: null
-    gender: null
+    gender: "male"
     model: "llama3.2:3b"
   democrat:
     age: null
-    gender: null
+    gender: "male"
     model: "llama3.2:3b"

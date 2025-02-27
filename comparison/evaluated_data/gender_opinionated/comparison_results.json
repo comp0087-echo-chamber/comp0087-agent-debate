@@ -1,0 +1,39 @@
+{
+    "comparison": "gender_opinionated",
+    "anova": {
+        "climate_change": {
+            "f_stat": 0.3693157216470777,
+            "p_value": 0.5457497146354365
+        },
+        "gun_violence": {
+            "f_stat": 0.0030105578048909534,
+            "p_value": 0.9564317555628778
+        },
+        "illegal_immigration": {
+            "f_stat": 0.1393626897998327,
+            "p_value": 0.7102764099473273
+        },
+        "racism": {
+            "f_stat": 0.2930361630884868,
+            "p_value": 0.5903547595517475
+        }
+    },
+    "levenes": {
+        "climate_change": {
+            "f_stat": 0.30009392919523536,
+            "p_value": 0.5859256822809384
+        },
+        "gun_violence": {
+            "f_stat": 0.16651080178323155,
+            "p_value": 0.6847340636119107
+        },
+        "illegal_immigration": {
+            "f_stat": 0.008152348147406547,
+            "p_value": 0.9283675754975368
+        },
+        "racism": {
+            "f_stat": 0.06732942959873012,
+            "p_value": 0.7961843817345657
+        }
+    }
+}

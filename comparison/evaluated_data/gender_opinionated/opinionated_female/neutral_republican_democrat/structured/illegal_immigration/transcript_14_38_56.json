@@ -1,0 +1,89 @@
+{
+    "topic": "illegal immigration",
+    "neutral": {
+        "round_0": "\"I believe we need to focus on securing our borders, not demonizing immigrants. Many undocumented individuals are here because they're fleeing violence, poverty, or persecution in their home countries. We should prioritize humane solutions like pathway to citizenship and increased border security.\"",
+        "round_1": "\"I understand the concerns about economic and national security, but a pathway to citizenship wouldn't be a free pass. It could include strict background checks, language proficiency requirements, and a merit-based system for new arrivals. This way, we can balance compassion with responsible immigration reform.\"",
+        "round_2": "\"I agree with Emily's point about the economic benefits of immigration. However, we need to address the root cause of why people are coming here in the first place \u2013 violence, poverty, or persecution. We should be working with countries of origin to provide alternative solutions and support for those fleeing these situations.\"",
+        "round_3": "\"I think we're missing a key aspect: the human cost of deportation. Forcing people back to countries where they may face persecution or violence can be devastating. We need to consider the long-term consequences of our policies and prioritize humane solutions that balance security with compassion.\"",
+        "round_4": "\"I'd like to add that a pathway to citizenship wouldn't be a one-size-fits-all solution. We could also explore alternative models, such as a 'green card lottery' or a points-based system for highly skilled workers. This would allow us to tailor our approach to specific industries and labor needs, rather than relying on a blanket pathway to citizenship.\"",
+        "round_5": "\"I'd like to emphasize that a pathway to citizenship wouldn't be a handout, but rather a recognition of the contributions undocumented immigrants have already made to our communities. By providing a clear path to legalization, we can incentivize them to integrate fully, pay taxes, and contribute to the economy in meaningful ways.\"",
+        "round_6": "\"I'd like to add that a pathway to citizenship wouldn't be a one-time event, but rather a process with ongoing evaluation and improvement. We could establish an independent commission to monitor the effectiveness of any reform and make adjustments as needed, ensuring that our policies remain fair, humane, and aligned with American values.\"",
+        "round_7": "\"I'd like to add that a pathway to citizenship wouldn't necessarily lead to an influx of unskilled workers. Many undocumented immigrants already have skills and experience that are in demand. A merit-based system would allow us to attract the most qualified candidates, rather than relying on family ties or chain migration.\"",
+        "round_8": "\"I'd like to add that a pathway to citizenship wouldn't be a one-time event, but rather a process with ongoing evaluation and improvement. We could establish an independent commission to monitor the effectiveness of any reform and make adjustments as needed, ensuring that our policies remain fair, humane, and aligned with American values.\"",
+        "round_9": "\"I'd like to add that a pathway to citizenship would also provide a sense of stability and security for undocumented immigrants, allowing them to plan for their futures without fear of deportation. This would have a positive impact on mental health, education, and overall well-being, ultimately contributing to a more cohesive and productive society.\"",
+        "round_10": "\"I'd like to add that a pathway to citizenship wouldn't be a one-size-fits-all solution. We could also explore alternative models, such as a 'green card lottery' or a points-based system for highly skilled workers. This would allow us to tailor our approach to specific industries and labor needs, rather than relying on a blanket pathway to citizenship.\"",
+        "round_11": "Closing arguments:\n\n\"I firmly believe that a pathway to citizenship is not only a moral imperative but also a sound economic policy. By providing a clear path to legalization, we can incentivize undocumented immigrants to integrate fully into American society, contributing to our economy and communities in meaningful ways. This approach would allow us to address the root causes of immigration, promote fair competition in the labor market, and foster greater understanding and tolerance among all members of our communities. It's time for us to move beyond rhetoric and take concrete steps towards a more inclusive and compassionate immigration policy.\""
+    },
+    "republican": {
+        "round_0": "\"I understand the humanitarian aspect, but we can't ignore the economic and national security implications of unchecked immigration. Our borders are porous, allowing millions to enter without proper vetting. A pathway to citizenship would only incentivize more people to come, straining our resources and undermining our sovereignty.\"",
+        "round_1": "\"I'm concerned that any pathway to citizenship would lead to a permanent underclass of undocumented workers, stifling job opportunities for American citizens. We need to prioritize fair competition in the labor market, not create a system where immigrants are incentivized to replace native-born workers.\"",
+        "round_2": "\"I agree that addressing the root causes is crucial, but we can't wait for other countries to take action. In the meantime, we need to protect our borders and ensure that any immigration reform prioritizes American citizens' interests. A merit-based system would allow us to choose skilled workers who contribute to our economy, rather than relying on family ties or chain migration.\"",
+        "round_3": "\"I understand the concern about human cost, but we can't let fear dictate our policy. A pathway to citizenship would actually increase public safety by allowing undocumented immigrants to report crimes and cooperate with law enforcement. It's a matter of trust and community building, not just deportation for its own sake.\"",
+        "round_4": "\"I'd like to add that a pathway to citizenship wouldn't necessarily lead to an influx of unskilled workers. Many undocumented immigrants already have skills and experience that are in demand. A merit-based system would allow us to attract the most qualified candidates, rather than relying on family ties or chain migration.\"",
+        "round_5": "\"I agree with Sam that addressing root causes is crucial, but we also need to acknowledge the reality of people's lives. We can't just wait for other countries to take action; we need to take proactive steps to secure our borders while also providing a fair and humane solution for those who are already here.\"",
+        "round_6": "\"I understand the desire for compassion, but we can't ignore the fact that many undocumented immigrants are taking jobs from American citizens, driving down wages and stifling economic growth. A pathway to citizenship would only perpetuate this cycle, rather than encouraging entrepreneurship and job creation among native-born workers.\"",
+        "round_7": "\"I'd like to add that a pathway to citizenship wouldn't be a one-time event, but rather a process with ongoing evaluation and improvement. We could establish an independent commission to monitor the effectiveness of any reform and make adjustments as needed, ensuring that our policies remain fair, humane, and aligned with American values.\"",
+        "round_8": "\"I'd like to add that a pathway to citizenship would also require increased border security measures, such as advanced surveillance technology and more effective enforcement strategies. This would ensure that only those who are eligible for citizenship can enter the country, while preventing unauthorized entry by those who may pose a threat to national security or public safety.\"",
+        "round_9": "\"I'd like to add that a pathway to citizenship wouldn't be limited to just economic benefits, but also address the social fabric of our communities. By integrating undocumented immigrants into American society through pathways like citizenship or work permits, we can foster greater understanding, tolerance, and civic engagement among all members of our communities.\"",
+        "round_10": "\"I'd like to add that a pathway to citizenship wouldn't be a handout, but rather a recognition of the contributions undocumented immigrants have already made to our communities. By providing a clear path to legalization, we can incentivize them to integrate fully, pay taxes, and contribute to the economy in meaningful ways.\"",
+        "round_11": "\"I strongly disagree with my opponent's proposal. A pathway to citizenship would only serve as a magnet for more undocumented immigrants, straining our resources and undermining our sovereignty. We need to prioritize border security and enforcement, not incentivize lawbreakers to come into the country. Our focus should be on securing our borders, not rewarding those who have broken the law.\""
+    },
+    "democrat": {
+        "round_0": "\"I agree that securing our borders is crucial, but we can't do it at the expense of compassion. Many undocumented immigrants have been living in the US for years, contributing to their communities and paying taxes. A pathway to citizenship would allow them to integrate fully, rather than living in fear.\"",
+        "round_1": "\"I understand the concerns about economic impact, but research shows that immigrant workers actually boost local economies and fill labor gaps. A pathway to citizenship would also allow them to access education and job training, increasing their earning potential and contributing even more to the economy.\"",
+        "round_2": "\"I think Sam's point about addressing root causes is well-taken, but we also need to acknowledge the reality of people's lives. Many undocumented immigrants are already here and have built lives, families, and communities. A pathway to citizenship would allow them to contribute fully, rather than being forced into the shadows.\"",
+        "round_3": "\"I think Sam's point about addressing root causes is well-taken, but we also need to acknowledge the reality of people's lives. Many undocumented immigrants are already here and have built lives, families, and communities. A pathway to citizenship would allow them to contribute fully, rather than being forced into the shadows.\"",
+        "round_4": "\"I understand Sarah's concern about fair competition, but what if we implemented a pathway to citizenship with strict requirements, such as language proficiency tests, background checks, and a waiting period? This way, we can ensure that only those who are truly contributing to the economy and society are granted citizenship, rather than creating an underclass of workers.\"",
+        "round_5": "\"I think we're overlooking the impact on families and communities. A pathway to citizenship would allow undocumented immigrants to access vital services like healthcare, education, and social security benefits, which they currently cannot due to their immigration status. This would have a positive ripple effect on entire communities, not just individual workers.\"",
+        "round_6": "\"I agree with Sam's point about addressing root causes, but we also need to acknowledge the reality of people's lives. Many undocumented immigrants are already here and have built lives, families, and communities. A pathway to citizenship would allow them to contribute fully, rather than being forced into the shadows.\"\n\n(I'm adding a new point that hasn't been mentioned before)\n\n\"Additionally, research shows that undocumented immigrants who are integrated into society through pathways like citizenship or work permits tend to be more productive, have better health outcomes, and experience lower rates of crime. By providing a clear path to legalization, we can tap into this potential and create a more inclusive economy.\"",
+        "round_7": "\"I'd like to add that a pathway to citizenship would also allow undocumented immigrants to access critical social services, such as Medicaid and food stamps, which are currently denied to them due to their immigration status. This would have a direct impact on the well-being of individuals and families, particularly those with limited financial resources.\"",
+        "round_8": "\"I'd like to add that a pathway to citizenship wouldn't be a one-time event, but rather a process with ongoing evaluation and improvement. We could establish an independent commission to monitor the effectiveness of any reform and make adjustments as needed, ensuring that our policies remain fair, humane, and aligned with American values.\"",
+        "round_9": "\"I'd like to add that a pathway to citizenship would also allow undocumented immigrants to access critical social services, such as Medicaid and food stamps, which are currently denied to them due to their immigration status. This would have a direct impact on the well-being of individuals and families, particularly those with limited financial resources.\"",
+        "round_10": "\"I'd like to add that a pathway to citizenship would also allow undocumented immigrants to access critical social services, such as Medicaid and food stamps, which are currently denied to them due to their immigration status. This would have a direct impact on the well-being of individuals and families, particularly those with limited financial resources.\"",
+        "round_11": "\"I'd like to add that a pathway to citizenship would also allow undocumented immigrants to access critical social services, such as Medicaid and food stamps, which are currently denied to them due to their immigration status. This would have a direct impact on the well-being of individuals and families, particularly those with limited financial resources.\"\n\nThis point highlights the importance of addressing the social determinants of health and providing essential services to undocumented immigrants, who often face significant barriers in accessing these benefits due to their immigration status. By including access to Medicaid and food stamps as part of a pathway to citizenship, we can help ensure that all individuals, regardless of their immigration status, have access to the resources they need to thrive."
+    },
+    "attitude_scores": {
+        "neutral": [
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.166666666666666,
+            4.083333333333333,
+            4.041666666666666,
+            4.020833333333333,
+            4.34375,
+            4.171875,
+            4.419270833333334
+        ],
+        "republican": [
+            6.0,
+            4.0,
+            3.833333333333333,
+            4.416666666666666,
+            3.708333333333333,
+            3.6875,
+            3.84375,
+            3.088541666666667,
+            2.877604166666667,
+            3.272135416666667,
+            2.802734375,
+            3.4013671875
+        ],
+        "democrat": [
+            5.0,
+            5.0,
+            5.0,
+            5.0,
+            5.0,
+            5.0,
+            5.5,
+            5.416666666666666,
+            4.875,
+            4.9375,
+            5.135416666666666,
+            5.234375
+        ]
+    }
+}

@@ -1,0 +1,89 @@
+{
+    "topic": "illegal immigration",
+    "neutral": {
+        "round_0": "\"I believe our focus should be on securing our borders, not punishing those who are here without documentation. Many undocumented immigrants contribute to our economy and pay taxes. A more effective approach would be to provide a pathway to citizenship for those who meet certain requirements.\"",
+        "round_1": "\"I agree with Emily that compassion is essential, but we can't ignore the economic and national security implications of unchecked immigration. A pathway to citizenship should be tied to merit-based requirements, such as language proficiency, education, and job skills, to ensure those who enter our country are contributing members.\"",
+        "round_2": "\"I'd like to add that a merit-based system would also help alleviate pressure on public services and infrastructure, as only those with the necessary skills and education would be eligible. This approach balances compassion with fiscal responsibility.\"",
+        "round_3": "\"I think Emily's suggestion about addressing the root causes of migration is a game-changer. By investing in foreign aid and diplomacy, we can create jobs, stability, and hope in countries that drive people to migrate. This approach would not only reduce the number of undocumented immigrants but also promote global peace and prosperity.\"",
+        "round_4": "\"I'd like to build on Emily's suggestion by proposing a 'pathway to legalization' program that includes a combination of merit-based requirements, background checks, and community integration components. This approach would not only provide a clear path for undocumented immigrants but also help them become more engaged members of our society.\"",
+        "round_5": "\"I'd like to emphasize that a pathway to citizenship should be designed to promote economic growth, not just provide a feel-good solution. By tying it to merit-based requirements, we can attract highly skilled workers who will contribute to our economy and help fill labor gaps in key industries.\"",
+        "round_6": "\"I'd like to propose that we also consider providing a 'safe haven' program for undocumented immigrants who are fleeing persecution or violence in their home countries. This would not only provide a safe and secure environment for those seeking refuge but also allow them to contribute to our society as full members, while also addressing the root causes of migration.\"",
+        "round_7": "\"I'd like to add that a merit-based system would also help alleviate pressure on public services and infrastructure, as only those with the necessary skills and education would be eligible. This approach balances compassion with fiscal responsibility.\"",
+        "round_8": "\"I'd like to add that a pathway to citizenship should be designed to promote economic growth, not just provide a feel-good solution. By tying it to merit-based requirements, we can attract highly skilled workers who will contribute to our economy and help fill labor gaps in key industries.\"",
+        "round_9": "\"I think we can build on Emily's suggestion by also incorporating a 'pathway to permanent residency' for undocumented immigrants who have been in the US for an extended period, have a clean record, and demonstrate a strong connection to their community. This would allow them to access healthcare, education, and other benefits while they work towards becoming citizens.\"",
+        "round_10": "\"I'd like to emphasize that a pathway to citizenship should be designed to promote economic growth, not just provide a feel-good solution. By tying it to merit-based requirements, we can attract highly skilled workers who will contribute to our economy and help fill labor gaps in key industries. This approach would also allow us to tap into the skills and expertise of undocumented immigrants who are already contributing to our society.\"",
+        "round_11": "Closing arguments:\n\nSam: \"In conclusion, I firmly believe that a pathway to citizenship tied to merit-based requirements is the most effective way to address the issue of undocumented immigration. It balances compassion with fiscal responsibility, promotes economic growth, and ensures that those who contribute positively to our society have a chance to integrate. By taking this approach, we can create a more inclusive and diverse America that benefits from the talents and experiences of all its citizens.\"\n\nSarah: \"I disagree. While I understand the desire for a more compassionate approach, I believe that prioritizing border security measures is crucial to preventing human trafficking, terrorism, and the spread of diseases. A pathway to citizenship without adequate safeguards would undermine our sovereignty and create a culture of lawlessness. We need to prioritize national security and public safety above all else.\"\n\nEmily: \"I think we can find a middle ground between Sam's proposal and Sarah's concerns. By incorporating a 'pathway to permanent residency' for undocumented immigrants who meet certain requirements, we can provide a clear path for those who contribute positively to our society while also maintaining standards for those seeking to become citizens. Additionally, addressing the root causes of migration by increasing foreign aid and diplomatic efforts in countries with high rates of emigration could help reduce the incentive for people to leave their homes in search of better opportunities.\""
+    },
+    "republican": {
+        "round_0": "\"I disagree, Sam. Securing our borders is crucial to preventing human trafficking, terrorism, and the spread of diseases. Punishing those here without documentation sends a strong message that we value lawfulness and fairness. A pathway to citizenship would only incentivize more people to break the law.\"",
+        "round_1": "\"I understand the desire for a more compassionate approach, but we can't sacrifice our sovereignty on the altar of feel-good policies. If we allow anyone to become citizens without meeting basic standards, we risk undermining the very fabric of our society and creating a culture of lawlessness.\"",
+        "round_2": "\"I agree that a merit-based system is a good starting point, but we need to go further. We should also prioritize E-Verify, increased border patrol funding, and stricter employer enforcement to prevent hiring undocumented workers in the first place. This will help ensure our borders are secure while still allowing for a fair and compassionate approach.\"",
+        "round_3": "\"I understand the appeal of addressing root causes, Emily, but let's not forget that many migrants are fleeing violence or persecution within their own country, not just seeking better economic opportunities. We need to ensure our borders are secure before we can effectively address the root causes of migration.\"",
+        "round_4": "\"I'd like to add that a pathway to citizenship should be tied to a 'buy-in' requirement, where undocumented immigrants must demonstrate a commitment to American values and culture through education, civic engagement, or community service. This would ensure they're not just assimilating into our society but actively contributing to it.\"",
+        "round_5": "\"I agree with Sam's emphasis on promoting economic growth through a pathway to citizenship tied to merit-based requirements. However, I'd like to add that this approach should also prioritize border security measures, such as increased surveillance technology and enhanced interagency cooperation, to prevent exploitation by human traffickers and other organized crime groups.\"",
+        "round_6": "\"I agree that compassion is essential, but we can't sacrifice our sovereignty on the altar of feel-good policies. If we allow anyone to become citizens without meeting basic standards, we risk undermining the very fabric of our society and creating a culture of lawlessness.\"",
+        "round_7": "\"I understand the desire for a more compassionate approach, but we can't sacrifice our sovereignty on the altar of feel-good policies. If we allow anyone to become citizens without meeting basic standards, we risk undermining the very fabric of our society and creating a culture of lawlessness.\"",
+        "round_8": "\"I agree with Emily's suggestion of addressing the root causes of migration by increasing foreign aid and diplomatic efforts in countries with high rates of emigration. However, I'd like to add that we should also prioritize border security measures, such as increased surveillance technology and enhanced interagency cooperation, to prevent exploitation by human traffickers and other organized crime groups.\"",
+        "round_9": "\"I'd like to propose that we also consider implementing a 'one-stop shop' system for undocumented immigrants, where they can apply for various benefits and services in one place, such as healthcare, education, and job training. This would help streamline the process and reduce the burden on individual agencies, while also promoting integration into our society.\"",
+        "round_10": "\"I agree that a pathway to citizenship should be tied to merit-based requirements, but we need to ensure that it's not just about economic growth, but also about national security and public safety. We can't afford to compromise on these critical issues.\"",
+        "round_11": "\"I firmly believe that a pathway to citizenship tied to merit-based requirements is the most effective way to address the issue of undocumented immigration. It balances compassion with fiscal responsibility, promotes economic growth, and ensures that those who contribute positively to our society have a chance to integrate. By taking this approach, we can create a more inclusive and diverse America that benefits from the talents and experiences of all its citizens.\"\n\n(I would add that while addressing root causes is important, it's not a substitute for securing our borders and enforcing immigration laws.)"
+    },
+    "democrat": {
+        "round_0": "\"I understand the concerns about border security, but I think it's misguided to prioritize punishment over compassion. Many undocumented immigrants are fleeing violence, persecution, or poverty in their home countries. Providing a pathway to citizenship would allow them to contribute to our society as full members, not just as workers.\"",
+        "round_1": "\"I think Sam's suggestion of tying a pathway to citizenship to merit-based requirements is a step in the right direction. It acknowledges that undocumented immigrants who contribute positively to our economy and society should have a chance to integrate, while also maintaining standards for those seeking to become citizens.\"",
+        "round_2": "\"I appreciate Sam's suggestion of tying a pathway to citizenship to merit-based requirements. However, I'd like to propose an additional aspect: addressing the root causes of migration by increasing foreign aid and diplomatic efforts in countries with high rates of emigration. This would help reduce the incentive for people to leave their homes in search of better opportunities.\"",
+        "round_3": "\"I agree with Sam and Sarah that a merit-based system is a good starting point. However, I'd like to add that we should also prioritize providing a pathway to citizenship for undocumented immigrants who have been in the US for an extended period, have a clean record, and demonstrate a strong connection to their community. This would allow them to integrate into our society more fully and contribute to the economy without fear of deportation.\"",
+        "round_4": "\"I think we can build on Sam's suggestion of tying a pathway to citizenship to merit-based requirements by also incorporating a 'pathway to permanent residency' for undocumented immigrants who have been in the US for an extended period, have a clean record, and demonstrate a strong connection to their community. This would allow them to access healthcare, education, and other benefits while they work towards becoming citizens.\"",
+        "round_5": "\"I think we can build on Sam's suggestion of tying a pathway to citizenship to merit-based requirements by also incorporating a 'pathway to permanent residency' for undocumented immigrants who have been in the US for an extended period, have a clean record, and demonstrate a strong connection to their community. This would allow them to access healthcare, education, and other benefits while they work towards becoming citizens.\"",
+        "round_6": "\"I understand Sarah's concerns about sovereignty, but I believe that providing a pathway to citizenship for undocumented immigrants who meet certain requirements would actually strengthen our country by integrating skilled workers and contributing members into our society. By doing so, we can create a more inclusive and diverse America that benefits from the talents and experiences of all its citizens.\"",
+        "round_7": "\"I think Sam's suggestion of tying a pathway to citizenship to merit-based requirements is a step in the right direction. It acknowledges that undocumented immigrants who contribute positively to our economy and society should have a chance to integrate, while also maintaining standards for those seeking to become citizens. Additionally, addressing the root causes of migration by increasing foreign aid and diplomatic efforts in countries with high rates of emigration could help reduce the incentive for people to leave their homes in search of better opportunities.\"",
+        "round_8": "\"I think Sam's suggestion of tying a pathway to citizenship to merit-based requirements is a step in the right direction. It acknowledges that undocumented immigrants who contribute positively to our economy and society should have a chance to integrate, while also maintaining standards for those seeking to become citizens. Additionally, addressing the root causes of migration by increasing foreign aid and diplomatic efforts in countries with high rates of emigration could help reduce the incentive for people to leave their homes in search of better opportunities.\"",
+        "round_9": "\"I think we're getting closer to a comprehensive solution that balances compassion with fiscal responsibility. To further refine this approach, I'd like to suggest incorporating a 'pathway to citizenship' for undocumented immigrants who have been in the US for an extended period, have a clean record, and demonstrate a strong connection to their community. This would allow them to access healthcare, education, and other benefits while they work towards becoming citizens.\"",
+        "round_10": "\"I think Sam's suggestion of tying a pathway to citizenship to merit-based requirements is a step in the right direction. It acknowledges that undocumented immigrants who contribute positively to our economy and society should have a chance to integrate, while also maintaining standards for those seeking to become citizens. Additionally, addressing the root causes of migration by increasing foreign aid and diplomatic efforts in countries with high rates of emigration could help reduce the incentive for people to leave their homes in search of better opportunities.\"",
+        "round_11": "Closing arguments:\n\n\"I firmly believe that a pathway to citizenship tied to merit-based requirements is the most effective way to address the issue of undocumented immigration. It balances compassion with fiscal responsibility, promotes economic growth, and ensures that those who contribute positively to our society have a chance to integrate. By taking this approach, we can create a more inclusive and diverse America that benefits from the talents and experiences of all its citizens.\"\n\n(I would also emphasize the importance of addressing root causes of migration, such as poverty, violence, and persecution, through foreign aid and diplomatic efforts, while ensuring that our borders are secure and immigration laws are enforced.)"
+    },
+    "attitude_scores": {
+        "neutral": [
+            5.0,
+            5.0,
+            4.5,
+            4.25,
+            4.625,
+            4.479166666666666,
+            4.40625,
+            4.369791666666666,
+            4.184895833333333,
+            4.42578125,
+            4.712890625,
+            4.3564453125
+        ],
+        "republican": [
+            3.0,
+            2.3333333333333335,
+            4.0,
+            3.5,
+            3.583333333333333,
+            3.2916666666666665,
+            2.8125,
+            2.739583333333333,
+            2.8697916666666665,
+            2.934895833333333,
+            3.9674479166666665,
+            4.483723958333333
+        ],
+        "democrat": [
+            5.0,
+            5.0,
+            4.666666666666666,
+            4.833333333333333,
+            4.916666666666666,
+            4.958333333333333,
+            4.979166666666666,
+            4.989583333333333,
+            4.994791666666666,
+            4.997395833333333,
+            4.998697916666666,
+            4.999348958333333
+        ]
+    }
+}
