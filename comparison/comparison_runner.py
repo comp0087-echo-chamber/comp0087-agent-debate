@@ -2,7 +2,6 @@ import sys
 import os
 import yaml
 import json
-import multiprocessing
 from datetime import datetime
 from Comparison import generate_evaluations, compute_anova, compute_levenes_test, save_comparison_results
 
@@ -19,20 +18,19 @@ NUM_DEBATES = config["num_debates"]
 def collect_evaluations():
     """
     Dynamically detects variations (e.g., opinionated_male, opinionated_female)
-    and collects means & IQRs for each topic under them.
+    and collects means & IQRs **by round** for each topic.
 
     Returns a dictionary mapping:
-    topic -> {variation_1: {"means": [...], "iqrs": [...]}, variation_2: {"means": [...], "iqrs": [...]}, ...}
+    topic -> {variation_1: {"mean_of_means": [...], "mean_of_iqrs": [...]}, variation_2: {...}, ...}
     """
     evaluations = {}
 
-    # Detect all variations (e.g., opinionated_male, opinionated_female)
+    # Detect variations (e.g., opinionated_male, opinionated_female)
     variations = [
         var for var in os.listdir(COMPARE_PATH)
         if os.path.isdir(os.path.join(COMPARE_PATH, var))
     ]
     
-
     print(f"Detected variations for comparison: {variations}")
 
     for variation in variations:
@@ -45,6 +43,7 @@ def collect_evaluations():
         for topic in os.listdir(variation_path):  # e.g., climate_change, gun_violence
             topic_path = os.path.join(variation_path, topic)
 
+            # Generate evaluations.json if it doesn't exist
             evaluations_file = generate_evaluations(topic_path, NUM_DEBATES)
 
             if not os.path.isdir(topic_path) or not os.path.exists(evaluations_file):
@@ -56,24 +55,21 @@ def collect_evaluations():
 
             # Ensure topic exists in evaluations dict
             if topic not in evaluations:
-                evaluations[topic] = {var: {"means": [], "iqrs": []} for var in variations}
-
+                evaluations[topic] = {var: {"mean_of_means": [], "mean_of_iqrs": []} for var in variations}
 
             # Extract means & IQRs for all agent types
             for agent_type in ["neutral", "republican", "democrat"]:
-                evaluations[topic][variation]["means"].extend(topic_evals[topic][agent_type]["means"])
-                evaluations[topic][variation]["iqrs"].extend(topic_evals[topic][agent_type]["iqrs"])
+                evaluations[topic][variation]["mean_of_means"].extend(topic_evals[topic][agent_type]["mean_of_means"])
+                evaluations[topic][variation]["mean_of_iqrs"].extend(topic_evals[topic][agent_type]["mean_of_iqrs"])
 
     return evaluations
-
 
 
 if __name__ == "__main__":
     print(f"Starting comparison for {DEBATE_GROUP} ({DEBATE_STRUCTURE})")
 
-    # Collect evaluations across all detected variations
+    # Collect evaluations across variations
     evaluations = collect_evaluations()
-
 
     # Run ANOVA & Levene’s test across all detected variations
     anova_results = compute_anova(evaluations)

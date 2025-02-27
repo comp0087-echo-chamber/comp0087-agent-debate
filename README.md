@@ -54,10 +54,17 @@ python3 evaluation/evaluation_runner.py
 
 ## Running the comparison
 
-Once you have computed the evaluation on a set of debates changing the age, gender, model type etc - you now should compare them to determine if there is a statistically significant difference between the results.
+Once you have computed the evaluation on a set of debates while changing age, gender, model type, etc, you should now compare them to determine if there is a statistically significant difference between the results.
 
-To do this use the comparison feature. 
-WE will take gender of the opinionated agents as an example.
+The comparison feature allows you to analyze whether different factors (e.g., gender, age) impact the debate outcomes using ANOVA and Levene’s test.
+
+ANOVA tests whether the mean attitude scores differ significantly between group, while Levenes tests whether there is significantly different spread in results (1 group more volatile than the other)
+
+In both cases, we look for p < 0.05 to for a statistically significant result.
+
+To perform the compariso, we use the comparison directory
+
+We take gender of the opinionated agents as an example.
 1) Run all evaluations and set them aside - ensure that the eval_data transcripts for male and female are separate
 2) In comparison/evaluated_data create a new directory. In this case we call it gender_opinionated
 3) Create separate directories for however many categories you wish to compare. In our case, we create opinionated_female and opinionated_male
