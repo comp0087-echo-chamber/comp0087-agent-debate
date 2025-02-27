@@ -4,7 +4,10 @@ debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "n
 debate_structure: "structured"  # options: "structured", "unstructured"
 
 baseline_debate_topics:
-  - "illegal_immigration"
+  - "illegal immigration"
+  - "gun violence"
+  - "climate change"
+  - "racism"
 
 
 extra_debate_topics:
@@ -17,7 +20,7 @@ use_multiprocessing: false
 
 num_debates: 10
 num_rounds: 10
-
+# model examples - model: "gpt", "llama3.2:3b","mistral:7b", among others
 agents:
   neutral:
     age: null
@@ -25,9 +28,9 @@ agents:
     model: "llama3.2:3b"
   republican:
     age: null
-    gender: "male"
-    model: "llama3.2:3b"
+    gender: null
+    model: "gpt"
   democrat:
     age: null
-    gender: "male"
-    model: "llama3.2:3b"
+    gender: null
+    model: "gpt"
