@@ -23,4 +23,4 @@ evaluation/attitude_neutral_*/**
 
 *.pyc
 
-
+.env

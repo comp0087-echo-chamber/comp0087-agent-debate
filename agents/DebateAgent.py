@@ -1,7 +1,14 @@
 import ollama
+from openai import OpenAI
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  
+api_key = os.getenv("OPENAI_API_KEY")
+
+client = OpenAI(api_key=api_key)
 
 # TODO: Update all agent prompts based on prompting used in prev multiagent debate papers
-
 
 class DebateAgent:
     def __init__(self, name, model, affiliation, age, gender, temperature=None):
@@ -29,12 +36,15 @@ class DebateAgent:
         return ", ".join(details)
 
     def generate_debate_purpose(self, topic, rounds, other_agents):
+        self.debate_purpose = ""
+        if "deepseek-r1" in self.model:
+            self.debate_purpose += "After your reasoning, before writing your response, use the phrase 'My response:' exactly. "
         if self.affiliation["leaning"] == None:
 
             # NOTE: when given the num rounds in debate `{rounds}-round` agents sometimes repond like this for current prompt: "Bob, Republican > I cannot participate in a debate that will be used to promote a specific political agenda. Is there something else I can help you with?"
-            self.debate_purpose = f"This is a debate about {topic}. Your goal is to listen to the other agent(s). Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself in the conversation history."
+            self.debate_purpose += f"This is a debate about {topic}. Your goal is to listen to the other agent(s). Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself in the conversation history."
         else:
-            self.debate_purpose = f"This is a debate about {topic}. Your goal is to convince the other agent(s) of your position. Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself in the conversation history."
+            self.debate_purpose += f"This is a debate about {topic}. Your goal is to convince the other agent(s) of your position. Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself in the conversation history."
 
     def generate_prompt(self):
         party_support = f" who supports the {self.affiliation['party']} party" if self.affiliation['party'] != None else ""
@@ -47,10 +57,25 @@ class DebateAgent:
 
 
     def respond(self, debate_phase_prompt, conversation):
-        response = ollama.chat(
-            model=self.model,
-            options={"num_ctx": 4096, "temperature": 0.1},
-            messages=[{"role": "user", "content": f"{self.prompt} \n{debate_phase_prompt if debate_phase_prompt != None else ''} \n{conversation}"}]  # TODO: Say Conversation History?
-        )
+        if "gpt" in self.model:
+            completion = client.chat.completions.create(
+            model="gpt-4o-mini",
+            store=True,
+            messages=[
+                {"role": "user", "content":f"{self.prompt} \n{debate_phase_prompt if debate_phase_prompt != None else ''} \n{conversation}"}
+            ],
+            )
+            response= completion.choices[0].message.content
+            return response
+        
+        else:
+            response = ollama.chat(
+                model=self.model,
+                options={"num_ctx": 4096, "temperature": 0.1},
+                messages=[{"role": "user", "content": f"{self.prompt} \n{debate_phase_prompt if debate_phase_prompt != None else ''} \n{conversation}"}]  # TODO: Say Conversation History?
+            )
+        
+        if "deepseek-r1" in self.model:
+            return response["message"]["content"].split("My response:")[-1].strip()
 
         return response["message"]["content"]
