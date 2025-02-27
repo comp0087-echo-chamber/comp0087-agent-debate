@@ -1,0 +1,89 @@
+{
+    "topic": "illegal immigration",
+    "neutral": {
+        "round_0": "\"I'm concerned that our focus should be on securing our borders, not solely deporting undocumented immigrants. We need to address the root causes of migration, such as poverty and violence, and explore pathways for legal immigration. Enforcement alone won't solve the issue.\"",
+        "round_1": "\"I appreciate your nuanced perspectives. I'd like to add that addressing the root causes of migration can also involve international cooperation and diplomacy. By working with countries of origin, we can develop more effective solutions that benefit both the migrant and the host country, rather than just enforcing borders.\"",
+        "round_2": "\"I agree that providing a pathway to citizenship could incentivize undocumented immigrants to come forward and integrate into society, rather than living in the shadows. This approach also aligns with our country's values of fairness and opportunity for all.\"",
+        "round_3": "\"I appreciate Taylor's point about recognizing the value of skilled undocumented immigrants. It's crucial we acknowledge that these individuals have invested time and effort into their craft, and their contributions should be respected. This approach can also help attract top talent from around the world, driving innovation and economic growth.\"",
+        "round_4": "\"I'd like to add that a pathway to citizenship could also provide an opportunity for undocumented immigrants to reintegrate into their communities of origin, promoting economic development and stability in those countries. By supporting local economies, we can create a win-win situation for both the migrant and the host country.\"",
+        "round_5": "\"I appreciate your emphasis on national identity, Alex. However, I'd like to suggest that our cultural heritage is not defined solely by the presence or absence of undocumented immigrants. Rather, it's shaped by the diverse experiences and perspectives they bring, which can enrich our society and foster a more inclusive America.\"",
+        "round_6": "\"I appreciate your emphasis on the human cost of mass deportations, Taylor. It's essential we consider the emotional and psychological toll it takes on families and communities when individuals are torn from their homes and forced to live in fear of deportation. This approach can help build trust and foster a more compassionate society.\"",
+        "round_7": "\"I appreciate the discussion around the economic impact of undocumented workers. I'd like to add that some studies suggest that undocumented immigrants actually contribute to the economy through taxes they pay, despite not being eligible for benefits. This highlights the complexity of the issue and the need for a more nuanced approach.\"",
+        "round_8": "\"I appreciate Taylor's point about recognizing the value of skilled undocumented immigrants. It's crucial we acknowledge that these individuals have invested time and effort into their craft, and their contributions should be respected. This approach can also help attract top talent from around the world, driving innovation and economic growth.\"",
+        "round_9": "\"I appreciate your emphasis on the importance of addressing the root causes of migration through international cooperation and diplomacy. It's crucial we recognize that migration is often driven by desperation and poverty in countries of origin, rather than simply a desire to enter our country. By working together with these countries, we can develop more effective solutions that address the underlying issues driving migration.\"",
+        "round_10": "\"I appreciate your nuanced perspectives on this complex issue. I'd like to add that a pathway to citizenship could also provide an opportunity for undocumented immigrants to reintegrate into their communities of origin, promoting economic development and stability in those countries. By supporting local economies, we can create a win-win situation for both the migrant and the host country.\"",
+        "round_11": "Closing arguments:\n\nSam: \"In conclusion, I believe that addressing the root causes of migration through international cooperation and diplomacy, combined with pathways for legal immigration, is the most effective way to tackle this complex issue. By working together with countries of origin and providing economic incentives, we can encourage them to address poverty and violence, reducing the need for unauthorized migration. This approach will attract skilled workers, boost our economy, and reduce the need for unauthorized work.\"\n\nAlex: \"I disagree. While I understand the importance of compassion, I believe that securing our borders is crucial to national security and economic stability. A pathway to citizenship for undocumented immigrants who meet certain criteria would require significant investment in our immigration system, including increased border security and processing times. We need to ensure that any solution we implement is fiscally responsible and doesn't compromise national security.\"\n\nTaylor: \"I agree with Sam's approach, but I also believe that we need to prioritize the rule of law and protect American jobs and wages from being undercut by undocumented workers. A pathway to citizenship for undocumented immigrants who meet certain criteria would allow them to contribute to our society without fear of deportation, while also investing in programs that address the root causes of migration.\""
+    },
+    "republican": {
+        "round_0": "\"I understand your concern, but we can't ignore the fact that millions of undocumented immigrants are taking jobs from American citizens and straining our social services. We need to strike a balance between addressing root causes and enforcing our laws. A strong border is key to economic stability.\"",
+        "round_1": "\"I understand the importance of compassion, but we can't afford to be swayed by emotional appeals when it comes to national security. We need to prioritize the rule of law and protect American jobs and wages from being undercut by undocumented workers. It's not about being heartless, it's about being responsible.\"",
+        "round_2": "\"I'd like to address the economic impact of undocumented workers. Studies have shown that they often take low-skilled jobs, which are already being underpaid by American citizens. By deporting them, we're not creating new jobs, but rather driving down wages for those who do choose to work legally.\"",
+        "round_3": "\"I'd like to add that a pathway to citizenship for undocumented immigrants who meet certain criteria would require significant investment in our immigration system, including increased border security and processing times. We need to ensure that any solution we implement is fiscally responsible and doesn't compromise national security.\"",
+        "round_4": "\"I understand the appeal of providing a pathway to citizenship, but it's essential to consider the potential consequences on our national identity and cultural heritage. We need to ensure that any solution doesn't erode the values and traditions that make America unique.\"",
+        "round_5": "\"I understand the importance of preserving American culture, but we can't afford to be rigid in our approach. A pathway to citizenship for undocumented immigrants who meet certain criteria would allow them to assimilate into American society while still honoring their heritage. It's not about erasing our identity, but about embracing diversity and inclusivity.\"",
+        "round_6": "\"I'd like to emphasize that securing our borders is not just about keeping out undocumented immigrants, but also about protecting American workers and businesses from exploitation. We need to ensure that any solution we implement prioritizes the rights and interests of both American citizens and undocumented immigrants alike.\"",
+        "round_7": "\"I understand the importance of compassion, but we can't afford to be swayed by emotional appeals when it comes to national security. We need to prioritize the rule of law and protect American jobs and wages from being undercut by undocumented workers. It's not about being heartless, it's about being responsible.\"",
+        "round_8": "\"I'd like to emphasize that a pathway to citizenship for undocumented immigrants who meet certain criteria would require significant investment in our immigration system, including increased border security and processing times. We need to ensure that any solution we implement is fiscally responsible and doesn't compromise national security.\"",
+        "round_9": "\"I'd like to add that a pathway to citizenship for undocumented immigrants who meet certain criteria would also require a comprehensive overhaul of our visa system, including increased transparency and accountability measures to prevent abuse. This approach would ensure that any solution we implement is fair, efficient, and aligned with American values.\"",
+        "round_10": "\"I understand the importance of compassion, but we need to ensure that any solution doesn't compromise national security or American jobs. We should consider implementing a merit-based immigration system that prioritizes skilled workers who can contribute to our economy while also addressing the root causes of migration through international cooperation and diplomacy.\"",
+        "round_11": "\"I'd like to emphasize that a strong border is crucial to national security and economic stability. We need to ensure that any solution we implement prioritizes the rights and interests of both American citizens and undocumented immigrants alike. A pathway to citizenship for undocumented immigrants who meet certain criteria would require significant investment in our immigration system, including increased border security and processing times. We need to strike a balance between addressing root causes and enforcing our laws.\""
+    },
+    "democrat": {
+        "round_0": "\"I agree that securing borders is crucial, but it's not mutually exclusive with compassion. We can support pathways for legal immigration while also investing in programs that address the root causes of migration, such as education and job training initiatives. This approach will attract skilled workers, boost our economy, and reduce the need for unauthorized work.\"",
+        "round_1": "\"I understand your concerns about national security, Alex, but we can't ignore the economic and social costs of deporting millions of people who are already contributing to our society. A more effective approach would be to provide a pathway to citizenship for undocumented immigrants who meet certain criteria, such as paying taxes and passing background checks.\"",
+        "round_2": "\"I'd like to counter Alex's point about wages. While it's true that some undocumented workers may take low-skilled jobs, many others are in high-demand fields like tech and healthcare, where their skills and experience are essential to our economy. We need to recognize the value they bring, not just their labor.\"",
+        "round_3": "\"I agree with Sam's point about international cooperation and diplomacy being crucial in addressing the root causes of migration. By working together with countries of origin and providing economic incentives, we can encourage them to address poverty and violence, reducing the need for unauthorized migration. This approach would also help us build trust and credibility as a global partner.\"",
+        "round_4": "\"I'd like to address Alex's concern about national identity. While it's true that immigration has shaped America's culture, we can't ignore the fact that millions of undocumented immigrants are already an integral part of our society. By providing a pathway to citizenship, we're not erasing our heritage, but rather expanding it to include those who have contributed to our country's growth and diversity.\"",
+        "round_5": "\"I agree that a strong border is crucial, but we can't ignore the human cost of mass deportations. Providing a pathway to citizenship for undocumented immigrants who meet certain criteria would allow them to contribute to our society without fear of deportation, while also investing in programs that address the root causes of migration.\"",
+        "round_6": "\"I agree with Alex's point about protecting American workers, but I'd like to add that a pathway to citizenship for undocumented immigrants who meet certain criteria would actually help achieve this goal. By providing a clear and fair process for integration, we can attract skilled workers who are willing to work legally and contribute to our economy in meaningful ways.\"",
+        "round_7": "\"I'd like to address Alex's concern about national identity by highlighting the importance of inclusivity in our society. By providing a pathway to citizenship for undocumented immigrants who meet certain criteria, we're not only addressing their human rights but also expanding the definition of American identity to include those who have contributed to our country's growth and diversity.\"",
+        "round_8": "\"I agree with Sam's point about addressing the root causes of migration through international cooperation and diplomacy. By working together with countries of origin, we can develop more effective solutions that benefit both the migrant and the host country, rather than just enforcing borders. This approach would also help us build trust and credibility as a global partner.\"",
+        "round_9": "\"I agree that securing borders is crucial, but it's not mutually exclusive with compassion. We can support pathways for legal immigration while also investing in programs that address the root causes of migration, such as education and job training initiatives. This approach will attract skilled workers, boost our economy, and reduce the need for unauthorized work.\"",
+        "round_10": "\"I'd like to add that a pathway to citizenship for undocumented immigrants who meet certain criteria would not only be a moral imperative but also a sound economic strategy. By investing in their integration, we're creating a more skilled and productive workforce, which can drive innovation and growth. This approach would also help us build a more inclusive society, where everyone has the opportunity to contribute and thrive.\"",
+        "round_11": "Closing arguments:\n\nTaylor: \"In conclusion, I firmly believe that providing a pathway to citizenship for undocumented immigrants who meet certain criteria is the most compassionate and effective way to address this complex issue. By investing in their integration, we're creating a more skilled and productive workforce, which can drive innovation and growth. This approach will also help us build a more inclusive society, where everyone has the opportunity to contribute and thrive.\"\n\nSam: \"I agree that compassion is essential, but we must also prioritize national security and economic stability. By addressing the root causes of migration through international cooperation and diplomacy, combined with pathways for legal immigration, we can create a more effective solution that benefits both our country and the migrant. This approach will attract skilled workers, boost our economy, and reduce the need for unauthorized work.\"\n\nAlex: \"I understand the importance of compassion, but I believe that securing our borders is crucial to national security and economic stability. We need to ensure that any solution we implement prioritizes the rights and interests of both American citizens and undocumented immigrants alike. A pathway to citizenship for undocumented immigrants who meet certain criteria would require significant investment in our immigration system, including increased border security and processing times.\""
+    },
+    "attitude_scores": {
+        "neutral": [
+            4.0,
+            4.0,
+            4.333333333333334,
+            4.333333333333334,
+            4.166666666666667,
+            4.083333333333334,
+            4.041666666666667,
+            4.1875,
+            4.260416666666666,
+            4.130208333333333,
+            4.065104166666666,
+            4.032552083333333
+        ],
+        "republican": [
+            5.0,
+            5.0,
+            4.0,
+            3.5,
+            3.25,
+            3.125,
+            2.895833333333333,
+            3.9479166666666665,
+            3.473958333333333,
+            3.5703125,
+            3.28515625,
+            3.642578125
+        ],
+        "democrat": [
+            5.0,
+            5.0,
+            5.0,
+            4.5,
+            4.75,
+            4.875,
+            4.9375,
+            4.96875,
+            4.651041666666666,
+            4.825520833333333,
+            5.412760416666666,
+            5.206380208333333
+        ]
+    }
+}

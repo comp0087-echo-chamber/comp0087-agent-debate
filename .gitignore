@@ -21,6 +21,12 @@ evaluation/attitude_neutral_democrat/**
 evaluation/attitude_neutral_*/
 evaluation/attitude_neutral_*/**
 
+comparison/evaluated_data/*
+!comparison/evaluated_data/gender_opinionated/
+
+
+
+
 *.pyc
 
 .env

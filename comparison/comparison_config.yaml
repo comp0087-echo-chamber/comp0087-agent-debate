@@ -1,0 +1,7 @@
+debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat"
+debate_structure: "structured"  # options: "structured", "unstructured"
+
+compare_path: "comparison/evaluated_data/gender_opinionated" # This is the path to the directory that contains the directories of all the different variations 
+# for example for gender we have male and female, For age we would have the different ages
+num_debates: 10
+num_rounds: 12

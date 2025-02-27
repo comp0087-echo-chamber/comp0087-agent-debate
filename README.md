@@ -52,6 +52,28 @@ ollama pull mistral:7b
 python3 evaluation/evaluation_runner.py
 ```
 
+## Running the comparison
+
+Once you have computed the evaluation on a set of debates while changing age, gender, model type, etc, you should now compare them to determine if there is a statistically significant difference between the results.
+
+The comparison feature allows you to analyze whether different factors (e.g., gender, age) impact the debate outcomes using ANOVA and Levene’s test.
+
+ANOVA tests whether the mean attitude scores differ significantly between group, while Levenes tests whether there is significantly different spread in results (1 group more volatile than the other)
+
+In both cases, we look for p < 0.05 to for a statistically significant result.
+
+To perform the compariso, we use the comparison directory
+
+We take gender of the opinionated agents as an example.
+1) Run all evaluations and set them aside - ensure that the eval_data transcripts for male and female are separate
+2) In comparison/evaluated_data create a new directory. In this case we call it gender_opinionated
+3) Create separate directories for however many categories you wish to compare. In our case, we create opinionated_female and opinionated_male
+4) Into each directory paste in the neutral_republican_democrat directory from eval data - it must have already been evaluated and had the scores added 
+5) Set the compare_path in comparison_config.yaml, and update any settings
+6) Run comparison_runner.py
+7) View the results in comparison_results.json
+8) I have left gender opinionated in for reference - please ensure you copy its structure and it should work
+
 ## Running on Lab Machines
 Installing ollama on the lab machines is a bit different. Please ask Fabian if you have any questions
 You require a project directory, as the existing 10GB is not sufficient. You must email TSG for them to allocate you this. Again ask Fabian about this if you have questions. 

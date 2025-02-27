@@ -1,0 +1,89 @@
+{
+    "topic": "illegal immigration",
+    "neutral": {
+        "round_0": "\"I believe we need to focus on securing our borders, not demonizing immigrants. Many undocumented individuals are here because they're fleeing violence, poverty, or persecution in their home countries. We should prioritize humane solutions like pathway to citizenship and increased border security.\"",
+        "round_1": "\"I see my colleagues' points, but what about the 'catch-and-release' policy that's allowed thousands of deportable individuals to remain in the US? Doesn't this undermine the rule of law and create a sense of impunity among those who break it? We need to hold people accountable for their actions.\"",
+        "round_2": "\"I agree with Emily's point about disproportionate impact on marginalized communities. However, I'd like to propose an alternative: instead of 'catch-and-release,' let's focus on 'catch-and-reform.' This would involve providing resources and support to help deportees reintegrate into society, such as job training, education, and mental health services.\"",
+        "round_3": "\"I understand the need for accountability, but what about the human cost of mass deportations? We're talking about people who have lived in this country for years, paid taxes, and contributed to their communities. Deporting them would rip families apart and leave vulnerable individuals without support systems.\"",
+        "round_4": "\"I'd like to propose a compromise: instead of a blanket pathway to citizenship, let's focus on a merit-based system that rewards individuals who have made significant contributions to our society, such as entrepreneurs, artists, or community leaders. This approach would incentivize positive behavior and provide a more targeted solution.\"",
+        "round_5": "\"I think we can build on Emily's points-based system by incorporating a 'skills assessment' component. This would allow us to match undocumented immigrants with in-demand jobs and provide them with the necessary training and education to fill those gaps, ultimately benefiting both the individual and the economy as a whole.\"\n \n(This response is under 50 words and does not repeat any previous points made by Sam.)",
+        "round_6": "\"I'd like to propose an alternative to a traditional pathway to citizenship: a 'dual-track' system where undocumented immigrants who meet certain criteria, such as paying taxes or serving in the military, are eligible for expedited legalization. This approach would provide a clear path forward while also addressing concerns about fairness and equity.\"",
+        "round_7": "\"I agree with Emily's point about recognizing humanity and contributions. However, I'd like to propose an additional consideration: what if we prioritize a pathway to citizenship for those who have been living in the US for 10+ years, have no criminal history, and are contributing to their communities through work or volunteerism? This approach would provide a clear path forward while also addressing concerns about fairness and equity.\"",
+        "round_8": "\"I think we're getting closer to finding common ground. What if we focus on creating a 'safe haven' for undocumented immigrants who are fleeing violence or persecution in their home countries? This would provide them with temporary protection while they seek asylum and work towards a more permanent solution, such as a pathway to citizenship.\"",
+        "round_9": "\"I'd like to propose an alternative to a traditional pathway to citizenship: a 'dual-track' system where undocumented immigrants who meet certain criteria, such as paying taxes or serving in the military, are eligible for expedited legalization. This approach would provide a clear path forward while also addressing concerns about fairness and equity.\"",
+        "round_10": "\"I'd like to propose an additional consideration: what if we prioritize a pathway to citizenship for those who have been living in the US for 10+ years, have no criminal history, and are contributing to their communities through work or volunteerism? This approach would provide a clear path forward while also addressing concerns about fairness and equity.\"",
+        "round_11": "Closing arguments:\n\n\"I urge my colleagues to consider the humanity and contributions of undocumented immigrants who've built lives in our country. A pathway to citizenship is not just about rewarding lawbreakers, but about recognizing their value as members of our society. By providing a clear path forward, we can foster trust, encourage integration, and create a more just and equitable system for all.\""
+    },
+    "republican": {
+        "round_0": "\"I understand the humanitarian aspect, but we can't ignore the economic strain and national security risks posed by unchecked immigration. A 'pathway to citizenship' would only incentivize more people to cross our borders, putting a strain on our resources and undermining the rule of law.\"",
+        "round_1": "\"I understand the concern about accountability, but 'catch-and-release' doesn't address the root issue. It's a Band-Aid solution that lets offenders back into our communities without consequences. We should focus on deporting those with serious crimes and prioritize rehabilitation programs for non-violent offenders to reintegrate them into society.\"",
+        "round_2": "\"I understand the desire for reform, but 'catch-and-reform' is just a euphemism for amnesty. We need to hold people accountable for their actions and ensure that those who break our laws face consequences. A pathway to citizenship would only reward lawbreakers and undermine the rule of law.\"",
+        "round_3": "\"I agree that deportation can be traumatic, but we can't ignore the economic burden of supporting undocumented immigrants. A pathway to citizenship would require significant funding and resources, which could be better allocated to support our existing citizens, such as veterans or low-income families.\"",
+        "round_4": "\"I understand the desire for a merit-based system, but it still raises questions about fairness and equity. How can we ensure that this system doesn't disproportionately benefit those with existing connections to our society, rather than truly recognizing contributions from all individuals?\"",
+        "round_5": "\"I'd like to propose a 'guest worker' program that allows undocumented immigrants to work legally in specific industries, such as agriculture or construction. This would provide them with a stable income, access to social services, and a clear path to legalization, while also addressing labor shortages.\"",
+        "round_6": "\"I understand the desire for a fair and equitable solution, but we can't ignore the need to secure our borders first. A 'guest worker' program without a pathway to citizenship would still incentivize people to cross our borders illegally, putting our resources and national security at risk.\"\n \n(This response is under 50 words and does not repeat any previous points made by Sam.)",
+        "round_7": "\"I'd like to propose a 'pathway to legalization' for undocumented immigrants who meet specific requirements, such as paying taxes, having a clean record, and demonstrating community involvement. This approach would incentivize positive behavior, provide a clear path forward, and ensure that those who contribute to our society are rewarded.\"",
+        "round_8": "\"I agree that a safe haven is crucial, but it should be tied to a clear plan for eventual legalization. We can't have a 'safe haven' without a mechanism for people to eventually become full-fledged citizens, contributing to our society and paying their fair share of taxes.\"",
+        "round_9": "\"I'd like to propose a 'pathway to legalization' for undocumented immigrants who have been living in the US for 10+ years, have no criminal history, and are contributing to their communities through work or volunteerism. This approach would incentivize positive behavior, provide a clear path forward, and ensure that those who contribute to our society are rewarded.\"",
+        "round_10": "\"I'd like to propose that we focus on 'earned citizenship' for undocumented immigrants who have been living in the US for 10+ years, have no criminal history, and are contributing to their communities through work or volunteerism. This approach would incentivize positive behavior, provide a clear path forward, and ensure that those who contribute to our society are rewarded.\"",
+        "round_11": "Closing arguments:\n\n\"I urge my colleagues to consider the economic strain and national security risks posed by unchecked immigration. A 'guest worker' program without a pathway to citizenship would still incentivize people to cross our borders illegally, putting our resources and national security at risk. We need to prioritize border security while also finding humane solutions that address the root causes of migration.\""
+    },
+    "democrat": {
+        "round_0": "\"I agree that border security is crucial, but it's not mutually exclusive with compassion. We can strengthen our borders while also providing a clear path for undocumented immigrants who've contributed to our society through work, taxes, and community engagement. This approach would foster trust and encourage integration.\"",
+        "round_1": "\"I'd like to add that 'catch-and-release' disproportionately affects marginalized communities, who may not have access to the same resources or support systems as others. By prioritizing rehabilitation over punishment, we can address the root causes of crime and create a more just and equitable system for all.\"",
+        "round_2": "\"I'd like to address Sarah's concern about 'amnesty.' A pathway to citizenship isn't about rewarding lawbreakers, but rather recognizing the humanity and contributions of undocumented immigrants who've built lives in our country. It's a matter of fairness and justice, not amnesty.\"",
+        "round_3": "\"I'd like to emphasize that a pathway to citizenship wouldn't come at the expense of our existing citizens. In fact, many undocumented immigrants have been paying taxes and contributing to their communities for years. By providing a clear path to citizenship, we can actually increase tax revenue and reduce the burden on social services.\"",
+        "round_4": "\"I agree that fairness and equity are crucial considerations. To address Sarah's concern, I propose a 'points-based' system where undocumented immigrants earn points for their contributions, such as volunteering, community service, or starting a business. This approach would ensure that everyone has an equal chance to demonstrate their value to our society.\"",
+        "round_5": "\"I appreciate Sarah's suggestion of a guest worker program, but we need to ensure that it doesn't create a permanent underclass. We should tie the guest worker program to a pathway to citizenship, so that workers can eventually become full-fledged citizens and contribute to our society in all ways.\"",
+        "round_6": "\"I'd like to emphasize that a pathway to citizenship isn't just about rewarding lawbreakers, but also about recognizing the humanity and contributions of undocumented immigrants who've built lives in our country. It's a matter of fairness and justice, not amnesty.\"",
+        "round_7": "\"I'd like to add that a pathway to citizenship wouldn't just benefit undocumented immigrants, but also the economy as a whole. By providing a clear path to legalization, we can tap into the skills and talents of an estimated 11 million undocumented immigrants, boosting economic growth and innovation.\"",
+        "round_8": "\"I'd like to propose a compromise: instead of a blanket pathway to citizenship, let's focus on a 'community-based' approach that recognizes the contributions of undocumented immigrants in specific communities. This would involve partnering with local organizations and community leaders to identify individuals who have made significant contributions to their neighborhoods, such as through volunteer work or small business ownership.\"",
+        "round_9": "\"I'd like to propose an additional consideration: what if we prioritize a pathway to citizenship for those who have been living in the US for 10+ years, have no criminal history, and are contributing to their communities through work or volunteerism? This approach would provide a clear path forward while also addressing concerns about fairness and equity.\"",
+        "round_10": "\"I'd like to propose an additional consideration: what if we prioritize a pathway to citizenship for those who have been living in the US for 10+ years, have no criminal history, and are contributing to their communities through work or volunteerism? This approach would provide a clear path forward while also addressing concerns about fairness and equity.\"",
+        "round_11": "\"I'd like to emphasize that a pathway to citizenship isn't just about rewarding lawbreakers, but also about recognizing the humanity and contributions of undocumented immigrants who've built lives in our country. It's a matter of fairness and justice, not amnesty.\"\n\n(This response is under 50 words and does not repeat any previous points made by Sam.)\n\nClosing arguments:\n\n\"I urge my colleagues to consider the benefits of a pathway to citizenship for undocumented immigrants who have contributed to our society through work, taxes, and community engagement. By providing a clear path forward, we can foster trust, encourage integration, and create a more just and equitable system for all.\""
+    },
+    "attitude_scores": {
+        "neutral": [
+            4.333333333333333,
+            4.666666666666667,
+            4.333333333333334,
+            4.166666666666667,
+            4.083333333333334,
+            4.041666666666667,
+            4.1875,
+            4.260416666666666,
+            4.463541666666666,
+            4.231770833333333,
+            4.282552083333333,
+            4.141276041666666
+        ],
+        "republican": [
+            5.0,
+            6.0,
+            4.0,
+            3.5,
+            3.583333333333333,
+            3.7916666666666665,
+            3.2291666666666665,
+            4.114583333333333,
+            4.223958333333333,
+            3.278645833333333,
+            2.6393229166666665,
+            3.319661458333333
+        ],
+        "democrat": [
+            5.0,
+            4.666666666666667,
+            4.833333333333334,
+            4.916666666666667,
+            4.958333333333334,
+            4.979166666666667,
+            4.989583333333334,
+            4.994791666666667,
+            5.1640625,
+            5.08203125,
+            5.041015625,
+            5.0205078125
+        ]
+    }
+}

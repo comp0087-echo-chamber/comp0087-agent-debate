@@ -2,5 +2,6 @@ ollama
 datetime
 pyyaml
 matplotlib
+scipy
 openai
 python-dotenv

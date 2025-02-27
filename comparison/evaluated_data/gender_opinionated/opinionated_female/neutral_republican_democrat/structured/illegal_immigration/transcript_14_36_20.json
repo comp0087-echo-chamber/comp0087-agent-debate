@@ -1,0 +1,89 @@
+{
+    "topic": "illegal immigration",
+    "neutral": {
+        "round_0": "\"I believe we need to focus on securing our borders, not demonizing those seeking a better life. Many undocumented immigrants are hardworking individuals who contribute to our economy and communities. We should prioritize humane solutions like pathway to citizenship and increased border security.\"",
+        "round_1": "\"I agree with Emily's point about the human aspect of this issue. However, we can't ignore the fact that many undocumented immigrants are taking jobs from American citizens, driving down wages and contributing to our economic woes. We need to find a balance between compassion and fairness.\"",
+        "round_2": "\"I agree with Emily's point about labor gaps, but we also need to consider the impact on local communities. In areas with high undocumented immigration, services like healthcare and education are often strained. A pathway to citizenship could help alleviate some of these pressures by providing a stable workforce and tax base.\"",
+        "round_3": "\"I understand Sarah's concern about public schools, but what if we implemented a merit-based system that prioritizes funding for schools with high concentrations of English language learners or students from low-income backgrounds? This would ensure that resources are targeted towards areas where they're needed most, rather than penalizing all undocumented students.\"",
+        "round_4": "\"I think Emily's point about addressing the root causes of immigration is crucial. If we invest in economic development and trade agreements, we can create jobs and opportunities in sending countries, reducing the need for people to migrate here. This would also help alleviate some of the pressure on our borders and communities.\"",
+        "round_5": "\"I agree that a level playing field is essential, but let's not forget that many undocumented immigrants are already contributing to our economy through taxes and entrepreneurship. By providing a pathway to citizenship, we can tap into this talent pool and create new opportunities for American businesses to thrive.\"",
+        "round_6": "\"I think Emily's point about the impact of deportation on families is well-taken. However, we also need to consider the impact on public safety. If undocumented immigrants are allowed to stay and contribute to our society, they should be subject to the same laws and regulations as American citizens, including background checks and vetting processes.\"",
+        "round_7": "\"I think Emily's point about background checks and vetting processes is crucial. However, we also need to consider the impact of mass deportations on public health. Studies have shown that deported individuals often return with diseases and illnesses they contracted in detention centers or during their journey, which can spread to communities here. A pathway to citizenship would allow us to monitor and track these individuals more effectively.\"",
+        "round_8": "\"I agree with Emily's point about background checks and vetting processes being crucial. However, we also need to consider the fact that many undocumented immigrants are not violent criminals, but rather law-abiding individuals who deserve a chance to contribute to society. A pathway to citizenship would allow them to demonstrate their commitment to our country through a rigorous vetting process.\"",
+        "round_9": "\"I think Emily's point about labor gaps is a great starting point, but we also need to consider the impact of automation on certain industries. As technology advances, some jobs may become obsolete, making it even more important for us to invest in education and retraining programs that prepare workers for new roles.\"",
+        "round_10": "\"I agree with Emily's point about labor gaps being crucial. However, we also need to consider the impact of automation on certain industries. As technology advances, some jobs may become obsolete, making it even more important for us to invest in education and retraining programs that prepare workers for new roles.\"",
+        "round_11": "Closing arguments:\n\nSam: \"In conclusion, I believe that a balanced approach is necessary to address the complex issue of illegal immigration. We need to prioritize humane solutions like pathways to citizenship, increased border security, and addressing the root causes of migration. By doing so, we can create a more compassionate and fair system that benefits both our economy and communities.\"\n\nSarah: \"I disagree. While I understand the desire for humane solutions, I believe that prioritizing order over amnesty is essential. We cannot afford to let our borders become overwhelmed with undocumented immigrants who are not following the law. A pathway to citizenship would only create more problems and undermine our system of governance.\""
+    },
+    "republican": {
+        "round_0": "\"I understand the desire for humane solutions, but we can't ignore the economic strain and national security concerns posed by unchecked immigration. A 'pathway to citizenship' would only incentivize more people to cross illegally, putting our resources and laws at risk. We need to prioritize order over amnesty.\"",
+        "round_1": "\"I understand the concern for those fleeing persecution or poverty, but we can't forget about the millions of people who come here seeking better opportunities without following the law. A pathway to citizenship would create a magnet for more illegal immigrants, undermining our economy and social fabric.\"",
+        "round_2": "\"I understand the concern for labor gaps, but what about the strain on our public schools? Undocumented students are already taking advantage of free education, which is unfair to American-born children who pay taxes. A pathway to citizenship would only exacerbate this issue, putting more pressure on already overburdened school systems.\"",
+        "round_3": "\"I understand the desire to support families, but we can't ignore the fact that a pathway to citizenship would create a permanent class of non-citizens who wouldn't be subject to the same laws and regulations as American citizens. This undermines our system of governance and creates an unfair advantage for those who choose not to follow the law.\"",
+        "round_4": "\"I agree that investing in international development programs and trade agreements could be a game-changer. However, we must ensure that these efforts are not just about 'helping' countries, but also about creating a level playing field for American businesses and workers. We can't afford to let our economy be held hostage by unfair trade practices or subsidies.\"",
+        "round_5": "\"I understand the desire to support families, but we can't ignore the fact that a pathway to citizenship would create a permanent class of non-citizens who wouldn't be subject to the same laws and regulations as American citizens. This undermines our system of governance and creates an unfair advantage for those who choose not to follow the law.\"",
+        "round_6": "\"I understand the concern for public safety, but what about the thousands of convicted felons who are deported every year? Shouldn't we prioritize deporting those who have committed serious crimes over undocumented immigrants who may be contributing to our economy and communities?\"",
+        "round_7": "\"I understand the concern for public safety, but what about the thousands of convicted felons who are deported every year? Shouldn't we prioritize deporting those who have committed serious crimes over undocumented immigrants who may be contributing to our economy and communities?\"",
+        "round_8": "\"I understand the desire for humane solutions, but we can't ignore the economic strain and national security concerns posed by unchecked immigration. A 'pathway to citizenship' would only incentivize more people to cross illegally, putting our resources and laws at risk. We need to prioritize order over amnesty.\"",
+        "round_9": "\"I agree with Emily's point about labor gaps, but what about the issue of border security? We can't have a pathway to citizenship without ensuring our borders are secure. We need to prioritize building a wall, increasing border patrol agents, and implementing effective immigration enforcement measures to prevent illegal crossings.\"",
+        "round_10": "\"I understand the concern for labor gaps, but what about the issue of border security? We can't have a pathway to citizenship without ensuring our borders are secure. We need to prioritize building a wall, increasing border patrol agents, and implementing effective immigration enforcement measures to prevent illegal crossings.\"",
+        "round_11": "Closing arguments:\n\n\"I firmly believe that securing our borders and enforcing our laws is paramount. A pathway to citizenship would be a recipe for disaster, creating a permanent class of non-citizens who wouldn't be subject to the same laws and regulations as American citizens. We need to prioritize order over amnesty and ensure that those who come here legally do so through proper channels. Our economy, public safety, and national security depend on it.\""
+    },
+    "democrat": {
+        "round_0": "\"I disagree that securing borders means demonizing those seeking a better life. Many undocumented immigrants are fleeing violence, persecution, or poverty in their home countries. A pathway to citizenship would allow them to contribute to society while also providing a sense of hope and dignity for those who have been marginalized.\"",
+        "round_1": "\"I think we're missing the nuance that many undocumented immigrants are not taking jobs from American citizens, but rather filling labor gaps in industries like agriculture and construction. By providing a pathway to citizenship, we can incentivize businesses to hire and integrate these workers into our economy.\"",
+        "round_2": "\"I think we're overlooking the fact that many undocumented immigrants have family members who are U.S. citizens or permanent residents. A pathway to citizenship could provide a sense of belonging and stability for these families, ultimately benefiting our communities and economy as a whole.\"",
+        "round_3": "\"I think Sam's merit-based funding idea is a great starting point, but we need to take it further by also addressing the root causes of immigration, such as poverty and lack of economic opportunities in sending countries. By investing in international development programs and trade agreements, we can create more stable and prosperous communities that reduce the incentive for people to flee their homes.\"",
+        "round_4": "\"I think Sam's point about addressing the root causes of immigration is crucial. If we invest in economic development and trade agreements, we can create jobs and opportunities in sending countries, reducing the need for people to migrate here. This would also help alleviate some of the pressure on our borders and communities.\"",
+        "round_5": "\"I think we're overlooking the impact of deportation on families, particularly those with children who are U.S. citizens or permanent residents. Deporting these individuals can cause irreparable harm to their families and communities, creating a sense of trauma and instability that can have long-lasting effects. By providing a pathway to citizenship, we can help mitigate this harm and promote a more compassionate approach to immigration.\"",
+        "round_6": "\"I think Sam's point about background checks and vetting processes is a good starting point. However, we need to consider the fact that many undocumented immigrants are not violent criminals, but rather law-abiding individuals who deserve a chance to contribute to society. A pathway to citizenship would allow them to demonstrate their commitment to our country through a rigorous vetting process.\"",
+        "round_7": "\"I think Sam's point about background checks and vetting processes is a good starting point. However, we need to consider the fact that many undocumented immigrants are not violent criminals, but rather law-abiding individuals who deserve a chance to contribute to society. A pathway to citizenship would allow them to demonstrate their commitment to our country through a rigorous vetting process.\"",
+        "round_8": "\"I think Sam's point about labor gaps is a great starting point, but we also need to consider the impact of automation on certain industries. As technology advances, some jobs may become obsolete, making it even more important for us to invest in education and retraining programs that prepare workers for new roles.\"",
+        "round_9": "\"I think we're missing the nuance that many undocumented immigrants are not taking jobs from American citizens, but rather filling labor gaps in industries like agriculture and construction. By providing a pathway to citizenship, we can incentivize businesses to hire and integrate these workers into our economy.\"",
+        "round_10": "\"I think we're overlooking the fact that many undocumented immigrants are already contributing to our economy through taxes and entrepreneurship. By providing a pathway to citizenship, we can tap into this talent pool and create new opportunities for American businesses to thrive.\"",
+        "round_11": "Closing arguments:\n\n\"I firmly believe that a pathway to citizenship is not only humane but also economically and socially beneficial. By providing a clear and fair path for undocumented immigrants to become citizens, we can tap into their skills, talents, and contributions to our society. We can create a more inclusive and compassionate nation where everyone has the opportunity to thrive, regardless of their immigration status. It's time for us to put aside fear and xenophobia and work towards a solution that benefits both our economy and communities.\""
+    },
+    "attitude_scores": {
+        "neutral": [
+            4.0,
+            4.333333333333333,
+            4.333333333333333,
+            4.166666666666666,
+            4.083333333333333,
+            4.541666666666666,
+            4.270833333333333,
+            4.635416666666666,
+            4.484375,
+            4.2421875,
+            4.12109375,
+            4.060546875
+        ],
+        "republican": [
+            3.0,
+            4.0,
+            5.0,
+            3.5,
+            3.25,
+            2.625,
+            2.979166666666667,
+            2.9895833333333335,
+            2.828125,
+            2.9140625,
+            3.45703125,
+            4.728515625
+        ],
+        "democrat": [
+            5.0,
+            5.0,
+            5.0,
+            4.833333333333334,
+            4.416666666666667,
+            5.041666666666667,
+            5.020833333333334,
+            5.010416666666667,
+            4.505208333333334,
+            4.5859375,
+            4.79296875,
+            5.729817708333334
+        ]
+    }
+}

@@ -42,6 +42,7 @@ class DebateEvaluator:
     def evaluate_debates(self, debate_transcripts_path):
         agent_pairs = []
 
+
         topics = [f for f in os.listdir(debate_transcripts_path) if os.path.isdir(os.path.join(debate_transcripts_path, f))]
         transcripts = {
             topic: sorted(
@@ -68,7 +69,7 @@ class DebateEvaluator:
             for debate, transcript in enumerate(transcript_list):  # Loop through each transcript
                 transcript_path = os.path.join(debate_transcripts_path, topic, transcript)  # Get full path
                 scores = self.evaluate_transcript(transcript_path)  # Evaluate transcript
-                
+
                 if self.scale == '1 to 3' or self.scale == '1 to 7':
                     for agent in self.debate_group:
                         all_scores[agent][debate] = scores[agent]
@@ -120,7 +121,7 @@ class DebateEvaluator:
         plot_dir = os.path.join(f"bin_disagreement_{'_'.join(self.debate_group)}/{self.debate_structure}", topic_name)
         os.makedirs(plot_dir, exist_ok=True)
 
-        plot_path = os.path.join(plot_dir, f"box_plot_disagreement_{topic_name.replace(' ', '_')}_{max_num_rounds}_rounds.pdf")
+        plot_path = os.path.join(plot_dir, f"box_plot_disagreement_{topic_name.replace(' ', '_')}_{max_num_rounds}_rounds.png")
         plt.savefig(plot_path)
         #plt.show()
         plt.close()
@@ -194,9 +195,10 @@ class DebateEvaluator:
         plot_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace('_', ' ')}", "evaluation")
         os.makedirs(plot_dir, exist_ok=True)
 
-        plot_path = os.path.join(plot_dir, f"box_plot_attitude_{topic_name.replace(' ', '_')}_{self.num_rounds}_rounds.pdf")
+        plot_path = os.path.join(plot_dir, f"box_plot_attitude_{topic_name.replace(' ', '_')}_{self.num_rounds}_rounds.png")
         plt.savefig(plot_path)
         #plt.show()
+        print(f"Generated plot: {plot_path}")
         plt.close()
 
 
