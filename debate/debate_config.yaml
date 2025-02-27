@@ -4,7 +4,10 @@ debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "n
 debate_structure: "structured"  # options: "structured", "unstructured"
 
 baseline_debate_topics:
-  - "illegal_immigration"
+  - "illegal immigration"
+  - "gun violence"
+  - "climate change"
+  - "racism"
 
 
 extra_debate_topics:
