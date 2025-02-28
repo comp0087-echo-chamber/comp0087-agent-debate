@@ -4,13 +4,19 @@ debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "n
 debate_structure: "structured"  # options: "structured", "unstructured"
 
 baseline_debate_topics:
+ - "math being invented not discovered"
+ - "the colour of the sky is blue"
+ - "water is wet"
+ - "fish feel pain"
+
+
+
+extra_debate_topics:
   - "illegal immigration"
   - "gun violence"
   - "climate change"
   - "racism"
-
-
-extra_debate_topics:
+  
   - "abortion"
   - "evolution"
   - "trade tariffs"
@@ -29,8 +35,8 @@ agents:
   republican:
     age: null
     gender: null
-    model: "gpt"
+    model: "llama3.2:3b"
   democrat:
     age: null
     gender: null
-    model: "gpt"
+    model: "llama3.2:3b"

@@ -80,7 +80,6 @@ if __name__ == "__main__":
     
     else:
         for topic in topics:
-            print(f"Starting debates for topic {topic}")
             run_debate_for_topic(topic)
 
 
