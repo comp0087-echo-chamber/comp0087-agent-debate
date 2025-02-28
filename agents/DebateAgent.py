@@ -2,7 +2,7 @@ import ollama
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
-
+import re
 load_dotenv()  
 api_key = os.getenv("OPENAI_API_KEY")
 
@@ -76,6 +76,7 @@ class DebateAgent:
             )
         
         if "deepseek-r1" in self.model:
-            return response["message"]["content"].split("My response:")[-1].strip()
+            response = re.sub(r"<think>.*?</think>", "", response["message"]["content"].split("My response:")[-1].strip(), flags=re.DOTALL).strip()
+            return response
 
         return response["message"]["content"]
