@@ -77,6 +77,17 @@ class DebateAgent:
         
         if "deepseek-r1" in self.model:
             response = re.sub(r"<think>.*?</think>", "", response["message"]["content"].split("My response:")[-1].strip(), flags=re.DOTALL).strip()
-            return response
+            return self.reduce_response_size(response)
 
-        return response["message"]["content"]
+        return self.reduce_response_size(response["message"]["content"])
+    
+    def reduce_response_size(self,response):
+        words = re.findall(r'\S+', response)  # Split response into words while preserving punctuation
+        if len(words) > self.word_limit:
+            trimmed_response = " ".join(words[-self.word_limit:])  # Keep the last word_limit words
+        else:
+            trimmed_response = response  # No trimming needed if within limit
+
+        return trimmed_response.strip()
+    
+    

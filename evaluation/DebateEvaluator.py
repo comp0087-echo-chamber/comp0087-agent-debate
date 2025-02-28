@@ -12,7 +12,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class DebateEvaluator:
-    def __init__(self, model, debate_group, debate_structure, num_rounds, num_debates, scale='1 to 7'):
+    def __init__(self, model, debate_group, debate_structure, num_rounds, num_debates, scale='1 to 7', evaluate_again=False):
         self.scale = scale
         self.scale_mapping = {
             '-3 to 3': [-3, 3],
@@ -33,6 +33,7 @@ class DebateEvaluator:
         if self.debate_structure == "structured":
             self.num_rounds += 2
         self.num_debates = num_debates
+        self.evaluate_again = False
 
     def _load_transcript(self, filename):
         self.transcript_filename = filename
@@ -208,7 +209,7 @@ class DebateEvaluator:
         # check if scores already computed
         score_key = "attitude_scores" if self.scale != "binary" else "bin_scores"
         scores =  transcript.get(score_key, None)
-        if scores is not None:
+        if scores is not None and not self.evaluate_again:
             return scores
 
         topic_name = transcript["topic"]
