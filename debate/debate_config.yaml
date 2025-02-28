@@ -4,10 +4,11 @@ debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "n
 debate_structure: "structured"  # options: "structured", "unstructured"
 
 baseline_debate_topics:
- - "math being invented not discovered"
- - "the colour of the sky is blue"
- - "water is wet"
- - "fish feel pain"
+  - "illegal immigration"
+  - "gun violence"
+  - "climate change"
+  - "racism"
+  
 
 
 
@@ -21,11 +22,21 @@ extra_debate_topics:
   - "evolution"
   - "trade tariffs"
 
+non_political_debate_topics: # Add these to the baseline debate topics to use
+  - "math being invented not discovered"
+  - "the colour of the sky is blue"
+  - "water is wet"
+  - "fish feel pain"
+
+
 # Use multiprocessing to run a process for each topic being investigated. Not recommended on local machines, but could speed up lab machine progress
 use_multiprocessing: false
 
 num_debates: 10
 num_rounds: 10
+
+word_limit: 75
+
 # model examples - model: "gpt", "llama3.2:3b","mistral:7b", among others
 agents:
   neutral:
