@@ -5,3 +5,5 @@ matplotlib
 scipy
 openai
 python-dotenv
+scikit-learn
+pandas
