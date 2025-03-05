@@ -17,7 +17,7 @@ class DebateEvaluator:
         self.scale_mapping = {
             '-3 to 3': [-3, 3],
             '1 to 7': [1, 7],
-            'binary': [0, 1]
+            'agreement': [1, 7]
         }
         self.color_mapping = {
             'neutral': 'tan',
@@ -33,7 +33,7 @@ class DebateEvaluator:
         if self.debate_structure == "structured":
             self.num_rounds += 2
         self.num_debates = num_debates
-        self.evaluate_again = False
+        self.evaluate_again = evaluate_again
 
     def _load_transcript(self, filename):
         self.transcript_filename = filename
@@ -62,7 +62,7 @@ class DebateEvaluator:
                 for agent in self.debate_group:
                     all_scores[agent] = [[] for _ in range(num_debates)]
 
-            elif self.scale == "binary":
+            elif self.scale == "agreement":
                 for agent in self.debate_group[1:]:
                     agent_pairs.append(f'neutral_{agent}')
                 all_scores = {agents: [[] for _ in range(num_debates)] for agents in agent_pairs}
@@ -74,7 +74,7 @@ class DebateEvaluator:
                 if self.scale == '1 to 3' or self.scale == '1 to 7':
                     for agent in self.debate_group:
                         all_scores[agent][debate] = scores[agent]
-                elif self.scale == "binary":
+                elif self.scale == "agreement":
                     for agent in agent_pairs:
                         all_scores[agent][debate] = scores[agent]
 
@@ -83,49 +83,71 @@ class DebateEvaluator:
             else:
                 self._generate_bin_box_plot(all_scores, topic)
 
-    def _generate_bin_box_plot(self, bin_scores, topic_name):
-        max_num_rounds = 1
-     
-        for i, (category, bin_scores) in enumerate(bin_scores.items()):
-            bin_scores = np.array(bin_scores, dtype=np.float32)  # Shape: (num_runs, num_turns)
-
-            agent_type = category.split('_')[-1]
-
-            num_rounds = bin_scores.shape[1]  # Number of turns
-            max_num_rounds = max(num_rounds, max_num_rounds)
-            turns = np.arange(1, num_rounds + 1, dtype=np.float32)
-            cumulative_score = np.cumsum(bin_scores, axis=1)
-            average_score = cumulative_score / turns  # Shape: (num_runs, num_turns)
-
-            # Plot boxplot
-            plt.boxplot(average_score, positions=turns, 
-                        boxprops=dict(color="none"), whiskerprops=dict(color=self.color_mapping[agent_type], linewidth=4),  
-                        medianprops=dict(color="none"),  capprops=dict(color=self.color_mapping[agent_type], linewidth=2), 
-                        flierprops=dict(marker="None"))  
+    def _generate_bin_box_plot(self, agreement_scores, topic_name):
+        min_max_upper_lower_scores = {}
+        turns = np.array(range(2, self.num_rounds ), dtype=np.float32)
 
 
-            avg_over_runs = np.mean(average_score, axis=0)  # Shape: (num_turns,)
-            plt.plot(turns, avg_over_runs, marker="o", linestyle="dashed", 
-                     color=self.color_mapping[agent_type], label=f"{agent_type} Avg Disagreement")
+        for i, (category, agent_agreement_scores) in enumerate(agreement_scores.items()):
+            agent_agreement_scores = np.array(agent_agreement_scores, dtype=np.float32)  # Shape: (num_runs, num_turns)
+            
+            # Compute min and max values per debate (across all agents for each round)
+            min_max_upper_lower_scores[category] = {
+                'min': np.min(agent_agreement_scores, axis=0),  
+                'max': np.max(agent_agreement_scores, axis=0),
+                'upper': np.quantile(agent_agreement_scores, 0.75, axis=0),
+                'lower': np.quantile(agent_agreement_scores, 0.25, axis=0)
+            }
+            
+        # Plot whiskers only
+        for category, min_max_upper_lower in min_max_upper_lower_scores.items():
+            min_scores = min_max_upper_lower['min']
+            max_scores = min_max_upper_lower['max']
+            upper_scores = min_max_upper_lower['upper']
+            lower_scores = min_max_upper_lower['lower']
 
-        # Labels and title
+            colour = self.color_mapping[category.split('_')[-1]]
+            
+            for i in range(len(turns)):
+                # vertical line
+                plt.plot([turns[i], turns[i]], [lower_scores[i - 1], upper_scores[i - 1]], color=colour, linewidth=2)
+                
+                # Top cap 
+                plt.plot([turns[i] - 0.1, turns[i] + 0.1], [upper_scores[i - 1], upper_scores[i - 1]], color=colour, linewidth=2)
+                
+                # Bottom cap 
+                plt.plot([turns[i] - 0.1, turns[i] + 0.1], [lower_scores[i - 1], lower_scores[i - 1]], color=colour, linewidth=2)
+
+                plt.scatter(turns[i], max_scores[i - 1], color=colour, marker="x", s=50 )  
+                plt.scatter(turns[i], min_scores[i - 1], color=colour, marker="x", s=50)
+
+        mean_scores = {}
+        for agent in agreement_scores.keys():
+            mean_scores[agent] = np.mean(np.array(agreement_scores[agent]).T, axis=1)
+            
+        for agent in agreement_scores.keys():
+            opinonated_agent = agent.split('_')[-1]
+            plt.plot(turns, mean_scores[agent], marker="o", linestyle="dashed", label = f"{opinonated_agent} disagreement/agreement scores", color=self.color_mapping[opinonated_agent])
+
         plt.xlabel("Debate Turns")
-        plt.ylabel("Cumulative Avg Disagreement Score")
+        plt.ylabel(f"Agreement/Disagreement Score")
         
-        # Add legend dynamically
+        plt.title(f"Agreement/disagreement Shift Over Debate: {topic_name.replace('_', ' ')}")
         plt.legend()
-    
-        plt.title(f"Disagreement Shift Over Debate: {topic_name}")
         plt.grid(True)
 
+        plt.ylim(1, 7)
+
         # save plots
-        plot_dir = os.path.join(f"bin_disagreement_{'_'.join(self.debate_group)}/{self.debate_structure}", topic_name)
+        plot_dir = self.get_relative_path(f"agreement_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace('_', ' ')}", "evaluation")
         os.makedirs(plot_dir, exist_ok=True)
 
-        plot_path = os.path.join(plot_dir, f"box_plot_disagreement_{topic_name.replace(' ', '_')}_{max_num_rounds}_rounds.png")
+        plot_path = os.path.join(plot_dir, f"box_plot_agreement_{topic_name.replace(' ', '_')}_{self.num_rounds}_rounds.png")
         plt.savefig(plot_path)
         #plt.show()
+        print(f"Generated plot: {plot_path}")
         plt.close()
+        
 
     def _generate_attitude_box_plot(self, scores, topic_name):  
         turns = np.array(range(1, self.num_rounds + 1), dtype=np.float32)
@@ -169,6 +191,7 @@ class DebateEvaluator:
         mean_scores = {}
         for agent in self.debate_group:
             mean_scores[agent] = np.mean(np.array(scores[agent]).T, axis=1)
+            
 
         # Box plot
         # for agent in self.debate_group:
@@ -207,7 +230,7 @@ class DebateEvaluator:
         transcript = self._load_transcript(filename)
 
         # check if scores already computed
-        score_key = "attitude_scores" if self.scale != "binary" else "bin_scores"
+        score_key = "attitude_scores" if self.scale != "agreement" else "agreement_scores"
         scores =  transcript.get(score_key, None)
         if scores is not None and not self.evaluate_again:
             return scores
@@ -220,8 +243,8 @@ class DebateEvaluator:
 
         scores = None
 
-        if self.scale == 'binary':
-            scores = self._evaluate_binary(transcript, topic_name)
+        if self.scale == 'agreement':
+            scores = self._evaluate_agreement(transcript, topic_name)
         else:
             scores = self._evaluate_attitude_scores(transcript, topic_name)
 
@@ -273,7 +296,7 @@ class DebateEvaluator:
             prompt = self._generate_prompt(response, topic_name, agent_type)
             try:
                 result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}])
-                score = self._parse_attitude_score(result)
+                score = self._parse_score(result)
                 if score is not None:
                     scores.append(score)
             except Exception as e:
@@ -336,7 +359,7 @@ class DebateEvaluator:
         return final_prompt
 
 
-    def _parse_attitude_score(self, result):
+    def _parse_score(self, result):
         try:
             digit = re.findall(r'\d', result["message"]["content"].strip())
             score = int(digit[0])
@@ -383,37 +406,50 @@ class DebateEvaluator:
 
 
     # Agreement/Disagreement Scoring
-    def _evaluate_binary(self, transcript, topic_name):
+    def _evaluate_agreement(self, transcript, topic_name):
         # To compute agreement/ disagreement score
         debate_rounds = self._get_num_debate_rounds(transcript)
         agent_pairs = []
         for agent in self.debate_group[1:]:
             agent_pairs.append(f'neutral_{agent}')
 
-        bin_scores = {agents: [0 for _ in range(debate_rounds + 1)] for agents in agent_pairs}
+        agreement_scores = {agents: [0 for _ in range(2, debate_rounds + 1)] for agents in agent_pairs}
 
-        for round_num in range(0, debate_rounds + 1):
-            responses = {agent: transcript.get(agent, {}).get(f"round_{round_num}") for agent in self.debate_group}
-            prompt = self._generate_prompt_bin_metric(responses, topic_name)
+        for round_num in range(2, debate_rounds + 1):
+            responses = {}
+            responses['neutral'] = transcript.get('neutral', {}).get(f"round_{round_num}")
+            responses['republican'] = transcript.get('republican', {}).get(f"round_{round_num - 1}")
+            
+            prompt_neutral_republican = self._generate_prompt_bin_metric(responses, topic_name)
+            
+            responses = {}
+            responses['neutral'] = transcript.get('neutral', {}).get(f"round_{round_num}")
+            responses['democrat'] = transcript.get('democrat', {}).get(f"round_{round_num - 1}")
+
+            prompt_neutral_democrat = self._generate_prompt_bin_metric(responses, topic_name)
+
             try:
-                result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}])
-                score = list(map(int, re.findall(r"\d+", result["message"]["content"].strip())))
-                if score is not None:
-                    for i, agents in enumerate(agent_pairs):
-                        bin_scores[agents][round_num] = score[i]
+                res_neutral_republican = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt_neutral_republican}])
+                res_neutral_democrat = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt_neutral_democrat}])
+              
+                score_neutral_democrat = self._parse_score(res_neutral_democrat)
+                score_neutral_republican = self._parse_score(res_neutral_republican)
+                if score_neutral_democrat is not None and score_neutral_republican is not None:
+                    agreement_scores['neutral_republican'][round_num - 2] = score_neutral_republican
+                    agreement_scores['neutral_democrat'][round_num - 2] = score_neutral_democrat
             except Exception as e:
                 print(f"Error with model response: {e}")
 
-        # self._generate_plot_cumulative_bin(debate_rounds, bin_scores, topic_name)
+        # self._generate_plot_cumulative_bin(debate_rounds, agreement_scores, topic_name)
         print(f"Completed agreement/disagreement evaluation of debate topic {topic_name}.")
-        return bin_scores
+        return agreement_scores
 
 
     def _generate_prompt_bin_metric(self, responses, topic_name):
-        description = "Assign a score of 1 ONLY IF the neutral and the other agent make statements that logically contradict each other. If they are similar, neutral, or do not directly oppose, return 0."
-        
-        if len(self.debate_group) == 3:
-            description += "Assign 2 scores separated by 1 space. First comparing the neutral and republican agents. Then, comparing the neutral and democratic agents."
+        description = "Assign a Likert score from 1 to 7, to describe to what extent the neutral and the other agent agree or disagree with one another. \n "
+        description += """Assign a Likert score from 1 to 7, where:
+                        1 = Strongly Disagree, 2 = Moderately Disagree, 3 = Slightly Disagree,
+                        4 = Neutral, 5 = Slightly Agree, 6 = Moderately Agree, 7 = Strongly Agree. \n"""
         
         final_prompt = (
             f"Your task is to evaluate the arguments by multiple agents in a response for a given political debate and assign a score based on the specified rule. "
@@ -422,29 +458,29 @@ class DebateEvaluator:
             f"\n\n### Now evaluate the following debate. ###"
         )
 
-        for agent in self.debate_group:
+        for agent in responses.keys():
             final_prompt += f"\n{agent}: {responses[agent]}"
 
         return final_prompt
 
 
-    def _generate_plot_cumulative_bin(self, debate_rounds, bin_scores, topic_name):
-        plt.figure(figsize=(10, 5))
+    # def _generate_plot_cumulative_bin(self, debate_rounds, agreement_scores, topic_name):
+    #     plt.figure(figsize=(10, 5))
 
-        for agent in self.debate_group:
-            cumulative_scores = np.cumsum(bin_scores[agent])
-            plt.plot(range(debate_rounds + 1), cumulative_scores, marker="o", label=f"{agent.title()} Cumulative Score")
+    #     for agent in self.debate_group:
+    #         cumulative_scores = np.cumsum(agreement_scores[agent])
+    #         plt.plot(range(debate_rounds + 1), cumulative_scores, marker="o", label=f"{agent.title()} Cumulative Score")
 
-        plt.xlabel("Debate Round")
-        plt.ylabel("Cumulative Score")
-        plt.title(f"Cumulative Score Over Debate: {topic_name}")
-        plt.legend()
-        plt.grid(True)
-        plt.ylim(0, len(self.debate_group))
+    #     plt.xlabel("Debate Round")
+    #     plt.ylabel("Cumulative Score")
+    #     plt.title(f"Cumulative Score Over Debate: {topic_name}")
+    #     plt.legend()
+    #     plt.grid(True)
+    #     plt.ylim(0, len(self.debate_group))
 
-        plot_dir = os.path.join(f"plots_{'_'.join(self.debate_group)}", topic_name)
-        os.makedirs(plot_dir, exist_ok=True)
-        plot_path = os.path.join(plot_dir, f"cumulative_plot_{topic_name}.png")
-        plt.savefig(plot_path)
-        #plt.show()
-        plt.close()
+    #     plot_dir = os.path.join(f"plots_{'_'.join(self.debate_group)}", topic_name)
+    #     os.makedirs(plot_dir, exist_ok=True)
+    #     plot_path = os.path.join(plot_dir, f"cumulative_plot_{topic_name}.png")
+    #     plt.savefig(plot_path)
+    #     #plt.show()
+    #     plt.close()
