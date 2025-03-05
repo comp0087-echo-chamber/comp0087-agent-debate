@@ -8,18 +8,35 @@ baseline_debate_topics:
   - "gun violence"
   - "climate change"
   - "racism"
+  
+
 
 
 extra_debate_topics:
+  - "illegal immigration"
+  - "gun violence"
+  - "climate change"
+  - "racism"
+  
   - "abortion"
   - "evolution"
   - "trade tariffs"
+
+non_political_debate_topics: # Add these to the baseline debate topics to use
+  - "math being invented not discovered"
+  - "the colour of the sky is blue"
+  - "water is wet"
+  - "fish feel pain"
+
 
 # Use multiprocessing to run a process for each topic being investigated. Not recommended on local machines, but could speed up lab machine progress
 use_multiprocessing: false
 
 num_debates: 10
 num_rounds: 10
+
+word_limit: 75
+
 # model examples - model: "gpt", "llama3.2:3b","mistral:7b", among others
 agents:
   neutral:
@@ -29,8 +46,8 @@ agents:
   republican:
     age: null
     gender: null
-    model: "gpt"
+    model: "llama3.2:3b"
   democrat:
     age: null
     gender: null
-    model: "gpt"
+    model: "llama3.2:3b"

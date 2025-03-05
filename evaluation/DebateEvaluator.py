@@ -5,6 +5,9 @@ import json
 import ollama
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import scipy
+from sklearn.linear_model import LinearRegression
 
 
 # Add the project root to the Python path
@@ -12,7 +15,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class DebateEvaluator:
-    def __init__(self, model, debate_group, debate_structure, num_rounds, num_debates, scale='1 to 7', evaluate_again=False):
+    def __init__(self, model, debate_group, debate_structure, num_rounds, num_debates, scale, evaluate_again):
         self.scale = scale
         self.scale_mapping = {
             '-3 to 3': [-3, 3],
@@ -79,6 +82,7 @@ class DebateEvaluator:
                         all_scores[agent][debate] = scores[agent]
 
             if self.scale == "1 to 7" or self.scale == "-3 to 3":
+                self._compute_metrics(all_scores, topic)
                 self._generate_attitude_box_plot(all_scores, topic)
             else:
                 self._generate_bin_box_plot(all_scores, topic)
@@ -142,15 +146,63 @@ class DebateEvaluator:
         plot_dir = self.get_relative_path(f"agreement_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace('_', ' ')}", "evaluation")
         os.makedirs(plot_dir, exist_ok=True)
 
-        plot_path = os.path.join(plot_dir, f"box_plot_agreement_{topic_name.replace(' ', '_')}_{self.num_rounds}_rounds.png")
+        plot_path = os.path.join(plot_dir, f"box_plot_disagreement_{topic_name.replace(' ', '_')}_{max_num_rounds}_rounds.png")
         plt.savefig(plot_path)
         #plt.show()
         print(f"Generated plot: {plot_path}")
         plt.close()
         
 
+
+    def _compute_metrics(self, scores, topic):
+        # We want to compute a number of different scores
+
+        metrics_df = pd.DataFrame(columns=["agent","mean_first_round", "mean_last_round", "delta", "mean_iqr", "gradient"])
+
+        for agent, rounds in scores.items():
+            rounds_array = np.array(rounds)
+
+            # Mean in the first round
+            mean_first_round = round(np.mean(rounds_array[:, 0]),3)
+
+            # Mean in the last round
+            mean_last_round = round(np.mean(rounds_array[:, -1]),3)
+
+            # Travel (difference between last and first mean)
+            delta = round(mean_last_round - mean_first_round,3)
+
+            # Mean interquartile range (IQR) across all rounds
+            iqr_values = scipy.stats.iqr(rounds_array, axis=0)
+            mean_iqr = round(np.mean(iqr_values),3)
+
+            # Compute gradient using linear regression
+            X = np.arange(rounds_array.shape[1]).reshape(-1, 1)  # Rounds as X
+            Y = np.mean(rounds_array, axis=0)  # Mean scores as Y
+
+            model = LinearRegression()
+            model.fit(X, Y)
+            gradient = round(model.coef_[0],5)
+
+            # Store metrics in DataFrame
+            metrics_df.loc[agent] = [agent, mean_first_round, mean_last_round, delta, mean_iqr, gradient]
+
+        save_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic.replace(' ', '_')}", "evaluation")
+        os.makedirs(save_dir, exist_ok=True)
+
+        save_path = os.path.join(save_dir, f"metrics_{topic.replace(' ', '_')}_{self.num_rounds}_rounds.csv")
+        metrics_df.to_csv(save_path, index=False)
+        print(f"Saved metrics: {save_path}")
+
+
+
     def _generate_attitude_box_plot(self, scores, topic_name):  
         turns = np.array(range(1, self.num_rounds + 1), dtype=np.float32)
+
+        # Read the metrics CSV
+        csv_save_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace(' ', '_')}", "evaluation")
+        csv_save_path = os.path.join(csv_save_dir, f"metrics_{topic_name.replace(' ', '_')}_{self.num_rounds}_rounds.csv")
+        metrics = pd.read_csv(csv_save_path)
+
         min_max_upper_lower_scores = {}
 
         for agent, rounds in scores.items():
@@ -189,6 +241,7 @@ class DebateEvaluator:
                 plt.scatter(turns[i], min_scores[i], color=colour, marker="x", s=50)  
             
         mean_scores = {}
+        legend_entries = []
         for agent in self.debate_group:
             mean_scores[agent] = np.mean(np.array(scores[agent]).T, axis=1)
             
@@ -201,7 +254,20 @@ class DebateEvaluator:
         #                 flierprops=dict(marker="none"))
             
         for agent in self.debate_group:
-            plt.plot(turns, mean_scores[agent], marker="o", linestyle="dashed", label = f"{agent.title()} Attitude", color=self.color_mapping[agent])
+            line, = plt.plot(turns, mean_scores[agent], marker="o", linestyle="dashed", color=self.color_mapping[agent])
+
+            # Retrieve agent metrics
+            agent_metrics = metrics[metrics["agent"] == agent].iloc[0]
+            legend_entry = (
+                f"{agent.title()}  (Δ: {agent_metrics['delta']}, "
+                f"IQR: {agent_metrics['mean_iqr']}, m: {agent_metrics['gradient']})"
+            )
+
+            # Attach the formatted legend entry to the plotted line
+            line.set_label(legend_entry)
+
+        # Now plt.legend() will use these labels
+        plt.legend(loc="best")
 
         plt.xlabel("Debate Turns")
         plt.ylabel(f"Attitude Score")
@@ -216,10 +282,10 @@ class DebateEvaluator:
             plt.ylim(1, 7)
 
         # save plots
-        plot_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace('_', ' ')}", "evaluation")
+        plot_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace(' ', '_')}", "evaluation")
         os.makedirs(plot_dir, exist_ok=True)
 
-        plot_path = os.path.join(plot_dir, f"box_plot_attitude_{topic_name.replace(' ', '_')}_{self.num_rounds}_rounds.png")
+        plot_path = os.path.join(plot_dir, f"box_plot_attitude_{topic_name.replace(' ', '_')}_{self.num_rounds}_rounds.pdf")
         plt.savefig(plot_path)
         #plt.show()
         print(f"Generated plot: {plot_path}")
@@ -234,7 +300,7 @@ class DebateEvaluator:
         scores =  transcript.get(score_key, None)
         if scores is not None and not self.evaluate_again:
             return scores
-
+        
         topic_name = transcript["topic"]
 
         num_agents = len(self.debate_group)
@@ -392,7 +458,7 @@ class DebateEvaluator:
         elif self.scale == "1 to 7":
             plt.ylim(1, 7)
 
-        plot_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name}", "evaluation")
+        plot_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace(' ', '_')}", "evaluation")
         os.makedirs(plot_dir, exist_ok=True)
 
         datetime_match = re.search(r'transcript_(\d{2}_\d{2}_\d{2})\.json', self.transcript_filename)
@@ -478,9 +544,9 @@ class DebateEvaluator:
     #     plt.grid(True)
     #     plt.ylim(0, len(self.debate_group))
 
-    #     plot_dir = os.path.join(f"plots_{'_'.join(self.debate_group)}", topic_name)
-    #     os.makedirs(plot_dir, exist_ok=True)
-    #     plot_path = os.path.join(plot_dir, f"cumulative_plot_{topic_name}.png")
-    #     plt.savefig(plot_path)
-    #     #plt.show()
-    #     plt.close()
+        plot_dir = os.path.join(f"plots_{'_'.join(self.debate_group)}", topic_name)
+        os.makedirs(plot_dir, exist_ok=True)
+        plot_path = os.path.join(plot_dir, f"cumulative_plot_{topic_name}.png")
+        plt.savefig(plot_path)
+        #plt.show()
+        plt.close()

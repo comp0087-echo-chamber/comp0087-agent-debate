@@ -31,21 +31,21 @@ def run_debate_for_topic(topic):
             return chosen_name
 
     # Ensure agent1 is a neutral agent
-    agent1 = DebateAgent(name=get_name(config["agents"]["neutral"]["gender"]), model=config["agents"]["neutral"]["model"], affiliation={"leaning": None, "party": None}, age=config["agents"]["neutral"]["age"], gender=config["agents"]["neutral"]["gender"])
+    agent1 = DebateAgent(name=get_name(config["agents"]["neutral"]["gender"]), model=config["agents"]["neutral"]["model"], affiliation={"leaning": None, "party": None}, age=config["agents"]["neutral"]["age"], gender=config["agents"]["neutral"]["gender"], word_limit=config["word_limit"])
 
     # Create agents based on the config
     if config["debate_group"] == "neutral_republican":
-        agents = [agent1, DebateAgent(name= get_name(config["agents"]["republican"]["gender"]), model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"])]
+        agents = [agent1, DebateAgent(name= get_name(config["agents"]["republican"]["gender"]), model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"], word_limit=config["word_limit"])]
 
 
     elif config["debate_group"] == "neutral_democrat": 
-        agents = [agent1, DebateAgent(name= get_name(config["agents"]["democrat"]["gender"]), model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"])]
+        agents = [agent1, DebateAgent(name= get_name(config["agents"]["democrat"]["gender"]), model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"])]
 
     elif config["debate_group"] == "neutral_republican_democrat":
         agents = [
             agent1,
-            DebateAgent(name= get_name(config["agents"]["republican"]["gender"]), model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"]),
-            DebateAgent(name= get_name(config["agents"]["democrat"]["gender"]), model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"])
+            DebateAgent(name= get_name(config["agents"]["republican"]["gender"]), model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"], word_limit=config["word_limit"]),
+            DebateAgent(name= get_name(config["agents"]["democrat"]["gender"]), model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"])
         ]
     else:
         raise ValueError("Invalid debate group")
@@ -80,7 +80,6 @@ if __name__ == "__main__":
     
     else:
         for topic in topics:
-            print(f"Starting debates for topic {topic}")
             run_debate_for_topic(topic)
 
 
