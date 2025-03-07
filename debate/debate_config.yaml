@@ -34,7 +34,7 @@ use_multiprocessing: false
 
 num_debates: 10
 num_rounds: 10
-
+[]
 word_limit: 75
 
 # model examples - model: "gpt", "llama3.2:3b","mistral:7b", among others

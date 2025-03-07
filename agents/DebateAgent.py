@@ -71,7 +71,7 @@ class DebateAgent:
         else:
             response = ollama.chat(
                 model=self.model,
-                options={"num_ctx": 4096, "temperature": 0.1},
+                options={"num_ctx": 8192, "temperature": 0.1},
                 messages=[{"role": "user", "content": f"{self.prompt} \n{debate_phase_prompt if debate_phase_prompt != None else ''} \n{conversation}"}]  # TODO: Say Conversation History?
             )
         
