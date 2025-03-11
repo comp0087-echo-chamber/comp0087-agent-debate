@@ -30,11 +30,10 @@ non_political_debate_topics: # Add these to the baseline debate topics to use
 
 
 # Use multiprocessing to run a process for each topic being investigated. Not recommended on local machines, but could speed up lab machine progress
-use_multiprocessing: false
+use_multiprocessing: False
 
 num_debates: 10
 num_rounds: 10
-[]
 word_limit: 75
 
 # model examples - model: "gpt", "llama3.2:3b","mistral:7b", among others

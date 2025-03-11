@@ -14,6 +14,7 @@ COMPARE_PATH = config["compare_path"]
 DEBATE_GROUP = config["debate_group"]
 DEBATE_STRUCTURE = config["debate_structure"]
 NUM_DEBATES = config["num_debates"]
+AGENT_TYPES = config["agent_types"]
 
 def collect_evaluations():
     """
@@ -58,7 +59,9 @@ def collect_evaluations():
                 evaluations[topic] = {var: {"mean_of_means": [], "mean_of_iqrs": []} for var in variations}
 
             # Extract means & IQRs for all agent types
-            for agent_type in ["neutral", "republican", "democrat"]:
+            #for agent_type in ["neutral", "republican", "democrat"]:
+            for agent_type in AGENT_TYPES:
+                print(agent_type)
                 evaluations[topic][variation]["mean_of_means"].extend(topic_evals[topic][agent_type]["mean_of_means"])
                 evaluations[topic][variation]["mean_of_iqrs"].extend(topic_evals[topic][agent_type]["mean_of_iqrs"])
 

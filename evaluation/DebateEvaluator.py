@@ -20,7 +20,8 @@ class DebateEvaluator:
         self.scale_mapping = {
             '-3 to 3': [-3, 3],
             '1 to 7': [1, 7],
-            'agreement': [1, 7]
+            'agreement': [1, 7],
+            "binary_agreement": [0, 1]
         }
         self.color_mapping = {
             'neutral': 'tan',
@@ -46,7 +47,6 @@ class DebateEvaluator:
     def evaluate_debates(self, debate_transcripts_path):
         agent_pairs = []
 
-
         topics = [f for f in os.listdir(debate_transcripts_path) if os.path.isdir(os.path.join(debate_transcripts_path, f))]
         transcripts = {
             topic: sorted(
@@ -69,6 +69,8 @@ class DebateEvaluator:
                 for agent in self.debate_group[1:]:
                     agent_pairs.append(f'neutral_{agent}')
                 all_scores = {agents: [[] for _ in range(num_debates)] for agents in agent_pairs}
+            elif self.scale == "binary_agreement": 
+                all_scores = [[] for _ in range(num_debates)]
 
             for debate, transcript in enumerate(transcript_list):  # Loop through each transcript
                 transcript_path = os.path.join(debate_transcripts_path, topic, transcript)  # Get full path
@@ -80,17 +82,20 @@ class DebateEvaluator:
                 elif self.scale == "agreement":
                     for agent in agent_pairs:
                         all_scores[agent][debate] = scores[agent]
+                elif self.scale == "binary_agreement":
+                    all_scores[debate] = scores
 
             if self.scale == "1 to 7" or self.scale == "-3 to 3":
                 self._compute_metrics(all_scores, topic)
                 self._generate_attitude_box_plot(all_scores, topic)
+            elif self.scale == "binary_agreement":
+                self._generate_binary_agreement_box_plot(all_scores, topic)
             else:
-                self._generate_bin_box_plot(all_scores, topic)
+                self._generate_agreement_box_plot(all_scores, topic)
 
-    def _generate_bin_box_plot(self, agreement_scores, topic_name):
+    def _generate_agreement_box_plot(self, agreement_scores, topic_name):
         min_max_upper_lower_scores = {}
         turns = np.array(range(2, self.num_rounds ), dtype=np.float32)
-
 
         for i, (category, agent_agreement_scores) in enumerate(agreement_scores.items()):
             agent_agreement_scores = np.array(agent_agreement_scores, dtype=np.float32)  # Shape: (num_runs, num_turns)
@@ -153,7 +158,6 @@ class DebateEvaluator:
         print(f"Generated plot: {plot_path}")
         plt.close()
         
-
 
     def _compute_metrics(self, scores, topic):
         # We want to compute a number of different scores
@@ -242,7 +246,6 @@ class DebateEvaluator:
                 plt.scatter(turns[i], min_scores[i], color=colour, marker="x", s=50)  
             
         mean_scores = {}
-        legend_entries = []
         for agent in self.debate_group:
             mean_scores[agent] = np.mean(np.array(scores[agent]).T, axis=1)
             
@@ -260,7 +263,7 @@ class DebateEvaluator:
             # Retrieve agent metrics
             agent_metrics = metrics[metrics["agent"] == agent].iloc[0]
             legend_entry = (
-                f"{agent.title()}  (Δ: {agent_metrics['delta']}, "
+                f"{agent.title()}  (?: {agent_metrics['delta']}, "
                 f"IQR: {agent_metrics['mean_iqr']}, m: {agent_metrics['gradient']})"
             )
 
@@ -297,7 +300,8 @@ class DebateEvaluator:
         transcript = self._load_transcript(filename)
 
         # check if scores already computed
-        score_key = "attitude_scores" if self.scale != "agreement" else "agreement_scores"
+        
+        score_key = self.scale
         scores =  transcript.get(score_key, None)
         if scores is not None and not self.evaluate_again:
             return scores
@@ -312,6 +316,8 @@ class DebateEvaluator:
 
         if self.scale == 'agreement':
             scores = self._evaluate_agreement(transcript, topic_name)
+        elif self.scale == "binary_agreement":  
+            scores = self._evaluate_binary_agreement(transcript, topic_name)
         else:
             scores = self._evaluate_attitude_scores(transcript, topic_name)
 
@@ -320,6 +326,65 @@ class DebateEvaluator:
             json.dump(transcript, f, indent=4)
 
         return scores
+    
+    def _generate_binary_agreement_box_plot(self, binary_scores, topic_name):
+        turns = np.array(range(2, self.num_rounds), dtype=np.float32)
+
+        min_max_upper_lower_scores = {}
+
+        # Compute min and max values per debate (across all agents for each round)
+        min_max_upper_lower_scores['neutral'] = {
+            'min': np.min(binary_scores, axis=0),  
+            'max': np.max(binary_scores, axis=0),
+            'upper': np.quantile(binary_scores, 0.75, axis=0),
+            'lower': np.quantile(binary_scores, 0.25, axis=0)
+        }
+
+        plt.figure(figsize=(10, 5))
+
+        for agent, min_max_upper_lower in min_max_upper_lower_scores.items():
+            min_scores = min_max_upper_lower['min']
+            max_scores = min_max_upper_lower['max']
+            upper_scores = min_max_upper_lower['upper']
+            lower_scores = min_max_upper_lower['lower']
+
+            colour = self.color_mapping[agent]
+            
+            for i in range(len(turns)):
+                # vertical line
+                plt.plot([turns[i], turns[i]], [lower_scores[i], upper_scores[i]], color=colour, linewidth=2)
+                
+                # Top cap 
+                plt.plot([turns[i] - 0.1, turns[i] + 0.1], [upper_scores[i], upper_scores[i]], color=colour, linewidth=2)
+                
+                # Bottom cap 
+                plt.plot([turns[i] - 0.1, turns[i] + 0.1], [lower_scores[i], lower_scores[i]], color=colour, linewidth=2)
+
+                plt.scatter(turns[i], max_scores[i], color=colour, marker="x", s=50 )  
+                plt.scatter(turns[i], min_scores[i], color=colour, marker="x", s=50)  
+        
+        mean_scores = np.mean(np.array(binary_scores).T, axis=1)
+        plt.plot(turns, mean_scores, marker="o", linestyle="dashed", label = "Binary Agreement Scores", color="black")
+
+        plt.xlabel("Debate Turns")
+        plt.ylabel(f"Neutral Agent Agreement Score")
+        
+        plt.title(f"Neutral's Agreement Shift Over Debate: {topic_name.replace('_', ' ')}")
+        plt.legend()
+        plt.grid(True)
+
+        plt.ylim(0, 1)
+
+        # save plots
+        plot_dir = self.get_relative_path(f"bin_agreement_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace('_', ' ')}", "evaluation")
+        os.makedirs(plot_dir, exist_ok=True)
+
+        plot_path = os.path.join(plot_dir, f"box_plot_bin_agreement_{topic_name.replace(' ', '_')}_{self.num_rounds}_rounds.png")
+        plt.savefig(plot_path)
+        #plt.show()
+        print(f"Generated plot: {plot_path}")
+        plt.close()
+        
 
     # Attitude Scoring
     def _evaluate_attitude_scores(self, transcript, topic_name):
@@ -471,6 +536,30 @@ class DebateEvaluator:
         #plt.show()
         plt.close()
 
+    def _evaluate_binary_agreement(self, transcript, topic_name):
+        debate_rounds = self._get_num_debate_rounds(transcript)
+        binary_scores = [0 for _ in range(debate_rounds - 1)] 
+
+        for round_num in range(1, debate_rounds):
+            responses = {}
+            responses['neutral'] = transcript.get('neutral', {}).get(f"round_{round_num}")
+            responses['republican'] = transcript.get('republican', {}).get(f"round_{round_num - 1}")
+            responses['democrat'] = transcript.get('democrat', {}).get(f"round_{round_num - 1}")
+            prompt = self._generate_prompt_binary_agreement_metric(responses, topic_name)
+
+            try:
+                result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}])
+                
+                score = self._parse_score(result)
+
+                if score is not None:
+                    binary_scores[round_num - 1] = score
+            except Exception as e:
+                print(f"Error with model response: {e}")
+        
+        print(f"Completed binary agreement evaluation of debate topic {topic_name}.")
+        return binary_scores
+
 
     # Agreement/Disagreement Scoring
     def _evaluate_agreement(self, transcript, topic_name):
@@ -480,20 +569,20 @@ class DebateEvaluator:
         for agent in self.debate_group[1:]:
             agent_pairs.append(f'neutral_{agent}')
 
-        agreement_scores = {agents: [0 for _ in range(2, debate_rounds + 1)] for agents in agent_pairs}
+        agreement_scores = {agents: [0 for _ in range(1, debate_rounds)] for agents in agent_pairs}
 
-        for round_num in range(2, debate_rounds + 1):
+        for round_num in range(1, debate_rounds):
             responses = {}
             responses['neutral'] = transcript.get('neutral', {}).get(f"round_{round_num}")
             responses['republican'] = transcript.get('republican', {}).get(f"round_{round_num - 1}")
             
-            prompt_neutral_republican = self._generate_prompt_bin_metric(responses, topic_name)
+            prompt_neutral_republican = self._generate_prompt_agreement_metric(responses, topic_name)
             
             responses = {}
             responses['neutral'] = transcript.get('neutral', {}).get(f"round_{round_num}")
             responses['democrat'] = transcript.get('democrat', {}).get(f"round_{round_num - 1}")
 
-            prompt_neutral_democrat = self._generate_prompt_bin_metric(responses, topic_name)
+            prompt_neutral_democrat = self._generate_prompt_agreement_metric(responses, topic_name)
 
             try:
                 res_neutral_republican = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt_neutral_republican}])
@@ -502,17 +591,16 @@ class DebateEvaluator:
                 score_neutral_democrat = self._parse_score(res_neutral_democrat)
                 score_neutral_republican = self._parse_score(res_neutral_republican)
                 if score_neutral_democrat is not None and score_neutral_republican is not None:
-                    agreement_scores['neutral_republican'][round_num - 2] = score_neutral_republican
-                    agreement_scores['neutral_democrat'][round_num - 2] = score_neutral_democrat
+                    agreement_scores['neutral_republican'][round_num - 1] = score_neutral_republican
+                    agreement_scores['neutral_democrat'][round_num - 1] = score_neutral_democrat
             except Exception as e:
                 print(f"Error with model response: {e}")
 
-        # self._generate_plot_cumulative_bin(debate_rounds, agreement_scores, topic_name)
         print(f"Completed agreement/disagreement evaluation of debate topic {topic_name}.")
         return agreement_scores
 
 
-    def _generate_prompt_bin_metric(self, responses, topic_name):
+    def _generate_prompt_agreement_metric(self, responses, topic_name):
         description = "Assign a Likert score from 1 to 7, to describe to what extent the neutral and the other agent agree or disagree with one another. \n "
         description += """Assign a Likert score from 1 to 7, where:
                         1 = Strongly Disagree, 2 = Moderately Disagree, 3 = Slightly Disagree,
@@ -530,6 +618,21 @@ class DebateEvaluator:
 
         return final_prompt
 
+    def _generate_prompt_binary_agreement_metric(self, responses, topic_name):
+        description = "Assign a value of 0 if the neutral agent's responses and opinions align closely with the Republican agent's responses and opinions MORE. " \
+                      "OR assign a value of 1 if the neutral agent's responses and opinions align closely with the Democrat agent's responses and opinions MORE. \n"
+        
+        
+        final_prompt = (
+            f"Your task is to evaluate the arguments by multiple agents in a response for a given political debate and assign a score based on the specified rule. "
+            f"\n\n{description}"
+            f"\n\nReturn ONLY the INTEGER NUMERIC SCORE as described. Do not provide any explanation or additional text."
+            f"\n\n### Now evaluate the following debate. ###"
+        )
+        for agent in responses.keys():
+            final_prompt += f"\n{agent}: {responses[agent]}"
+
+        return final_prompt
 
     # def _generate_plot_cumulative_bin(self, debate_rounds, agreement_scores, topic_name):
     #     plt.figure(figsize=(10, 5))
