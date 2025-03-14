@@ -36,11 +36,13 @@ num_debates: 10
 num_rounds: 10
 word_limit: 75
 
+use_extended_personas: true  # if false, uses personas we've been using so far
+
 # model examples - model: "gpt", "llama3.2:3b","mistral:7b", among others
 agents:
   neutral:
-    age: null
-    gender: null
+    age: null  # options: "21", "35", "67"
+    gender: null  # options: "male", "female"
     model: "llama3.2:3b"
   republican:
     age: null
