@@ -59,7 +59,6 @@ class DebateAgent:
     def generate_prompt(self, use_extended_personas):
 
         if not use_extended_personas:
-            print("Not using extended personas.")
             party_support = f" who supports the {self.affiliation['party']} party" if self.affiliation['party'] != None else ""
 
             self.prompt = f"You are {self.name}," \
