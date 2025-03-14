@@ -51,7 +51,7 @@ def run_debate_for_topic(topic):
         raise ValueError("Invalid debate group")
 
     # Run the debate for this topic
-    dm = DebateManager(agents, topic, config["num_rounds"], config["debate_structure"], config["debate_group"])
+    dm = DebateManager(agents, topic, config["num_rounds"], config["debate_structure"], config["debate_group"], config["use_extended_personas"])
     dm.start(config["num_debates"])
 
     print(f"Debate completed for topic: {topic}")
