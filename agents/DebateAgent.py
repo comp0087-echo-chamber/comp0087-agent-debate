@@ -11,8 +11,9 @@ client = OpenAI(api_key=api_key)
 # TODO: Update all agent prompts based on prompting used in prev multiagent debate papers
 
 class DebateAgent:
-    def __init__(self, name, model, affiliation, age, gender,  word_limit, temperature=None):
+    def __init__(self, name, identifier, model, affiliation, age, gender,  word_limit, temperature=None):
         self.name = name
+        self.identifier = identifier
         self.model = model
         self.affiliation = affiliation
         self.age = age
@@ -45,7 +46,6 @@ class DebateAgent:
             self.debate_purpose += f"This is a debate about {topic}. Your goal is to listen to the other agent(s). Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself in the conversation history."
         else:
             self.debate_purpose += f"This is a debate about {topic}. Your goal is to convince the other agent(s) of your position. Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself in the conversation history."
-
     def generate_prompt(self):
         party_support = f" who supports the {self.affiliation['party']} party" if self.affiliation['party'] != None else ""
 

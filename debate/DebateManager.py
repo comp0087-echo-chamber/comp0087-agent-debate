@@ -22,12 +22,22 @@ class DebateManager:
             "neutral": {},
             "republican": {},
             "democrat": {}
-        }
+        }         
 
         self.ordered_conversation_history = []  # conversation history to pass to agents
         self.conversation_for_transcription = []
 
         self.round_num_counts = {"neutral": 0, "democrat": 0, "republican": 0}
+
+
+        if debate_group in ["republican_republican2"]:
+            self.data_for_evaluation["republican2"] = {}
+            self.round_num_counts["republican2"] = 0
+
+        if debate_group in ["democrat_democrat2"]:
+            self.data_for_evaluation["democrat2"] = {}
+            self.round_num_counts["democrat2"] = 0
+
 
 
     def _print_response(self, agent_details, response):
@@ -53,10 +63,10 @@ class DebateManager:
         self.ordered_conversation_history.append(f"{agent.name}: {response}")
         self.conversation_for_transcription.append({"agent": agent, "response": response})
 
-        agent_type = agent.affiliation['party'].lower() if agent.affiliation['party'] != None else "neutral"
-        round_num = self.round_num_counts[agent_type]
-        self.data_for_evaluation[agent_type][f"round_{round_num}"] = response
-        self.round_num_counts[agent_type] += 1
+        #agent_type = agent.affiliation['party'].lower() if agent.affiliation['party'] != None else "neutral"
+        round_num = self.round_num_counts[agent.identifier]
+        self.data_for_evaluation[agent.identifier][f"round_{round_num}"] = response
+        self.round_num_counts[agent.identifier] += 1
 
 
     def start(self, num_debates=10):
@@ -82,6 +92,14 @@ class DebateManager:
             "republican": {},
             "democrat": {}
         }
+
+        if self.debate_group in ["republican_republican2"]:
+            self.data_for_evaluation["republican2"] = {}
+            self.round_num_counts["republican2"] = 0
+
+        if self.debate_group in ["democrat_democrat2"]:
+            self.data_for_evaluation["democrat2"] = {}
+            self.round_num_counts["democrat2"] = 0
 
 
     def start_structured_debate(self):
