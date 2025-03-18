@@ -10,8 +10,11 @@ from datetime import datetime
 
 class DebateManager:
 
-    def __init__(self, agents, topic, rounds, debate_structure, debate_group):
+    def __init__(self, agents, topic, debate_scenario, debate_question, eval_prompt, rounds, debate_structure, debate_group):
         self.topic = topic
+        self.debate_scenario = debate_scenario
+        self.debate_question = debate_question
+        self.eval_prompt = eval_prompt
         self.agents = agents
         self.rounds = rounds
         self.debate_structure = debate_structure
@@ -19,6 +22,8 @@ class DebateManager:
 
         self.data_for_evaluation = {  # used for evaluation
             "topic": self.topic,
+            "eval_prompt": self.eval_prompt,
+            "debate_question":self.debate_question,
             "neutral": {},
             "republican": {},
             "democrat": {}
@@ -36,8 +41,11 @@ class DebateManager:
 
     def generate_agent_prompts(self):
         for agent in self.agents:
-            agent.generate_debate_purpose(self.topic, self.rounds, self.agents)
-
+            if self.topic:
+                agent.generate_debate_purpose(self.topic, self.rounds, self.agents)
+            else:
+                agent.generate_debate_purpose_with_scenario(self.debate_scenario, self.debate_question)
+                
         for agent in self.agents:
             agent.generate_prompt()
             print(agent.prompt, "\n")
@@ -78,6 +86,8 @@ class DebateManager:
         self.round_num_counts = {"neutral": 0, "democrat": 0, "republican": 0}
         self.data_for_evaluation = {  # used for evaluation
             "topic": self.topic,
+            "debate_question":self.debate_question,
+            "eval_prompt": self.eval_prompt,
             "neutral": {},
             "republican": {},
             "democrat": {}
@@ -115,7 +125,7 @@ class DebateManager:
 
     def save_evaluation_data(self):
         timestamp = datetime.now().strftime('%H_%M_%S')
-        save_folder = self.get_relative_path(f"eval_data/{self.debate_group}/{self.debate_structure}/{self.topic.replace(' ', '_')}")
+        save_folder = self.get_relative_path(f"eval_data/{self.debate_group}/{self.debate_structure}/{self.topic.replace(' ', '_') if self.topic else self.debate_question[:-1].replace(' ', '_')}")
         os.makedirs(save_folder, exist_ok=True)
         filename = f"{save_folder}/transcript_{timestamp}.json"
     
@@ -128,7 +138,7 @@ class DebateManager:
     def save_debate_transcription(self):
         timestamp = datetime.now().strftime('%H_%M_%S')
 
-        save_folder = self.get_relative_path(f"debate_transcripts/{self.debate_group}/{self.debate_structure}/{self.topic.replace(' ', '_')}")
+        save_folder = self.get_relative_path(f"debate_transcripts/{self.debate_group}/{self.debate_structure}/{self.topic.replace(' ', '_') if self.topic else self.debate_question[:-1].replace(' ', '_')}")
         os.makedirs(save_folder, exist_ok=True)
 
         # TXT
@@ -141,6 +151,9 @@ class DebateManager:
         json_filename = f'{save_folder}/transcript_{timestamp}.json'
         json_data = {
             "topic": self.topic,
+            "debate scenario": self.debate_scenario,
+            "debate question": self.debate_question,
+            "eval_prompt": self.eval_prompt,
             "timestamp": timestamp,
             "agents": [ {
                 "agent_id": index,

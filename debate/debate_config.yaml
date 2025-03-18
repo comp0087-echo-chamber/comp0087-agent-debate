@@ -3,14 +3,31 @@
 debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat"
 debate_structure: "structured"  # options: "structured", "unstructured"
 
+use_scenarios: True
+
 baseline_debate_topics:
   - "illegal immigration"
   - "gun violence"
   - "climate change"
   - "racism"
   
+baseline_debate_scenarios:
+- "A major international corporation is considering opening a large manufacturing plant in your city.\nThe plant will create thousands of jobs but will also increase carbon emissions. \nEnvironmental groups are pushing for strict regulations, while business leaders argue that \nregulations could discourage investment."
+- "A company is caught hiring undocumented workers at lower wages while refusing to hire legal \nresidents for the same jobs."
+- "Congress is considering a bill that includes both increased border security and a path to \nlegal status for undocumented immigrants already in the U.S."
+- "Countries like Australia and the UK have successfully reduced gun violence through strict \ngun control laws, but the U.S. has a unique gun culture \nand a constitutional right to bear arms."
 
+baseline_debate_questions:
+- "Should the government allow more flexibility with environmental regulations on the company in exchange for job creation?"
+- "Should businesses that hire undocumented workers be penalized?"
+- "Should immigration reform put security first?"
+- "Should the U.S. adopt similar strict gun control laws?"
 
+eval_prompts:
+- "in allowing the company more flexibility with environmental regulations?"
+- "that the businesses should be penalized?"
+- "that immigration reform should put security first?"
+- "that the U.S. should adopt strict gun control laws?"
 
 extra_debate_topics:
   - "illegal immigration"

@@ -46,6 +46,20 @@ class DebateAgent:
         else:
             self.debate_purpose += f"This is a debate about {topic}. Your goal is to convince the other agent(s) of your position. Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself in the conversation history."
 
+    def generate_debate_purpose_with_scenario(self, debate_scenario, debate_question):
+        self.debate_purpose = ""
+        self.debate_purpose += f"This is the scenario: \n{debate_scenario}\n"
+        self.debate_purpose += f"The debate question is: {debate_question}\n"
+       
+        if "deepseek-r1" in self.model:
+            self.debate_purpose += "After your reasoning, before writing your response, use the phrase 'My response:' exactly. "
+        if self.affiliation["leaning"] == None:
+
+            # NOTE: when given the num rounds in debate `{rounds}-round` agents sometimes repond like this for current prompt: "Bob, Republican > I cannot participate in a debate that will be used to promote a specific political agenda. Is there something else I can help you with?"
+            self.debate_purpose += f"Your goal is to listen to the other agent(s). Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself in the conversation history."
+        else:
+            self.debate_purpose += f"Your goal is to convince the other agent(s) of your position. Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself in the conversation history."
+
     def generate_prompt(self):
         party_support = f" who supports the {self.affiliation['party']} party" if self.affiliation['party'] != None else ""
 

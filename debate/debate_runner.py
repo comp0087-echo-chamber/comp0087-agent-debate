@@ -11,7 +11,7 @@ from agents.DebateAgent import DebateAgent
 from debate.DebateManager import DebateManager
 
 
-def run_debate_for_topic(topic):
+def run_debate_for_topic(topic, debate_scenario=None, debate_question=None, eval_prompt=None):
 
     print(f"Starting debate for topic: {topic}")
 
@@ -51,7 +51,7 @@ def run_debate_for_topic(topic):
         raise ValueError("Invalid debate group")
 
     # Run the debate for this topic
-    dm = DebateManager(agents, topic, config["num_rounds"], config["debate_structure"], config["debate_group"])
+    dm = DebateManager(agents, topic, debate_scenario, debate_question, eval_prompt, config["num_rounds"], config["debate_structure"], config["debate_group"])
     dm.start(config["num_debates"])
 
     print(f"Debate completed for topic: {topic}")
@@ -79,8 +79,15 @@ if __name__ == "__main__":
             pool.map(run_debate_for_topic, topics)
     
     else:
-        for topic in topics:
-            run_debate_for_topic(topic)
+        if config["use_scenarios"]:
+            debate_scenarios = config["baseline_debate_scenarios"]
+            debate_questions = config["baseline_debate_questions"]
+            eval_prompts = config["eval_prompts"]
+            for scenario, question, eval_prompt in zip(debate_scenarios, debate_questions, eval_prompts):
+                run_debate_for_topic(None, scenario, question, eval_prompt)
+        else:
+            for topic in topics:
+                run_debate_for_topic(topic)
 
 
     print("All debates completed")
