@@ -10,7 +10,7 @@ from datetime import datetime
 
 class DebateManager:
 
-    def __init__(self, agents, topic, debate_scenario, debate_question, eval_prompt, rounds, debate_structure, debate_group):
+    def __init__(self, agents, topic, debate_scenario, debate_question, eval_prompt, rounds, debate_structure, debate_group, use_extended_personas):
         self.topic = topic
         self.debate_scenario = debate_scenario
         self.debate_question = debate_question
@@ -19,6 +19,7 @@ class DebateManager:
         self.rounds = rounds
         self.debate_structure = debate_structure
         self.debate_group = debate_group  # used for filenames when saving files
+        self.use_extended_personas = use_extended_personas
 
         self.data_for_evaluation = {  # used for evaluation
             "topic": self.topic,
@@ -47,7 +48,7 @@ class DebateManager:
                 agent.generate_debate_purpose_with_scenario(self.debate_scenario, self.debate_question)
                 
         for agent in self.agents:
-            agent.generate_prompt()
+            agent.generate_prompt(self.use_extended_personas)
             print(agent.prompt, "\n")
 
 

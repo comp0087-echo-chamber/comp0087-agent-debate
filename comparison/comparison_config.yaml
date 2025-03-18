@@ -1,7 +1,13 @@
 debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat"
 debate_structure: "structured"  # options: "structured", "unstructured"
 
-compare_path: "comparison/evaluated_data/gender_opinionated" # This is the path to the directory that contains the directories of all the different variations 
+agent_types:  # Evaluate significance for the specified agent types
+  - neutral
+  #- republican
+  #- democrat
+
+
+compare_path: "comparison/evaluated_data/llama_gpt_comparison_dem_gpt_rep_llama" # This is the path to the directory that contains the directories of all the different variations 
 # for example for gender we have male and female, For age we would have the different ages
 num_debates: 10
 num_rounds: 12

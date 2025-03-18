@@ -151,6 +151,7 @@ class DebateEvaluator:
         plot_dir = self.get_relative_path(f"agreement_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace('_', ' ')}", "evaluation")
         os.makedirs(plot_dir, exist_ok=True)
 
+        # THis was previous max_num_rounds ------------------------------------------------------------ V  changed to self.num_rounds because max_num_rounds was undefined
         plot_path = os.path.join(plot_dir, f"box_plot_disagreement_{topic_name.replace(' ', '_')}_{self.num_rounds}_rounds.png")
         plt.savefig(plot_path)
         #plt.show()
