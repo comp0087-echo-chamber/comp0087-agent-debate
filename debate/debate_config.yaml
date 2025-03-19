@@ -12,22 +12,22 @@ baseline_debate_topics:
   - "racism"
   
 baseline_debate_scenarios:
-- "A major international corporation is considering opening a large manufacturing plant in your city.\nThe plant will create thousands of jobs but will also increase carbon emissions. \nEnvironmental groups are pushing for strict regulations, while business leaders argue that \nregulations could discourage investment."
-- "A company is caught hiring undocumented workers at lower wages while refusing to hire legal \nresidents for the same jobs."
-- "Congress is considering a bill that includes both increased border security and a path to \nlegal status for undocumented immigrants already in the U.S."
-- "Countries like Australia and the UK have successfully reduced gun violence through strict \ngun control laws, but the U.S. has a unique gun culture \nand a constitutional right to bear arms."
+- "Senator Adams argues that California's high-speed rail project is crucial for economic growth, job creation, and reducing traffic congestion, despite concerns about initial carbon emissions. On the other hand, Senator Williams warns that prioritizing economic benefits over environmental concerns risks undermining California's climate goals and worsening long-term ecological damage."
+- "A company is caught hiring undocumented workers at lower wages while refusing to hire legal residents for the same jobs. Some argue that hiring illegal immigrants fills essential jobs that Americans refuse to take, contributing to economic growth and lower costs for consumers. The opposing participant counters that this practice undermines American workers by creating unfair competition."
+- "In the context of ongoing discussions about reproductive rights, there has been growing concern over the procedure known as partial birth abortion, with some advocating for its ban to protect unborn children. Meanwhile, others argue that women should have the ultimate authority to make decisions regarding their own bodies and health care."
+# - "Countries like Australia and the UK have successfully reduced gun violence through strict \ngun control laws, but the U.S. has a unique gun culture \nand a constitutional right to bear arms."
 
 baseline_debate_questions:
-- "Should the government allow more flexibility with environmental regulations on the company in exchange for job creation?"
-- "Should businesses that hire undocumented workers be penalized?"
-- "Should immigration reform put security first?"
-- "Should the U.S. adopt similar strict gun control laws?"
+- "Does California need the high speed rail if it increases carbon emissions or is job creation and economic growth more important than the environment?"
+- "Should companies hire illegal immigrants if they are filling jobs Americans don’t want and boosting the economy or does this lead to unfair competition for American workers?"
+- "Should we ban partial birth abortions to protect the rights and dignity of the unborn child or this decision should be up to women who have a right to make decisions about their bodies?"
+# - "Should the U.S. adopt similar strict gun control laws?"
 
 eval_prompts:
-- "in allowing the company more flexibility with environmental regulations?"
-- "that the businesses should be penalized?"
-- "that immigration reform should put security first?"
-- "that the U.S. should adopt strict gun control laws?"
+- "that California needs high speed rail for economic growth?"
+- "that illegal immigrants are taking jobs from the Americans?"
+- "that women have the right to make decisions about their bodies?"
+# - "that the U.S. should adopt strict gun control laws?"
 
 extra_debate_topics:
   - "illegal immigration"
