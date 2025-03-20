@@ -194,10 +194,8 @@ def evaluate_response(question, response, affiliation, gender, age):
     if age and age.lower() != "n/a":
         demographics["Age"] = age
 
-    # Format demographics text if present
     demographics_text = "\n".join([f"**Agent {key}:** {value}" for key, value in demographics.items()])
 
-    # Determine whether to include gender or age demographics in the prompt
     demographics_ref = ""
     if demographics:
         demographics_ref = " and " + " and ".join([f"{key.lower()} demographics" for key in demographics.keys()])
@@ -226,7 +224,6 @@ def evaluate_response(question, response, affiliation, gender, age):
         # print(prompt)
         # print("\n\n",llm_text)
 
-        # Extract alignment evaluation and explanation using regex
         match = re.search(r"(?:\*\*)?\s*(?:Evaluation)\s*:\s*(Aligned|Not Aligned)", llm_text, re.IGNORECASE)
         explanation_match = re.search(r"(?:\*\*)?\s*Explanation\s*:\s*(.+)", llm_text, re.IGNORECASE)
 
@@ -259,19 +256,11 @@ def evaluate_interviews():
             if "Evaluation" in row and row["Evaluation"]:  # skip already processed rows
                 continue
 
-            # question = row["Question"]
-            # agent_response = row["Response"]
-            # affiliation = row["Affiliation"]
-            # gender = row["Gender"]
-            # age = row["Age"]
-
             evaluation, explanation = evaluate_response(row["Question"], row["Response"], row["Affiliation"], row["Gender"], row["Age"])
             row["Evaluation"] = evaluation
             row["Explanation"] = explanation
 
-            # print(evaluation, explanation)
-
-            # Save every `batch_size` rows to prevent data loss
+            # save every `batch_size` rows to prevent data loss
             if (i + 1) % batch_size == 0 or i == len(rows) - 1:
                 with open(output_csv_filename, mode="w", newline="", encoding="utf-8") as output_csv:
                     writer = csv.DictWriter(output_csv, fieldnames=fieldnames)
@@ -284,7 +273,6 @@ def visualise_evaluation():
     base_path = os.path.dirname(os.path.abspath(__file__))
     df = pd.read_csv(os.path.join(base_path, "agent_validation_evaluated.csv"))
 
-    # Convert both columns to strings
     df["Gender"] = df["Gender"].astype(str)
     df["Age"] = pd.to_numeric(df["Age"], errors="coerce")
     df["Age"] = df["Age"].apply(lambda x: str(int(x)) if not pd.isna(x) else "nan")
@@ -299,41 +287,31 @@ def visualise_evaluation():
 
     df["Persona Category"] = df.apply(get_demographic_category, axis=1)
 
-    # Compute alignment percentage
     summary = (
         df.groupby(["Affiliation", "Persona Category", "Model"])["Evaluation"]
         .apply(lambda x: (x.str.lower() == "aligned").mean() * 100)
         .reset_index()
     )
 
-    # Pivot for heatmap
     heatmap_data = summary.pivot(index=["Affiliation", "Persona Category"], columns="Model", values="Evaluation")
 
-    # Ensure all demographic categories exist
     expected_categories = ["baseline", "age", "gender"]
     for affiliation in df["Affiliation"].unique():
         for category in expected_categories:
             if (affiliation, category) not in heatmap_data.index:
                 heatmap_data.loc[(affiliation, category), :] = None  # Fill missing categories with NaN
 
-    # Sort index to meet specific ordering criteria:
     affiliation_order = ["neutral", "democrat", "republican"]
     persona_order = ["baseline", "gender", "age"]
     heatmap_data = heatmap_data.reindex(pd.MultiIndex.from_product([affiliation_order, persona_order], names=["Affiliation", "Persona Category"]))
 
-    # Plot heatmap
     plt.figure(figsize=(12, 6))
     sns.heatmap(heatmap_data, annot=True, cmap="RdYlGn", linewidths=0.5, fmt=".1f")
 
-    # Set title, axis labels, and figure explanation
     plt.title("Alignment Percentage of Agents to Different Political Leanings and Demographics (Age & Gender)",
               fontsize=12, pad=20)
     plt.xlabel("Agent Models", fontsize=11)
     plt.ylabel("Agent Persona Types", fontsize=11)
-
-    # Adding figure explanation
-    # plt.figtext(0.5, 0.01, "This heatmap shows the percentage of alignment between personas and the true perspectives for different political affiliations and demographic factors. Categories considered include Age (21, 35, 67), Gender (Male, Female), and Baseline. Evaluated using LLM-as-a-judge with Mistral 7B).",
-    #             wrap=True, horizontalalignment='center', fontsize=10, color='gray')
 
     heatmap_path = os.path.join(base_path, "persona_alignment_heatmap.pdf")
     plt.savefig(heatmap_path, dpi=300, bbox_inches="tight")
