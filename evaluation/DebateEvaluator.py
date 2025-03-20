@@ -26,7 +26,11 @@ class DebateEvaluator:
         self.color_mapping = {
             'neutral': 'tan',
             'republican': 'red',
-            'democrat': 'blue'
+            'democrat': 'blue',
+            'republican2': 'firebrick',
+            'democrat2': 'navy',
+            'republican3': 'lightcoral',
+            'democrat3': 'skyblue',
         }
         self.model = model
         self.num_model_calls = 3
@@ -167,6 +171,7 @@ class DebateEvaluator:
         for agent, rounds in scores.items():
             rounds_array = np.array(rounds)
 
+            print(f"Agent: {agent}, First Round Scores: {rounds_array[:, 0]}, Last Round Scores: {rounds_array[:, -1]}")
             # Mean in the first round
             mean_first_round = round(np.mean(rounds_array[:, 0]),3)
 
@@ -256,7 +261,7 @@ class DebateEvaluator:
             # Retrieve agent metrics
             agent_metrics = metrics[metrics["agent"] == agent].iloc[0]
             legend_entry = (
-                f"{agent.title()}  (?: {agent_metrics['delta']}, "
+                f"{agent.title()}  (Δ: {agent_metrics['delta']}, "
                 f"IQR: {agent_metrics['mean_iqr']}, m: {agent_metrics['gradient']})"
             )
 
@@ -304,8 +309,8 @@ class DebateEvaluator:
         # TODO: This needs updating - im a bit confused whats going on here with the difference in evaluation of using or not using scenarios
 
         num_agents = len(self.debate_group)
-        if num_agents not in [2, 3]:
-            raise ValueError("The evaluation data in JSON file must contain exactly 2 or 3 agents.")
+        if num_agents not in [2, 3, 4]:
+            raise ValueError("The evaluation data in JSON file must contain exactly 2, 3 or 4 agents.")
 
         scores = None
         if self.scale == 'agreement':
@@ -552,6 +557,13 @@ class DebateEvaluator:
             responses['neutral'] = transcript.get('neutral', {}).get(f"round_{round_num}")
             responses['republican'] = transcript.get('republican', {}).get(f"round_{round_num - 1}")
             responses['democrat'] = transcript.get('democrat', {}).get(f"round_{round_num - 1}")
+
+            if self.debate_group in ["republican_republican"]: 
+                responses['republican2'] = transcript.get('republican2', {}).get(f"round_{round_num - 1}")
+            
+            if self.debate_group in ["democrat_democrat"]: 
+                responses['democrat2'] = transcript.get('democrat2', {}).get(f"round_{round_num - 1}")
+
             prompt = self._generate_prompt_binary_agreement_metric(responses, topic_name)
 
             try:

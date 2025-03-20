@@ -1,17 +1,17 @@
 # model: "llama3.2:3b"
 
-debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat"
+debate_group: "neutral_republican_republican2_republican3"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat", "republican_republican2", "democrat_democrat2"
 debate_structure: "structured"  # options: "structured", "unstructured"
 
 use_scenarios: True
-use_extended_personas: false  # if false, uses personas we've been using so far
+use_extended_personas: True  # if false, uses personas we've been using so far
 
 baseline_debate_topics: # If you want to not do a certain topic when doign scenarios, comment out the baseline_debate_topics, baseline_debate_scenarios, baseline_debate_questions and eval_prompts line for the given topic
   - "illegal immigration"
   - "gun violence"
   - "abortion"
   - "climate change"
-  
+
 baseline_debate_scenarios:
 - "A company is caught hiring undocumented workers at lower wages while refusing to hire legal residents for the same jobs. Some argue that hiring illegal immigrants fills essential jobs that Americans refuse to take, contributing to economic growth and lower costs for consumers. The opposing participant counters that this practice undermines American workers by creating unfair competition."
 - "After a rise in violent crime and mass shootings, lawmakers are under pressure to find solutions that balance public safety with constitutional rights.  One argues that tighter restrictions prevent guns from falling into the wrong hands, while the other warns that such measures infringe people’s individual rights and limit self-defense capabilities.  "
@@ -61,11 +61,30 @@ agents:
     age: null  # options: "21", "35", "67"
     gender: null  # options: "male", "female"
     model: "llama3.2:3b"
+
   republican:
     age: null
     gender: null
     model: "llama3.2:3b"
   democrat:
+    age: null
+    gender: null
+    model: "llama3.2:3b"
+
+  republican2:
+    age: null
+    gender: null
+    model: "llama3.2:3b"
+  democrat2:
+    age: null
+    gender: null
+    model: "llama3.2:3b"
+
+  republican3:
+    age: null
+    gender: null
+    model: "llama3.2:3b"
+  democrat3:
     age: null
     gender: null
     model: "llama3.2:3b"
