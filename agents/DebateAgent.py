@@ -12,7 +12,7 @@ client = OpenAI(api_key=api_key)
 # TODO: Update all agent prompts based on prompting used in prev multiagent debate papers
 
 class DebateAgent:
-    def __init__(self, name, model, affiliation, age, gender,  word_limit, temperature):
+    def __init__(self, name, identifier, model, affiliation, age, gender,  word_limit, temperature):
         self.name = name
         self.identifier = identifier
         self.model = model
