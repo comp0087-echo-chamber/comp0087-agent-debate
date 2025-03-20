@@ -4,6 +4,7 @@ debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "n
 debate_structure: "structured"  # options: "structured", "unstructured"
 
 use_scenarios: True
+use_extended_personas: false  # if false, uses personas we've been using so far
 
 baseline_debate_topics: # If you want to not do a certain topic when doign scenarios, comment out the baseline_debate_topics, baseline_debate_scenarios, baseline_debate_questions and eval_prompts line for the given topic
   - "illegal immigration"
@@ -53,8 +54,6 @@ num_debates: 10
 num_rounds: 10
 word_limit: 75
 temperature: 1
-
-use_extended_personas: false  # if false, uses personas we've been using so far
 
 # model examples - model: "gpt", "llama3.2:3b","mistral:7b", among others
 agents:
