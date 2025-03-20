@@ -306,10 +306,12 @@ class DebateEvaluator:
         if scores is not None and not self.evaluate_again:
             return scores
         
-        topic_name = transcript["topic"]
-        if transcript["topic"] is None:
-            topic_name = transcript["debate_question"]
-            eval_prompt = transcript["eval_prompt"]
+        topic = transcript["topic"]
+        debate_scenario = transcript["debate_scenario"]
+        debate_question = transcript["debate_question"]
+        eval_prompt = transcript["eval_prompt"]
+
+        # TODO: This needs updating - im a bit confused whats going on here with the difference in evaluation of using or not using scenarios
 
         num_agents = len(self.debate_group)
         if num_agents not in [2, 3]:
@@ -318,11 +320,11 @@ class DebateEvaluator:
         scores = None
 
         if self.scale == 'agreement':
-            scores = self._evaluate_agreement(transcript, topic_name)
+            scores = self._evaluate_agreement(transcript, topic)
         elif self.scale == "binary_agreement":  
-            scores = self._evaluate_binary_agreement(transcript, topic_name)
+            scores = self._evaluate_binary_agreement(transcript, topic)
         else:
-            scores = self._evaluate_attitude_scores(transcript, topic_name, eval_prompt)
+            scores = self._evaluate_attitude_scores(transcript, topic, eval_prompt)
 
         transcript[score_key] = scores
         with open(filename, 'w', encoding='utf-8') as f:

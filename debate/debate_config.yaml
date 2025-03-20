@@ -3,7 +3,7 @@
 debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat"
 debate_structure: "structured"  # options: "structured", "unstructured"
 
-use_scenarios: True
+use_scenarios: False
 
 baseline_debate_topics: # If you want to not do a certain topic when doign scenarios, comment out the baseline_debate_topics, baseline_debate_scenarios, baseline_debate_questions and eval_prompts line for the given topic
   - "climate change"
@@ -49,7 +49,7 @@ non_political_debate_topics: # Add these to the baseline debate topics to use
 # Use multiprocessing to run a process for each topic being investigated. Not recommended on local machines, but could speed up lab machine progress
 use_multiprocessing: False
 
-num_debates: 3
+num_debates: 1
 num_rounds: 10
 word_limit: 75
 temperature: 1
