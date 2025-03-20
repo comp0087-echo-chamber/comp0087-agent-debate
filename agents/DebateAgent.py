@@ -12,7 +12,7 @@ client = OpenAI(api_key=api_key)
 # TODO: Update all agent prompts based on prompting used in prev multiagent debate papers
 
 class DebateAgent:
-    def __init__(self, name, model, affiliation, age, gender,  word_limit, temperature=None):
+    def __init__(self, name, model, affiliation, age, gender,  word_limit, temperature):
         self.name = name
         self.model = model
         self.affiliation = affiliation
@@ -43,23 +43,23 @@ class DebateAgent:
         if self.affiliation["leaning"] == None:
 
             # NOTE: when given the num rounds in debate `{rounds}-round` agents sometimes repond like this for current prompt: "Bob, Republican > I cannot participate in a debate that will be used to promote a specific political agenda. Is there something else I can help you with?"
-            self.debate_purpose += f"This is a debate about {topic}. Your goal is to listen to the other agent(s). Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself in the conversation history."
+            self.debate_purpose += f"This is a debate about {topic}. Your goal is to listen to the other agent(s). Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself or others in the conversation history."
         else:
-            self.debate_purpose += f"This is a debate about {topic}. Your goal is to convince the other agent(s) of your position. Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself in the conversation history."
+            self.debate_purpose += f"This is a debate about {topic}. Your goal is to convince the other agent(s) of your position. Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself or others in the conversation history."
 
-    def generate_debate_purpose_with_scenario(self, debate_scenario, debate_question):
-        self.debate_purpose = ""
-        self.debate_purpose += f"This is the scenario: \n{debate_scenario}\n"
-        self.debate_purpose += f"The debate question is: {debate_question}\n"
+    def generate_debate_purpose_with_scenario(self, topic, debate_scenario, debate_question, rounds, agents):
+        self.debate_purpose = f"This is a debate about {topic}"
+        self.debate_purpose += f"We consider a scenario: \n{debate_scenario}\n"
+        self.debate_purpose += f"In your responses, please try to answer the following question: {debate_question}\n"
        
         if "deepseek-r1" in self.model:
             self.debate_purpose += "After your reasoning, before writing your response, use the phrase 'My response:' exactly. "
         if self.affiliation["leaning"] == None:
 
             # NOTE: when given the num rounds in debate `{rounds}-round` agents sometimes repond like this for current prompt: "Bob, Republican > I cannot participate in a debate that will be used to promote a specific political agenda. Is there something else I can help you with?"
-            self.debate_purpose += f"Your goal is to listen to the other agent(s). Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself in the conversation history."
+            self.debate_purpose += f"Your goal is to listen to the other agent(s). Keep your reply shorter than {str(self.word_limit)} words. YOU MUST not repeat points already mentioned by yourself or others in the conversation history."
         else:
-            self.debate_purpose += f"Your goal is to convince the other agent(s) of your position. Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself in the conversation history."
+            self.debate_purpose += f"Your goal is to convince the other agent(s) of your position. Keep your reply shorter than {str(self.word_limit)} words. YOU MUST not repeat points already mentioned by yourself or others in the conversation history."
 
     def load_extended_personas(self):
         persona_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "extended_personas.json")
@@ -116,7 +116,7 @@ class DebateAgent:
         else:
             response = ollama.chat(
                 model=self.model,
-                options={"num_ctx": 8192, "temperature": 0.1},
+                options={"num_ctx": 8192, "temperature": self.temperature},
                 messages=[{"role": "user", "content": f"{self.prompt} \n{debate_phase_prompt if debate_phase_prompt != None else ''} \n{conversation}"}]  # TODO: Say Conversation History?
             )
         

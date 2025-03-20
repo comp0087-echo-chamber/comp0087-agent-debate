@@ -42,10 +42,10 @@ class DebateManager:
 
     def generate_agent_prompts(self):
         for agent in self.agents:
-            if self.topic:
-                agent.generate_debate_purpose(self.topic, self.rounds, self.agents)
+            if self.debate_scenario:
+                agent.generate_debate_purpose_with_scenario(self.topic, self.debate_scenario, self.debate_question, self.rounds, self.agents)
             else:
-                agent.generate_debate_purpose_with_scenario(self.debate_scenario, self.debate_question)
+                agent.generate_debate_purpose(self.topic, self.rounds, self.agents)
                 
         for agent in self.agents:
             agent.generate_prompt(self.use_extended_personas)
