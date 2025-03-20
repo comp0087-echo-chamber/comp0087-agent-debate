@@ -16,6 +16,7 @@ if __name__ == "__main__":
     model = config["model"]
     debate_group = config["debate_group"]  # "neutral_republican", "neutral_democrat", or "neutral_republican_democrat"
     num_rounds = config["num_rounds"]
+    use_scenarios = config["use_scenarios"]
     
     print(f"Selected debate group: {debate_group}")
     

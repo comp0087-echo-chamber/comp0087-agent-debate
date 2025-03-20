@@ -3,14 +3,38 @@
 debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat", "republican_republican2", "democrat_democrat2"
 debate_structure: "structured"  # options: "structured", "unstructured"
 
-baseline_debate_topics:
+use_scenarios: True
+
+baseline_debate_topics: # If you want to not do a certain topic when doign scenarios, comment out the baseline_debate_topics, baseline_debate_scenarios, baseline_debate_questions and eval_prompts line for the given topic
+  - "climate change"
+  - "illegal immigration"
+  - "abortion"
+  - "gun violence"
+  
+baseline_debate_scenarios:
+- "A major international corporation is considering opening a large manufacturing plant in your city.\nThe plant will create thousands of jobs but will also increase carbon emissions. \nEnvironmental groups are pushing for strict regulations on the plant, while business leaders argue that \nregulations could discourage investment."
+- "A company is caught hiring undocumented workers at lower wages while refusing to hire legal residents for the same jobs. Some argue that hiring illegal immigrants fills essential jobs that Americans refuse to take, contributing to economic growth and lower costs for consumers. The opposing participant counters that this practice undermines American workers by creating unfair competition."
+- "In the context of ongoing discussions about reproductive rights, there has been growing concern over the procedure known as partial birth abortion, with some advocating for its ban to protect unborn children. Meanwhile, others argue that women should have the ultimate authority to make decisions regarding their own bodies and health care."
+- "Countries like Australia and the UK have successfully reduced gun violence through strict \ngun control laws, but the U.S. has a unique gun culture \nand a constitutional right to bear arms."
+
+baseline_debate_questions:
+- "Should the large factory be built under strict regulations to limit climate impact, even if doing so raises costs and risks the project's viability?"
+- "Should companies hire illegal immigrants if they are filling jobs Americans don’t want and boosting the economy or does this lead to unfair competition for American workers?"
+- "Should we ban partial birth abortions to protect the rights and dignity of the unborn child or this decision should be up to women who have a right to make decisions about their bodies?"
+- "Should the U.S. adopt similar strict gun control laws?"
+
+eval_prompts:
+- "that the possibly polluting plant should be built?"
+- "that illegal immigrants are taking jobs from the Americans?"
+- "that women have the right to make decisions about their bodies?"
+- "that the U.S. should adopt strict gun control laws?"
+
+extra_debate_topics:
   - "illegal immigration"
   - "gun violence"
   - "climate change"
   - "racism"
-
-
-extra_debate_topics:  
+  
   - "abortion"
   - "evolution"
   - "trade tariffs"
@@ -25,15 +49,18 @@ non_political_debate_topics: # Add these to the baseline debate topics to use
 # Use multiprocessing to run a process for each topic being investigated. Not recommended on local machines, but could speed up lab machine progress
 use_multiprocessing: True
 
-num_debates: 5
+num_debates: 3
 num_rounds: 10
 word_limit: 75
+temperature: 1
+
+use_extended_personas: false  # if false, uses personas we've been using so far
 
 # model examples - model: "gpt", "llama3.2:3b","mistral:7b", among others
 agents:
   neutral:
-    age: null
-    gender: null
+    age: null  # options: "21", "35", "67"
+    gender: null  # options: "male", "female"
     model: "llama3.2:3b"
 
   republican:

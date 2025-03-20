@@ -11,7 +11,7 @@ from agents.DebateAgent import DebateAgent
 from debate.DebateManager import DebateManager
 
 
-def run_debate_for_topic(topic):
+def run_debate_for_topic(topic, debate_scenario=None, debate_question=None, eval_prompt=None):
 
     print(f"Starting debate for topic: {topic}")
 
@@ -31,42 +31,42 @@ def run_debate_for_topic(topic):
             return chosen_name
 
     # Ensure agent1 is a neutral agent
-    agent1 = DebateAgent(name=get_name(config["agents"]["neutral"]["gender"]), identifier="neutral", model=config["agents"]["neutral"]["model"], affiliation={"leaning": None, "party": None}, age=config["agents"]["neutral"]["age"], gender=config["agents"]["neutral"]["gender"], word_limit=config["word_limit"])
+    agent1 = DebateAgent(name=get_name(config["agents"]["neutral"]["gender"]), identifier="neutral", model=config["agents"]["neutral"]["model"], affiliation={"leaning": None, "party": None}, age=config["agents"]["neutral"]["age"], gender=config["agents"]["neutral"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"])
 
     # Create agents based on the config
     if config["debate_group"] == "neutral_republican":
-        agents = [agent1, DebateAgent(name= get_name(config["agents"]["republican"]["gender"]), identifier="republican",  model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"], word_limit=config["word_limit"])]
+        agents = [agent1, DebateAgent(name= get_name(config["agents"]["republican"]["gender"]), identifier="republican",  model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"])]
 
 
     elif config["debate_group"] == "neutral_democrat": 
-        agents = [agent1, DebateAgent(name= get_name(config["agents"]["democrat"]["gender"]), identifier="democrat", model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"])]
+        agents = [agent1, DebateAgent(name= get_name(config["agents"]["democrat"]["gender"]), identifier="democrat", model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"])]
 
     elif config["debate_group"] == "neutral_republican_democrat":
         agents = [
             agent1,
-            DebateAgent(name= get_name(config["agents"]["republican"]["gender"]), identifier="republican", model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"], word_limit=config["word_limit"]),
-            DebateAgent(name= get_name(config["agents"]["democrat"]["gender"]), identifier="democrat", model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"])
+            DebateAgent(name= get_name(config["agents"]["republican"]["gender"]), identifier="republican", model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"]),
+            DebateAgent(name= get_name(config["agents"]["democrat"]["gender"]), identifier="democrat", model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"])
         ]
 
     elif config["debate_group"] == "republican_republican2":
         agents = [
             #agent1,
-            DebateAgent(name= get_name(config["agents"]["republican"]["gender"]), identifier="republican", model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"], word_limit=config["word_limit"]),
-            DebateAgent(name= get_name(config["agents"]["republican2"]["gender"]), identifier="republican2", model=config["agents"]["republican2"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican2"]["age"], gender=config["agents"]["republican2"]["gender"], word_limit=config["word_limit"])
+            DebateAgent(name= get_name(config["agents"]["republican"]["gender"]), identifier="republican", model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"]),
+            DebateAgent(name= get_name(config["agents"]["republican2"]["gender"]), identifier="republican2", model=config["agents"]["republican2"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican2"]["age"], gender=config["agents"]["republican2"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"])
         ]
 
     elif config["debate_group"] == "democrat_democrat2":
         agents = [
             #agent1,
-            DebateAgent(name= get_name(config["agents"]["democrat"]["gender"]), identifier="democrat", model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"]),
-            DebateAgent(name= get_name(config["agents"]["democrat2"]["gender"]), identifier="democrat2", model=config["agents"]["democrat2"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat2"]["age"], gender=config["agents"]["democrat2"]["gender"], word_limit=config["word_limit"])
+            DebateAgent(name= get_name(config["agents"]["democrat"]["gender"]), identifier="democrat", model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"]),
+            DebateAgent(name= get_name(config["agents"]["democrat2"]["gender"]), identifier="democrat2", model=config["agents"]["democrat2"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat2"]["age"], gender=config["agents"]["democrat2"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"])
         ]
 
     else:
         raise ValueError("Invalid debate group")
 
     # Run the debate for this topic
-    dm = DebateManager(agents, topic, config["num_rounds"], config["debate_structure"], config["debate_group"])
+    dm = DebateManager(agents, topic, debate_scenario, debate_question, eval_prompt, config["num_rounds"], config["debate_structure"], config["debate_group"], config["use_extended_personas"])
     dm.start(config["num_debates"])
 
     print(f"Debate completed for topic: {topic}")
@@ -94,8 +94,15 @@ if __name__ == "__main__":
             pool.map(run_debate_for_topic, topics)
     
     else:
-        for topic in topics:
-            run_debate_for_topic(topic)
+        if config["use_scenarios"]:
+            debate_scenarios = config["baseline_debate_scenarios"]
+            debate_questions = config["baseline_debate_questions"]
+            eval_prompts = config["eval_prompts"]
+            for topic, scenario, question, eval_prompt in zip(topics, debate_scenarios, debate_questions, eval_prompts):
+                run_debate_for_topic(topic, scenario, question, eval_prompt)
+        else:
+            for topic in topics:
+                run_debate_for_topic(topic)
 
 
     print("All debates completed")

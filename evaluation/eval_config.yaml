@@ -9,3 +9,16 @@ scale: "1 to 7"  # Likert scale options: "1 to 7" or "-3 to 3"; "agreement" for 
 num_rounds: 10 # All debates in the chosen directory should have same number of rounds.
 num_debates: 10 # Run evaluation on the recent 10 debates/transcripts only
 evaluate_again: True  # run evaluation on transcripts again, even if evaluated. 
+
+use_scenarios: True
+baseline_debate_scenarios:
+- "A major international corporation is considering opening a large manufacturing plant in your city.\nThe plant will create thousands of jobs but will also increase carbon emissions. \nEnvironmental groups are pushing for strict regulations, while business leaders argue that \nregulations could discourage investment."
+- "A company is caught hiring undocumented workers at lower wages while refusing to hire legal \nresidents for the same jobs."
+- "Congress is considering a bill that includes both increased border security and a path to \nlegal status for undocumented immigrants already in the U.S."
+- "Countries like Australia and the UK have successfully reduced gun violence through strict \ngun control laws, but the U.S. has a unique gun culture \nand a constitutional right to bear arms."
+
+eval_prompts:
+- "in allowing the company more flexibility with environmental regulations?"
+- "that the businesses should be penalized?"
+- "that immigration reform should put security first?"
+- "that the U.S. should adopt strict gun control laws?"
