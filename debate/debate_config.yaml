@@ -12,19 +12,19 @@ baseline_debate_topics: # If you want to not do a certain topic when doign scena
   - "gun violence"
   
 baseline_debate_scenarios:
-- "A major international corporation is considering opening a large manufacturing plant in your city.\nThe plant will create thousands of jobs but will also increase carbon emissions. \nEnvironmental groups are pushing for strict regulations, while business leaders argue that \nregulations could discourage investment."
+- "A major international corporation is considering opening a large manufacturing plant in your city.\nThe plant will create thousands of jobs but will also increase carbon emissions. \nEnvironmental groups are pushing for strict regulations on the plant, while business leaders argue that \nregulations could discourage investment."
 - "A company is caught hiring undocumented workers at lower wages while refusing to hire legal residents for the same jobs. Some argue that hiring illegal immigrants fills essential jobs that Americans refuse to take, contributing to economic growth and lower costs for consumers. The opposing participant counters that this practice undermines American workers by creating unfair competition."
 - "In the context of ongoing discussions about reproductive rights, there has been growing concern over the procedure known as partial birth abortion, with some advocating for its ban to protect unborn children. Meanwhile, others argue that women should have the ultimate authority to make decisions regarding their own bodies and health care."
 - "Countries like Australia and the UK have successfully reduced gun violence through strict \ngun control laws, but the U.S. has a unique gun culture \nand a constitutional right to bear arms."
 
 baseline_debate_questions:
-- "Does California need the high speed rail if it increases carbon emissions or is job creation and economic growth more important than the environment?"
+- "Should the large factory be built under strict regulations to limit climate impact, even if doing so raises costs and risks the project's viability?"
 - "Should companies hire illegal immigrants if they are filling jobs Americans don’t want and boosting the economy or does this lead to unfair competition for American workers?"
 - "Should we ban partial birth abortions to protect the rights and dignity of the unborn child or this decision should be up to women who have a right to make decisions about their bodies?"
 - "Should the U.S. adopt similar strict gun control laws?"
 
 eval_prompts:
-- "that California needs high speed rail for economic growth?"
+- "that the possibly polluting plant should be built?"
 - "that illegal immigrants are taking jobs from the Americans?"
 - "that women have the right to make decisions about their bodies?"
 - "that the U.S. should adopt strict gun control laws?"
