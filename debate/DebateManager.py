@@ -23,8 +23,9 @@ class DebateManager:
 
         self.data_for_evaluation = {  # used for evaluation
             "topic": self.topic,
-            "eval_prompt": self.eval_prompt,
+            "debate_scenario": self.debate_scenario,
             "debate_question":self.debate_question,
+            "eval_prompt": self.eval_prompt,
             "neutral": {},
             "republican": {},
             "democrat": {}
@@ -97,6 +98,7 @@ class DebateManager:
         self.round_num_counts = {"neutral": 0, "democrat": 0, "republican": 0}
         self.data_for_evaluation = {  # used for evaluation
             "topic": self.topic,
+            "debate_scenario": self.debate_scenario,
             "debate_question":self.debate_question,
             "eval_prompt": self.eval_prompt,
             "neutral": {},
@@ -154,43 +156,43 @@ class DebateManager:
         print(f"Evaluation data saved:\n- {filename}")
 
 
-    def save_debate_transcription(self):
-        timestamp = datetime.now().strftime('%H_%M_%S')
+    # def save_debate_transcription(self):
+    #     timestamp = datetime.now().strftime('%H_%M_%S')
 
-        save_folder = self.get_relative_path(f"debate_transcripts/{self.debate_group}/{self.debate_structure}/{self.topic.replace(' ', '_') if self.topic else self.debate_question[:-1].replace(' ', '_')}")
-        os.makedirs(save_folder, exist_ok=True)
+    #     save_folder = self.get_relative_path(f"debate_transcripts/{self.debate_group}/{self.debate_structure}/{self.topic.replace(' ', '_') if self.topic else self.debate_question[:-1].replace(' ', '_')}")
+    #     os.makedirs(save_folder, exist_ok=True)
 
-        # TXT
-        text_filename = f'{save_folder}/transcript_{timestamp}.txt'
-        with open(text_filename, 'w') as f:
-            for round in self.conversation_for_transcription:
-                f.write(f'{round["agent"].label} > {round["response"]} \n\n')
+    #     # TXT
+    #     text_filename = f'{save_folder}/transcript_{timestamp}.txt'
+    #     with open(text_filename, 'w') as f:
+    #         for round in self.conversation_for_transcription:
+    #             f.write(f'{round["agent"].label} > {round["response"]} \n\n')
 
-        # JSON
-        json_filename = f'{save_folder}/transcript_{timestamp}.json'
-        json_data = {
-            "topic": self.topic,
-            "debate scenario": self.debate_scenario,
-            "debate question": self.debate_question,
-            "eval_prompt": self.eval_prompt,
-            "timestamp": timestamp,
-            "agents": [ {
-                "agent_id": index,
-                "name": agent.name,
-                "leaning": agent.affiliation["leaning"], 
-                "party": agent.affiliation["party"], 
-                "age": agent.age, 
-                "gender":  agent.gender
-            } for index, agent in enumerate(self.agents)],
-            "rounds": [
-                    {
-                        "agent_id": self.agents.index(round["agent"]),
-                        "response": round["response"]}
-                for round in self.conversation_for_transcription
-            ]
-        }
+    #     # JSON
+    #     json_filename = f'{save_folder}/transcript_{timestamp}.json'
+    #     json_data = {
+    #         "topic": self.topic,
+    #         "debate scenario": self.debate_scenario,
+    #         "debate question": self.debate_question,
+    #         "eval_prompt": self.eval_prompt,
+    #         "timestamp": timestamp,
+    #         "agents": [ {
+    #             "agent_id": index,
+    #             "name": agent.name,
+    #             "leaning": agent.affiliation["leaning"], 
+    #             "party": agent.affiliation["party"], 
+    #             "age": agent.age, 
+    #             "gender":  agent.gender
+    #         } for index, agent in enumerate(self.agents)],
+    #         "rounds": [
+    #                 {
+    #                     "agent_id": self.agents.index(round["agent"]),
+    #                     "response": round["response"]}
+    #             for round in self.conversation_for_transcription
+    #         ]
+    #     }
 
-        with open(json_filename, 'w', encoding='utf-8') as f:
-            json.dump(json_data, f)
+    #     with open(json_filename, 'w', encoding='utf-8') as f:
+    #         json.dump(json_data, f)
 
-        print(f"Transcripts saved:\n- {text_filename}\n- {json_filename}")
+    #     print(f"Transcripts saved:\n- {text_filename}\n- {json_filename}")

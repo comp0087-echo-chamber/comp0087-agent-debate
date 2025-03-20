@@ -2,6 +2,11 @@ import sys
 import os
 import json
 import csv
+import ollama
+import re
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -12,41 +17,67 @@ AGENT_NAMES = {"neutral": "Sam", "republican": "Alex", "democrat": "Taylor"}
 
 
 INTERVIEW_QUESTIONS = {
-    "democrat": [
-        "Should Abortion Be Legal?",
-        "Can Alternative Energy Effectively Replace Fossil Fuels?",
+    "all": [
+        # dem
+        "Should Marijuana Be a Medical Option?",
         "Was Bill Clinton a Good President?",
-        "Is Human Activity Primarily Responsible for Global Climate Change?",
+        "Is Universal Basic Income a Good Idea?",
+        "Is the Patient Protection and Affordable Care Act (Obamacare) Good for America?",
+        "Should School Vouchers Be a Good Idea?",
+        "Should Teachers Get Tenure?",
+        "Is Refusing to Stand for the National Anthem an Appropriate Form of Protest?",
+        # rep
+        "Should Parents or Other Adults Be Able to Ban Books from Schools and Libraries?",
+        "Should Corporal Punishment Be Used in K-12 Schools?",
+        "Should the Words 'Under God' Be in the US Pledge of Allegiance?",
+        "Was Ronald Reagan a Good President?",
+        "Should the United States Continue Its Use of Drone Strikes Abroad?",
+        "Does Lowering the Federal Corporate Income Tax Rate Create Jobs?",
+        "Should Social Security Be Privatized?",
+        # neu
+        "Should the Voting Age Be Lowered to 16?",
+        "Should Any Vaccines Be Required for Children?",
+        "Should Tablets Replace Textbooks in K-12 Schools?",
+        "Should the Federal Minimum Wage Be Increased?",
+        "Should Police Officers Wear Body Cameras?",
+        "Do Electronic Voting Machines Improve the Voting Process?",
+        "Do Violent Video Games Contribute to Youth Violence?",
+    ],
+    "democrat": [
+        "Should Abortion Be Legal?", ####
+        # "Can Alternative Energy Effectively Replace Fossil Fuels?",  ####
+        # "Was Bill Clinton a Good President?",
+        "Is Human Activity Primarily Responsible for Global Climate Change?",  ####
         "Should Euthanasia or Physician-Assisted Suicide Be Legal?",
         "Should Gay Marriage Be Legal?",
-        "Should the Government Allow Immigrants Who Are Here Illegally to Become US Citizens?",
-        "Should Marijuana Be a Medical Option?",
-        "Is Refusing to Stand for the National Anthem an Appropriate Form of Protest?",
+        "Should the Government Allow Immigrants Who Are Here Illegally to Become US Citizens?", ####
+        # "Should Marijuana Be a Medical Option?",
+        # "Is Refusing to Stand for the National Anthem an Appropriate Form of Protest?",
         "Is Obesity a Disease?",
-        "Obamacare Is the Patient Protection and Affordable Care Act (Obamacare) Good for America?",
+        # "Is the Patient Protection and Affordable Care Act (Obamacare) Good for America?",
         "Should Sanctuary Cities Receive Federal Funding?",
         "Are Social Networking Sites Good for Our Society?",
         "Should Student Loan Debt Be Easier to Discharge in Bankruptcy?",
         "Should People Become Vegetarian?",
-        "Is Universal Basic Income a Good Idea?",
+        # "Is Universal Basic Income a Good Idea?",
         "Should All Americans Have the Right (Be Entitled) to Health Care?",
-        "Should School Vouchers Be a Good Idea?",
-        "Should Teachers Get Tenure?"
+        # "Should School Vouchers Be a Good Idea?",
+        # "Should Teachers Get Tenure?"
     ],
     "republican": [
-        "Should Parents or Other Adults Be Able to Ban Books from Schools and Libraries?",
-        "Should Adults Have the Right to Carry a Concealed Handgun?",
+        # "Should Parents or Other Adults Be Able to Ban Books from Schools and Libraries?",
+        "Should Adults Have the Right to Carry a Concealed Handgun?", ####
         "Should the United States Maintain Its Embargo against Cuba?",
-        "Should the United States Continue Its Use of Drone Strikes Abroad?",
-        "Should Corporal Punishment Be Used in K-12 Schools?",
-        "Does Lowering the Federal Corporate Income Tax Rate Create Jobs?",
+        # "Should the United States Continue Its Use of Drone Strikes Abroad?",
+        # "Should Corporal Punishment Be Used in K-12 Schools?",
+        # "Does Lowering the Federal Corporate Income Tax Rate Create Jobs?",
         "Should the United States Use the Electoral College in Presidential Elections?",
         "Should Felons Who Have Completed Their Sentence (Incarceration, Probation, and Parole) Be Allowed to Vote?",
         "Should the United States Return to a Gold Standard?",
         "Should the Use of Standardized Tests Improve Education in America?",
-        "Should the Words 'Under God' Be in the US Pledge of Allegiance?",
-        "Should Social Security Be Privatized?",
-        "Was Ronald Reagan a Good President?",
+        # "Should the Words 'Under God' Be in the US Pledge of Allegiance?",
+        # "Should Social Security Be Privatized?",
+        # "Was Ronald Reagan a Good President?",
         "Should Students Have to Wear School Uniforms?",
         "Should Prescription Drugs Be Advertised Directly to Consumers?"
     ],
@@ -58,18 +89,18 @@ INTERVIEW_QUESTIONS = {
         "Should Performance Enhancing Drugs (Such as Steroids) Be Accepted in Sports?",
         "Is Vaping with E-Cigarettes Safe?",
         "Should the Drinking Age Be Lowered from 21 to a Younger Age?",
-        "Should the Voting Age Be Lowered to 16?",
-        "Should the Federal Minimum Wage Be Increased?",
-        "Should Police Officers Wear Body Cameras?",
+        # "Should the Voting Age Be Lowered to 16?",
+        # "Should the Federal Minimum Wage Be Increased?",
+        # "Should Police Officers Wear Body Cameras?",
         "Is Drinking Milk Healthy for Humans?",
         "Is a Two-State Solution (Israel and Palestine) an Acceptable Solution to the Israeli-Palestinian Conflict?",
         "Should the Penny Stay in Circulation?",
         "Should Fighting Be Allowed in Hockey?",
         "Is Golf a Sport?",
-        "Should Tablets Replace Textbooks in K-12 Schools?",
-        "Do Violent Video Games Contribute to Youth Violence?",
-        "Do Electronic Voting Machines Improve the Voting Process?",
-        "Should Any Vaccines Be Required for Children?",
+        # "Should Tablets Replace Textbooks in K-12 Schools?",
+        # "Do Violent Video Games Contribute to Youth Violence?",
+        # "Do Electronic Voting Machines Improve the Voting Process?",
+        # "Should Any Vaccines Be Required for Children?",
         "Are the Olympic Games an Overall Benefit for Their Host Countries and Cities?"
     ]
 }
@@ -108,8 +139,10 @@ def interview_agents(agents, questions, csv_filename):
         print(f"Agent: {agent.name}, Model: {agent.model}, Affiliation: {agent.affiliation['party']}, Gender: {agent.gender}, Age: {agent.age}")
         
         agent.generate_prompt(use_extended_personas=True)
-        
-        for question in questions[agent.affiliation['party'].lower()]:
+
+        # questions[agent.affiliation['party'].lower()]
+
+        for question in questions["all"]:
             question_prompt = f"You are participating in an interview about your beliefs. Answer the following question in 50 words or less. {question}"
             response = agent.respond(question_prompt, conversation="")
 
@@ -138,7 +171,7 @@ def append_to_csv(filename, data):
         writer.writerows(data)
 
 
-def main():
+def start_interivews():
     base_path = os.path.dirname(os.path.abspath(__file__))
     personas_file = os.path.join(base_path, "extended_personas.json")
     csv_filename = os.path.join(base_path, "agent_validation.csv")
@@ -153,5 +186,164 @@ def main():
     print(f"CSV file '{csv_filename}' has been created successfully.")
 
 
+def evaluate_response(question, response, affiliation, gender, age):
+
+    demographics = {}
+    if gender and gender.lower() != "n/a":
+        demographics["Gender"] = gender
+    if age and age.lower() != "n/a":
+        demographics["Age"] = age
+
+    # Format demographics text if present
+    demographics_text = "\n".join([f"**Agent {key}:** {value}" for key, value in demographics.items()])
+
+    # Determine whether to include gender or age demographics in the prompt
+    demographics_ref = ""
+    if demographics:
+        demographics_ref = " and " + " and ".join([f"{key.lower()} demographics" for key in demographics.keys()])
+
+    prompt = f"""
+    You are a political analyst. Determine if the agent's response aligns with their stated political affiliation{demographics_ref}.
+
+    **Question:** {question}
+    **Agent Response:** {response}
+    **Agent Affiliation:** {affiliation}
+    {demographics_text}
+
+    Does the response match the typical views of this affiliation? Answer with:
+    - Aligned (if it matches)
+    - Not Aligned (if it contradicts)
+
+    Provide a short answer in this format:
+    Evaluation: [Aligned/Not Aligned]
+    Explanation: [Brief explanation]
+    """
+
+    try:
+        llm_response = ollama.chat(model="mistral:7b", messages=[{"role": "user", "content": prompt}])
+        llm_text = llm_response["message"]["content"]
+
+        # print(prompt)
+        # print("\n\n",llm_text)
+
+        # Extract alignment evaluation and explanation using regex
+        match = re.search(r"(?:\*\*)?\s*(?:Evaluation)\s*:\s*(Aligned|Not Aligned)", llm_text, re.IGNORECASE)
+        explanation_match = re.search(r"(?:\*\*)?\s*Explanation\s*:\s*(.+)", llm_text, re.IGNORECASE)
+
+
+        evaluation = match.group(1) if match else "Error: Unable to parse"
+        explanation = explanation_match.group(1) if explanation_match else "Error: No explanation found"
+
+        # print(match, evaluation)
+
+        return evaluation, explanation
+    except Exception as e:
+        return "Error", str(e)
+
+
+
+def evaluate_interviews():
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    input_csv_filename = os.path.join(base_path, "agent_validation.csv")
+    output_csv_filename = os.path.join(base_path, "agent_validation_evaluated.csv")
+
+    batch_size = 100
+
+    with open(input_csv_filename, newline="", encoding="utf-8") as csvfile:
+        reader = csv.DictReader(csvfile)
+        rows = list(reader)
+
+        fieldnames = reader.fieldnames + ["Evaluation", "Explanation"]
+
+        for i, row in enumerate(rows):
+            if "Evaluation" in row and row["Evaluation"]:  # skip already processed rows
+                continue
+
+            # question = row["Question"]
+            # agent_response = row["Response"]
+            # affiliation = row["Affiliation"]
+            # gender = row["Gender"]
+            # age = row["Age"]
+
+            evaluation, explanation = evaluate_response(row["Question"], row["Response"], row["Affiliation"], row["Gender"], row["Age"])
+            row["Evaluation"] = evaluation
+            row["Explanation"] = explanation
+
+            # print(evaluation, explanation)
+
+            # Save every `batch_size` rows to prevent data loss
+            if (i + 1) % batch_size == 0 or i == len(rows) - 1:
+                with open(output_csv_filename, mode="w", newline="", encoding="utf-8") as output_csv:
+                    writer = csv.DictWriter(output_csv, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(rows)
+                print(f"Saved progress: {i + 1}/{len(rows)} entries processed.")
+
+
+def visualise_evaluation():
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    df = pd.read_csv(os.path.join(base_path, "agent_validation_evaluated.csv"))
+
+    # Convert both columns to strings
+    df["Gender"] = df["Gender"].astype(str)
+    df["Age"] = pd.to_numeric(df["Age"], errors="coerce")
+    df["Age"] = df["Age"].apply(lambda x: str(int(x)) if not pd.isna(x) else "nan")
+
+    def get_demographic_category(row):
+        if row["Gender"].lower() != "nan":
+            return "gender"
+        elif row["Age"].lower() != "nan":
+            return "age"
+        else:
+            return "baseline"
+
+    df["Persona Category"] = df.apply(get_demographic_category, axis=1)
+
+    # Compute alignment percentage
+    summary = (
+        df.groupby(["Affiliation", "Persona Category", "Model"])["Evaluation"]
+        .apply(lambda x: (x.str.lower() == "aligned").mean() * 100)
+        .reset_index()
+    )
+
+    # Pivot for heatmap
+    heatmap_data = summary.pivot(index=["Affiliation", "Persona Category"], columns="Model", values="Evaluation")
+
+    # Ensure all demographic categories exist
+    expected_categories = ["baseline", "age", "gender"]
+    for affiliation in df["Affiliation"].unique():
+        for category in expected_categories:
+            if (affiliation, category) not in heatmap_data.index:
+                heatmap_data.loc[(affiliation, category), :] = None  # Fill missing categories with NaN
+
+    # Sort index to meet specific ordering criteria:
+    affiliation_order = ["neutral", "democrat", "republican"]
+    persona_order = ["baseline", "gender", "age"]
+    heatmap_data = heatmap_data.reindex(pd.MultiIndex.from_product([affiliation_order, persona_order], names=["Affiliation", "Persona Category"]))
+
+    # Plot heatmap
+    plt.figure(figsize=(12, 6))
+    sns.heatmap(heatmap_data, annot=True, cmap="RdYlGn", linewidths=0.5, fmt=".1f")
+
+    # Set title, axis labels, and figure explanation
+    plt.title("Alignment Percentage of Agents to Different Political Leanings and Demographics (Age & Gender)",
+              fontsize=12, pad=20)
+    plt.xlabel("Agent Models", fontsize=11)
+    plt.ylabel("Agent Persona Types", fontsize=11)
+
+    # Adding figure explanation
+    # plt.figtext(0.5, 0.01, "This heatmap shows the percentage of alignment between personas and the true perspectives for different political affiliations and demographic factors. Categories considered include Age (21, 35, 67), Gender (Male, Female), and Baseline. Evaluated using LLM-as-a-judge with Mistral 7B).",
+    #             wrap=True, horizontalalignment='center', fontsize=10, color='gray')
+
+    heatmap_path = os.path.join(base_path, "persona_alignment_heatmap.pdf")
+    plt.savefig(heatmap_path, dpi=300, bbox_inches="tight")
+    print(f"Saved heatmap plot to {heatmap_path}")
+
+    plt.show()
+
+
+
 if __name__ == "__main__":
-    main()
+    # start_interivews()
+    # evaluate_interviews()
+    visualise_evaluation()

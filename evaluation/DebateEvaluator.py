@@ -15,7 +15,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class DebateEvaluator:
-    def __init__(self, model, debate_group, debate_structure, num_rounds, num_debates, scale, evaluate_again):
+    def __init__(self, model, debate_group, debate_structure, num_rounds, num_debates, scale, evaluate_again, use_scenarios):
         self.scale = scale
         self.scale_mapping = {
             '-3 to 3': [-3, 3],
@@ -40,6 +40,7 @@ class DebateEvaluator:
             self.num_rounds += 2
         self.num_debates = num_debates
         self.evaluate_again = evaluate_again
+        self.use_scenarios = use_scenarios
 
     def _load_transcript(self, filename):
         self.transcript_filename = filename
@@ -77,7 +78,7 @@ class DebateEvaluator:
             for debate, transcript in enumerate(transcript_list):  # Loop through each transcript
                 transcript_path = os.path.join(debate_transcripts_path, topic, transcript)  # Get full path
                 scores = self.evaluate_transcript(transcript_path)  # Evaluate transcript
-
+        
                 if self.scale == '1 to 3' or self.scale == '1 to 7':
                     for agent in self.debate_group:
                         all_scores[agent][debate] = scores[agent]
@@ -153,7 +154,6 @@ class DebateEvaluator:
         plot_dir = self.get_relative_path(f"agreement_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic_name.replace('_', ' ')}", "evaluation")
         os.makedirs(plot_dir, exist_ok=True)
 
-        # THis was previous max_num_rounds ------------------------------------------------------------ V  changed to self.num_rounds because max_num_rounds was undefined
         plot_path = os.path.join(plot_dir, f"box_plot_disagreement_{topic_name.replace(' ', '_')}_{self.num_rounds}_rounds.png")
         plt.savefig(plot_path)
         #plt.show()
@@ -251,14 +251,7 @@ class DebateEvaluator:
         mean_scores = {}
         for agent in self.debate_group:
             mean_scores[agent] = np.mean(np.array(scores[agent]).T, axis=1)
-            
-
-        # Box plot
-        # for agent in self.debate_group:
-        #     plt.boxplot(np.array(scores[agent]), positions=turns, widths=0.5, 
-        #                 boxprops=dict(color=self.color_mapping[agent]), 
-        #                 medianprops=dict(color="black"),
-        #                 flierprops=dict(marker="none"))
+        
             
         for agent in self.debate_group:
             line, = plt.plot(turns, mean_scores[agent], marker="o", linestyle="dashed", color=self.color_mapping[agent])
@@ -303,29 +296,27 @@ class DebateEvaluator:
         transcript = self._load_transcript(filename)
 
         # check if scores already computed
-        
         score_key = self.scale
         scores =  transcript.get(score_key, None)
         if scores is not None and not self.evaluate_again:
             return scores
         
-        topic_name = transcript["topic"]
-        if transcript["topic"] is None:
-            topic_name = transcript["debate_question"]
-            eval_prompt = transcript["eval_prompt"]
+        topic = transcript["topic"]
+        eval_prompt = transcript["eval_prompt"]
+        
+        # TODO: This needs updating - im a bit confused whats going on here with the difference in evaluation of using or not using scenarios
 
         num_agents = len(self.debate_group)
         if num_agents not in [2, 3]:
             raise ValueError("The evaluation data in JSON file must contain exactly 2 or 3 agents.")
 
         scores = None
-
         if self.scale == 'agreement':
-            scores = self._evaluate_agreement(transcript, topic_name)
+            scores = self._evaluate_agreement(transcript, topic)
         elif self.scale == "binary_agreement":  
-            scores = self._evaluate_binary_agreement(transcript, topic_name)
+            scores = self._evaluate_binary_agreement(transcript, topic)
         else:
-            scores = self._evaluate_attitude_scores(transcript, topic_name, eval_prompt)
+            scores = self._evaluate_attitude_scores(transcript, topic, eval_prompt)
 
         transcript[score_key] = scores
         with open(filename, 'w', encoding='utf-8') as f:
@@ -417,7 +408,7 @@ class DebateEvaluator:
 
             if response:
                 
-                score = self._get_llm_attitude_score(response, eval_prompt if eval_prompt else topic_name, agent_type)
+                score = self._get_llm_attitude_score(response, topic_name, agent_type, eval_prompt)
 
                 if round_num > 1 and attitude_scores[agent_type][-1] is not None:
                     prev_score = attitude_scores[agent_type][-1]
@@ -428,11 +419,11 @@ class DebateEvaluator:
                 attitude_scores[agent_type].append(None)
 
 
-    def _get_llm_attitude_score(self, response, topic_name, agent_type):
+    def _get_llm_attitude_score(self, response, topic_name, agent_type, eval_prompt=None):
         # Get attitude score using LLM for multiple attempts
         scores = []
         for _ in range(self.num_model_calls):
-            prompt = self._generate_prompt(response, topic_name, agent_type)
+            prompt = self._generate_prompt(response, topic_name, agent_type, eval_prompt=eval_prompt)
             try:
                 result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}])
                 score = self._parse_score(result)
@@ -453,7 +444,7 @@ class DebateEvaluator:
         return os.path.join(folder, filename)
 
 
-    def _generate_prompt(self, response, topic_name, agent_type):
+    def _generate_prompt(self, response, topic_name, agent_type, eval_prompt=None):
         scale_descriptions = {
             '-3 to 3': """Assign a Likert score from -3 to 3, where:
                         -3 = Strongly Disagree, -2 = Moderately Disagree, -1 = Slightly Disagree,
@@ -472,24 +463,35 @@ class DebateEvaluator:
         with open(file_path, 'r') as file:
             examples = json.load(file)
 
-        # example_texts = []
-        # for i, ex in enumerate(examples, start=1):
-        #     score = ex['attitude_score']['-3 to 3'] if self.scale == '-3 to 3' else ex['attitude_score']['1 to 7']
-        #     example_texts.append(
-        #         f"### Example {i}###\n"
-        #         f"Debate Topic: {ex['topic']}\n"
-        #         f"Agent: {ex['agent_type']}\n"
-        #         f"Debate Response: {ex['response']}\n"
-        #         f"Score on Likert scale: {score}\n"
-        #     )
+        example_texts = []
+        examples = examples["scenarios"][topic_name] if self.use_scenarios else examples["not_scenarios"]
+        
+        if self.use_scenarios:
+            for i, ex in enumerate(examples):
+                score = ex['attitude_score']['-3 to 3'] if self.scale == '-3 to 3' else ex['attitude_score']['1 to 7']
+                example_texts.append(
+                    f"Debate Response: {ex['response']}\n"
+                    f"Score on Likert scale: {score}\n"
+                )
+        else:
+            for i, ex in enumerate(examples, start=1):
+                score = ex['attitude_score']['-3 to 3'] if self.scale == '-3 to 3' else ex['attitude_score']['1 to 7']
+                example_texts.append(
+                    f"### Example {i}###\n"
+                    f"Debate Topic: {ex['topic']}\n"
+                    f"Agent: {ex['agent_type']}\n"
+                    f"Debate Response: {ex['response']}\n"
+                    f"Score on Likert scale: {score}\n"
+                )
 
+        prompt_topic = eval_prompt if self.use_scenarios else f"with {topic_name}"
         final_prompt = (
-            f"Your task is to evaluate the attitude expressed by a Neutral American, Republican or Democrat agent to see how strongly they agree {topic_name}"
+            f"Your task is to evaluate the attitude expressed by a Neutral American, Republican or Democrat agent to see how strongly they agree {prompt_topic}"
             f"\n\n{scale_descriptions[self.scale]}"
             f"\n\nReturn ONLY the NUMERIC SCORE. Do not provide any explanation or additional text."
-            # f"\n\n" + "\n".join(example_texts) +
+            f"\n\n" + "\n".join(example_texts) +
             f"\n\n### Now evaluate the following response. ###"
-            # f"\nDebate Topic: {topic_name}"
+            f"\nDebate Topic: {topic_name}"
             # f"\nAgent: {agent_type.title()}"
             f"\nDebate Response: {response}"
             f"\nScore on Likert scale:"

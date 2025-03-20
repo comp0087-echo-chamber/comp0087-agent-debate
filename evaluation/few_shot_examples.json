@@ -1,4 +1,5 @@
-[
+{
+  "not_scenarios":[
     {
         "topic": "gun control",
         "agent_type": "Neutral",
@@ -26,4 +27,82 @@
             "1 to 7": "2"
         }
     }
-]
+    ],
+
+    "scenarios": {
+        
+        "climate change": [
+            {
+                "response": "I think Taylor raises an important point about considering the social benefits of supporting this company. By investing in clean energy technologies and adopting sustainable practices, we can create new opportunities for innovation and growth that will outlast this plant. This approach could also lead to improved air quality, public health, and a better quality of life for our residents.",
+                "attitude_score" : {
+                    "1 to 7": "1"
+                }
+            },
+            {
+                "response": "We have a moral obligation to protect our planet for future generations. By rejecting it, we can invest in green technologies and alternative industries that prioritize sustainability while creating jobs and driving growth through innovation and entrepreneurship",
+                "attitude_score": {
+                    "1 to 7": "1"
+                }
+            },
+            {  "response": "On one hand, we have concerns about environmental degradation and strain on public services. On the other hand, we have the potential economic benefits of creating jobs and stimulating growth. While I still believe there may be a need for a manufacturing plant, I also acknowledge that our city's capacity to absorb additional residents and businesses is already strained. ",
+                "attitude_score": {
+                    "1 to 7": "4"
+                }
+            }
+            
+        ],
+
+    
+        "gun violence": [
+        
+            {
+                "response": "Stricter gun ownership laws are necessary to address the growing epidemic of gun violence in our country. By implementing universal background checks and red flag laws, we can prevent guns from being handed down through generations of families, particularly among those with a history of mental illness or violent behavior.",
+                "attitude_score":{
+                    "1 to 7": "7"
+                }
+
+            },
+            {
+                "response": "I'd like to propose that we explore pilot programs or testing ground initiatives for new gun ownership laws, such as universal background checks or red flag laws, in select cities or regions. This would allow us to assess their effectiveness and make data-driven decisions about how to scale up these measures nationwide. What are your thoughts on implementing a phased approach to addressing gun violence?",
+                "attitude_score": {
+                    "1 to 7": "3"
+                }
+            }
+            
+        ],
+    
+        "illegal immigration": [
+            {
+                "response": "there may be nuances to the impact of immigration on the labor market, the fundamental issue is that immigrants can create competition among American-born workers for jobs. By exploiting undocumented workers at lower wages, companies are able to maintain their competitiveness while passing on the costs to American consumers. We must prioritize fair compensation and opportunities for all workers, regardless of their immigration status, to create a more level playing field in the labor market.",
+                "attitude_score":{
+                    "1 to 7": "7"
+                }
+            },
+            {
+                "response": "Ultimately, our goal should be to create a more inclusive and equitable labor market that benefits everyone \u2013 including immigrant workers who bring valuable skills and perspectives to the table. By focusing on upskilling and reskilling opportunities for American workers and supporting fair compensation and job training programs for all workers, we can create a level playing field where everyone has the chance to succeed.",
+                "attitude_score": {
+                    "1 to 7": "1"
+                }
+            }
+        ],
+    
+    "abortion": [
+            {
+                "response": "Let me close by emphasizing that a ban on partial birth abortions shouldn't be taken lightly. We need to consider the complexities of each individual situation and ensure that access to safe healthcare options is available for all women.",
+                "attitude_score": {
+                    "1 to 7": "3"
+                }
+                
+            },
+            {
+                "response": "It's not about restricting women's choices or imposing moral absolutes; it's about recognizing the humanity and potential suffering of unborn babies during partial birth abortions. We need to address the root causes of unnecessary abortions by investing in safe, compassionate care options for all pregnant women. By taking a more compassionate and inclusive approach, we can create a society that values both human life and autonomy, while also respecting women's bodily agency and well-being",
+                "attitude_score": {
+                    "1 to 7": "3"
+                }
+            }
+        ]
+    
+
+    }
+    
+}
