@@ -29,6 +29,8 @@ class DebateEvaluator:
             'democrat': 'blue',
             'republican2': 'firebrick',
             'democrat2': 'navy',
+            'republican3': 'lightcoral',
+            'democrat3': 'skyblue',
         }
         self.model = model
         self.num_model_calls = 3
@@ -307,8 +309,8 @@ class DebateEvaluator:
         # TODO: This needs updating - im a bit confused whats going on here with the difference in evaluation of using or not using scenarios
 
         num_agents = len(self.debate_group)
-        if num_agents not in [2, 3]:
-            raise ValueError("The evaluation data in JSON file must contain exactly 2 or 3 agents.")
+        if num_agents not in [2, 3, 4]:
+            raise ValueError("The evaluation data in JSON file must contain exactly 2, 3 or 4 agents.")
 
         scores = None
         if self.scale == 'agreement':

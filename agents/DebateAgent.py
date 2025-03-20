@@ -49,9 +49,9 @@ class DebateAgent:
             self.debate_purpose += f"This is a debate about {topic}. Your goal is to convince the other agent(s) of your position. Keep your reply shorter than {str(self.word_limit)} words. Do not repeat points already mentioned by yourself or others in the conversation history."
 
     def generate_debate_purpose_with_scenario(self, topic, debate_scenario, debate_question, rounds, agents):
-        self.debate_purpose = f"This is a debate about {topic}"
+        self.debate_purpose = f"This is a debate about {topic}. "
         self.debate_purpose += f"We consider a scenario: \n{debate_scenario}\n"
-        self.debate_purpose += f"In your responses, please try to answer the following question: {debate_question}\n"
+        self.debate_purpose += f"In your responses, please answer the following question: {debate_question}\n"
        
         if "deepseek-r1" in self.model:
             self.debate_purpose += "After your reasoning, before writing your response, use the phrase 'My response:' exactly. "
@@ -90,11 +90,11 @@ class DebateAgent:
                 agent_type = self.affiliation['party'].lower()
 
             if not self.gender and not self.age:
-                self.prompt =  extended_personas.get(agent_type).get("baseline")
+                self.prompt =  extended_personas.get(self.identifier).get("baseline")
             elif self.age:
-                self.prompt = extended_personas.get(agent_type, {}).get("age").get(str(self.age))
+                self.prompt = extended_personas.get(self.identifier, {}).get("age").get(str(self.age))
             elif self.gender:
-                self.prompt = extended_personas.get(agent_type, {}).get("gender").get(str(self.gender.lower()))
+                self.prompt = extended_personas.get(self.identifier, {}).get("gender").get(str(self.gender.lower()))
 
             if self.prompt != None:
                 if self.debate_purpose != None:

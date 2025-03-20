@@ -37,14 +37,25 @@ class DebateManager:
         self.round_num_counts = {"neutral": 0, "democrat": 0, "republican": 0}
 
 
-        if debate_group in ["republican_republican2"]:
+        if self.debate_group in ["republican_republican2", "neutral_republican_republican2"]:
             self.data_for_evaluation["republican2"] = {}
             self.round_num_counts["republican2"] = 0
 
-        if debate_group in ["democrat_democrat2"]:
+        if self.debate_group in ["democrat_democrat2", "neutral_democrat_democrat2"]:
             self.data_for_evaluation["democrat2"] = {}
             self.round_num_counts["democrat2"] = 0
 
+        if self.debate_group in ["neutral_republican_republican2_republican3"]:
+            self.data_for_evaluation["republican2"] = {}
+            self.round_num_counts["republican2"] = 0
+            self.data_for_evaluation["republican3"] = {}
+            self.round_num_counts["republican3"] = 0
+        
+        if self.debate_group in ["neutral_democrat_democrat2_democrat3"]:
+            self.data_for_evaluation["democrat2"] = {}
+            self.round_num_counts["democrat2"] = 0
+            self.data_for_evaluation["democrat3"] = {}
+            self.round_num_counts["democrat3"] = 0
 
 
     def _print_response(self, agent_details, response):
@@ -106,13 +117,25 @@ class DebateManager:
             "democrat": {}
         }
 
-        if self.debate_group in ["republican_republican2"]:
+        if self.debate_group in ["republican_republican2", "neutral_republican_republican2"]:
             self.data_for_evaluation["republican2"] = {}
             self.round_num_counts["republican2"] = 0
 
-        if self.debate_group in ["democrat_democrat2"]:
+        if self.debate_group in ["democrat_democrat2", "neutral_democrat_democrat2"]:
             self.data_for_evaluation["democrat2"] = {}
             self.round_num_counts["democrat2"] = 0
+
+        if self.debate_group in ["neutral_republican_republican2_republican3"]:
+            self.data_for_evaluation["republican2"] = {}
+            self.round_num_counts["republican2"] = 0
+            self.data_for_evaluation["republican3"] = {}
+            self.round_num_counts["republican3"] = 0
+        
+        if self.debate_group in ["neutral_democrat_democrat2_democrat3"]:
+            self.data_for_evaluation["democrat2"] = {}
+            self.round_num_counts["democrat2"] = 0
+            self.data_for_evaluation["democrat3"] = {}
+            self.round_num_counts["democrat3"] = 0
 
 
     def start_structured_debate(self):
