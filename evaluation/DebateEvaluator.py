@@ -467,6 +467,7 @@ class DebateEvaluator:
             for i, ex in enumerate(examples):
                 score = ex['attitude_score']['-3 to 3'] if self.scale == '-3 to 3' else ex['attitude_score']['1 to 7']
                 example_texts.append(
+                    f"### Example {i}###\n"
                     f"Debate Response: {ex['response']}\n"
                     f"Score on Likert scale: {score}\n"
                 )
@@ -474,7 +475,7 @@ class DebateEvaluator:
             for i, ex in enumerate(examples, start=1):
                 score = ex['attitude_score']['-3 to 3'] if self.scale == '-3 to 3' else ex['attitude_score']['1 to 7']
                 example_texts.append(
-                    f"### Example {i}###\n"
+                    f"### Example {i + 1}###\n"
                     f"Debate Topic: {ex['topic']}\n"
                     f"Agent: {ex['agent_type']}\n"
                     f"Debate Response: {ex['response']}\n"
@@ -483,7 +484,7 @@ class DebateEvaluator:
 
         prompt_topic = eval_prompt if self.use_scenarios else f"with {topic_name}"
         final_prompt = (
-            f"Your task is to evaluate the attitude expressed by a Neutral American, Republican or Democrat agent to see how strongly they agree {prompt_topic}"
+            f"Your task is to evaluate the attitude expressed by an agent in a debate to see how STRONGLY they AGREE {prompt_topic}"
             f"\n\n{scale_descriptions[self.scale]}"
             f"\n\nReturn ONLY the NUMERIC SCORE. Do not provide any explanation or additional text."
             f"\n\n" + "\n".join(example_texts) +
@@ -537,7 +538,7 @@ class DebateEvaluator:
         if datetime_match:
             timestamp = datetime_match.group(1)
 
-        plot_path = os.path.join(plot_dir, f"attitude_plot_{topic_name[:-1].replace(' ', '_')}_{max(debate_rounds) + 1}_rounds_{timestamp}.pdf")
+        plot_path = os.path.join(plot_dir, f"attitude_plot_{topic_name.replace(' ', '_')}_{max(debate_rounds) + 1}_rounds_{timestamp}.pdf")
         plt.savefig(plot_path)
         #plt.show()
         plt.close()
@@ -611,7 +612,7 @@ class DebateEvaluator:
         description += """Assign a Likert score from 1 to 7, where:
                         1 = Strongly Disagree, 2 = Moderately Disagree, 3 = Slightly Disagree,
                         4 = Neutral, 5 = Slightly Agree, 6 = Moderately Agree, 7 = Strongly Agree. \n"""
-        
+
         final_prompt = (
             f"Your task is to evaluate the arguments by multiple agents in a response for a given political debate and assign a score based on the specified rule. "
             f"\n\n{description}"
