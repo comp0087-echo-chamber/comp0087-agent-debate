@@ -8,6 +8,13 @@ import numpy as np
 import pandas as pd
 import scipy
 from sklearn.linear_model import LinearRegression
+from openai import OpenAI
+from dotenv import load_dotenv
+load_dotenv()
+
+api_key = os.getenv("OPENAI_API_KEY")
+
+client = OpenAI(api_key=api_key)
 
 
 # Add the project root to the Python path
@@ -427,7 +434,19 @@ class DebateEvaluator:
         for _ in range(self.num_model_calls):
             prompt = self._generate_prompt(response, topic_name, agent_type, eval_prompt=eval_prompt)
             try:
-                result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}])
+                if self.model == "gpt":
+                    completion = client.chat.completions.create(
+                        model="gpt-4o-mini",
+                        store=True,
+                        messages=[
+                            {"role": "user", "content": prompt}
+                        ],
+                    )
+                    result = completion.choices[0].message.content
+
+                else:
+                    result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}])
+                
                 score = self._parse_score(result)
                 if score is not None:
                     scores.append(score)
@@ -472,7 +491,7 @@ class DebateEvaluator:
             for i, ex in enumerate(examples):
                 score = ex['attitude_score']['-3 to 3'] if self.scale == '-3 to 3' else ex['attitude_score']['1 to 7']
                 example_texts.append(
-                    f"### Example {i}###\n"
+                    f"### Example {i + 1}###\n"
                     f"Debate Response: {ex['response']}\n"
                     f"Score on Likert scale: {score}\n"
                 )
@@ -492,9 +511,9 @@ class DebateEvaluator:
             f"Your task is to evaluate the attitude expressed by an agent in a debate to see how STRONGLY they AGREE {prompt_topic}"
             f"\n\n{scale_descriptions[self.scale]}"
             f"\n\nReturn ONLY the NUMERIC SCORE. Do not provide any explanation or additional text."
-            f"\n\n" + "\n".join(example_texts) +
+            # f"\n\n" + "\n".join(example_texts) +
             f"\n\n### Now evaluate the following response. ###"
-            f"\nDebate Topic: {topic_name}"
+            # f"\nDebate Topic: {topic_name}"
             # f"\nAgent: {agent_type.title()}"
             f"\nDebate Response: {response}"
             f"\nScore on Likert scale:"
@@ -505,12 +524,16 @@ class DebateEvaluator:
 
     def _parse_score(self, result):
         try:
-            digit = re.findall(r'\d', result["message"]["content"].strip())
+            if self.model == "gpt":
+                digit = re.findall(r'\d', result.strip())
+            else:
+                digit = re.findall(r'\d', result["message"]["content"].strip())
             score = int(digit[0])
             # score = int(result["message"]["content"].strip())
             min_score, max_score = self.scale_mapping[self.scale]
             return max(min_score, min(max_score, score))
-        except ValueError:
+        except Exception as e:
+            print(f"Error occurred: {e}")
             print(f"Unable to parse model response on the attitude score. Response:\n{result}")
             return None
 
