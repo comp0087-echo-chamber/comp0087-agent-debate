@@ -1,6 +1,6 @@
 # model: "llama3.2:3b"
 
-debate_group: "neutral_republican_republican2_republican3"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat", "republican_republican2", "democrat_democrat2"
+debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat", "republican_republican2", "democrat_democrat2"
 debate_structure: "structured"  # options: "structured", "unstructured"
 
 use_scenarios: True
@@ -25,10 +25,10 @@ baseline_debate_questions:
 - "Does the city need the manufacturing plant?"
 
 eval_prompts:
-- "that illegal immigrants are taking jobs from the Americans?"
-- "that the U.S. should adopt strict gun control laws?"
-- "that women have the right to make decisions about their bodies?"
-- "that job creation is more important?"
+- "that 'illegal immigrants are taking jobs from the Americans?'"
+- "that 'the U.S. should adopt strict gun control laws?'"
+- "that 'women have the right to make decisions about their bodies?'"
+- "that 'the benefits of job creation outweight the environmental damage'"
 
 extra_debate_topics:
   - "illegal immigration"
@@ -50,10 +50,10 @@ non_political_debate_topics: # Add these to the baseline debate topics to use
 # Use multiprocessing to run a process for each topic being investigated. Not recommended on local machines, but could speed up lab machine progress
 use_multiprocessing: False
 
-num_debates: 10
+num_debates: 5
 num_rounds: 10
 word_limit: 75
-temperature: 1
+temperature: 0.25
 
 # model examples - model: "gpt", "llama3.2:3b","mistral:7b", among others
 agents:

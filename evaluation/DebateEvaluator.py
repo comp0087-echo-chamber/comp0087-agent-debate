@@ -9,6 +9,13 @@ import pandas as pd
 import scipy
 from sklearn.linear_model import LinearRegression
 
+from openai import OpenAI
+from dotenv import load_dotenv
+load_dotenv()  
+api_key = os.getenv("OPENAI_API_KEY")
+
+client = OpenAI(api_key=api_key)
+
 
 # Add the project root to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -427,8 +434,18 @@ class DebateEvaluator:
         for _ in range(self.num_model_calls):
             prompt = self._generate_prompt(response, topic_name, agent_type, eval_prompt=eval_prompt)
             try:
-                result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}])
-                score = self._parse_score(result)
+
+                if "gpt" in self.model: 
+                    result = client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    store=False,
+                    messages=[{"role": "user", "content": prompt}]
+                    )
+                    content = result.choices[0].message.content.strip()
+                    score = self._parse_score({"message": {"content": content}})
+                else:
+                    result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}], options={"temperature": 0})
+                    score = self._parse_score(result)
                 if score is not None:
                     scores.append(score)
             except Exception as e:
@@ -495,7 +512,7 @@ class DebateEvaluator:
             f"\n\n" + "\n".join(example_texts) +
             f"\n\n### Now evaluate the following response. ###"
             f"\nDebate Topic: {topic_name}"
-            # f"\nAgent: {agent_type.title()}"
+            f"\nAgent: {agent_type.title()}"
             f"\nDebate Response: {response}"
             f"\nScore on Likert scale:"
         )
@@ -567,7 +584,7 @@ class DebateEvaluator:
             prompt = self._generate_prompt_binary_agreement_metric(responses, topic_name)
 
             try:
-                result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}])
+                result = ollama.generate(model=self.model, prompt=self.prompt)
                 
                 score = self._parse_score(result)
 
