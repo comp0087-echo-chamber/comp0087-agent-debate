@@ -421,7 +421,7 @@ class DebateEvaluator:
 
                 if round_num > 1 and attitude_scores[agent_type][-1] is not None:
                     prev_score = attitude_scores[agent_type][-1]
-                    score = (score + prev_score) / 2  # avg of current and previous scores
+                    score = (score + prev_score * 0.3) / 2  # avg of current and previous scores
 
                 attitude_scores[agent_type].append(score if score is not None else 4)
             else:
