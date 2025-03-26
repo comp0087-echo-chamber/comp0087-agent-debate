@@ -87,7 +87,9 @@ class DebateEvaluator:
             for debate, transcript in enumerate(transcript_list):  # Loop through each transcript
                 transcript_path = os.path.join(debate_transcripts_path, topic, transcript)  # Get full path
                 scores = self.evaluate_transcript(transcript_path)  # Evaluate transcript
-        
+                eval_prompt = None
+                if self.scale == '1 to 3' or self.scale == '1 to 7':
+                    scores, eval_prompt = scores
                 if self.scale == '1 to 3' or self.scale == '1 to 7':
                     for agent in self.debate_group:
                         all_scores[agent][debate] = scores[agent]
@@ -99,7 +101,7 @@ class DebateEvaluator:
 
             if self.scale == "1 to 7" or self.scale == "-3 to 3":
                 self._compute_metrics(all_scores, topic)
-                self._generate_attitude_box_plot(all_scores, topic)
+                self._generate_attitude_box_plot(all_scores, topic, eval_prompt)
             elif self.scale == "binary_agreement":
                 self._generate_binary_agreement_box_plot(all_scores, topic)
             else:
@@ -212,7 +214,7 @@ class DebateEvaluator:
 
 
 
-    def _generate_attitude_box_plot(self, scores, topic_name):  
+    def _generate_attitude_box_plot(self, scores, topic_name, eval_prompt):  
         turns = np.array(range(1, self.num_rounds + 1), dtype=np.float32)
 
         # Read the metrics CSV
@@ -281,7 +283,7 @@ class DebateEvaluator:
         plt.xlabel("Debate Turns")
         plt.ylabel(f"Attitude Score")
         
-        plt.title(f"Attitude Shift Over Debate: {topic_name.replace('_', ' ')}")
+        plt.title(f"Attitude Shift: How strongly they agree that {eval_prompt}")
         plt.legend()
         plt.grid(True)
 
@@ -331,7 +333,7 @@ class DebateEvaluator:
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(transcript, f, indent=4)
 
-        return scores
+        return scores, eval_prompt
     
     def _generate_binary_agreement_box_plot(self, binary_scores, topic_name):
         turns = np.array(range(2, self.num_rounds), dtype=np.float32)
@@ -421,7 +423,7 @@ class DebateEvaluator:
 
                 if round_num > 1 and attitude_scores[agent_type][-1] is not None:
                     prev_score = attitude_scores[agent_type][-1]
-                    score = (score + prev_score * 0.3) / 2  # avg of current and previous scores
+                    score = (score + prev_score) / 2  # avg of current and previous scores
 
                 attitude_scores[agent_type].append(score if score is not None else 4)
             else:
@@ -445,8 +447,7 @@ class DebateEvaluator:
                     result = completion.choices[0].message.content
 
                 else:
-                    result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}])
-                
+                    result = ollama.generate(options={"temperature":0.0}, model=self.model, prompt=prompt)
                 score = self._parse_score(result)
                 if score is not None:
                     scores.append(score)
@@ -508,10 +509,10 @@ class DebateEvaluator:
 
         prompt_topic = eval_prompt if self.use_scenarios else f"with {topic_name}"
         final_prompt = (
-            f"Your task is to evaluate the attitude expressed by an agent in a debate to see how STRONGLY they AGREE {prompt_topic}"
+            f"Your task is to evaluate the attitude expressed by an agent in a debate to see how STRONGLY they BELIEVE {prompt_topic}"
             f"\n\n{scale_descriptions[self.scale]}"
             f"\n\nReturn ONLY the NUMERIC SCORE. Do not provide any explanation or additional text."
-            # f"\n\n" + "\n".join(example_texts) +
+            f"\n\n" + "\n".join(example_texts) +
             f"\n\n### Now evaluate the following response. ###"
             # f"\nDebate Topic: {topic_name}"
             # f"\nAgent: {agent_type.title()}"
@@ -527,7 +528,7 @@ class DebateEvaluator:
             if self.model == "gpt":
                 digit = re.findall(r'\d', result.strip())
             else:
-                digit = re.findall(r'\d', result["message"]["content"].strip())
+                digit = re.findall(r'\d', result["response"].strip())
             score = int(digit[0])
             # score = int(result["message"]["content"].strip())
             min_score, max_score = self.scale_mapping[self.scale]
@@ -590,7 +591,7 @@ class DebateEvaluator:
             prompt = self._generate_prompt_binary_agreement_metric(responses, topic_name)
 
             try:
-                result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}])
+                result = ollama.generate(model=self.model, prompt=prompt)
                 
                 score = self._parse_score(result)
 
@@ -627,8 +628,8 @@ class DebateEvaluator:
             prompt_neutral_democrat = self._generate_prompt_agreement_metric(responses, topic_name)
 
             try:
-                res_neutral_republican = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt_neutral_republican}])
-                res_neutral_democrat = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt_neutral_democrat}])
+                res_neutral_republican = ollama.generate(model=self.model, prompt=prompt_neutral_republican)
+                res_neutral_democrat = ollama.generate(model=self.model, prompt=prompt_neutral_democrat)
               
                 score_neutral_democrat = self._parse_score(res_neutral_democrat)
                 score_neutral_republican = self._parse_score(res_neutral_republican)
@@ -690,9 +691,9 @@ class DebateEvaluator:
     #     plt.grid(True)
     #     plt.ylim(0, len(self.debate_group))
 
-        plot_dir = os.path.join(f"plots_{'_'.join(self.debate_group)}", topic_name)
-        os.makedirs(plot_dir, exist_ok=True)
-        plot_path = os.path.join(plot_dir, f"cumulative_plot_{topic_name}.png")
-        plt.savefig(plot_path)
-        #plt.show()
-        plt.close()
+        # plot_dir = os.path.join(f"plots_{'_'.join(self.debate_group)}", topic_name)
+        # os.makedirs(plot_dir, exist_ok=True)
+        # plot_path = os.path.join(plot_dir, f"cumulative_plot_{topic_name}.png")
+        # plt.savefig(plot_path)
+        # #plt.show()
+        # plt.close()

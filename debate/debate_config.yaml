@@ -1,6 +1,6 @@
 # model: "llama3.2:3b"
 
-debate_group: "neutral_republican_republican2_republican3"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat", "republican_republican2", "democrat_democrat2"
+debate_group: "neutral_republican_democrat"  # options: "neutral_republican", "neutral_democrat", "neutral_republican_democrat", "republican_republican2", "democrat_democrat2"
 debate_structure: "structured"  # options: "structured", "unstructured"
 
 use_scenarios: True
@@ -8,27 +8,27 @@ use_extended_personas: True  # if false, uses personas we've been using so far
 
 baseline_debate_topics: # If you want to not do a certain topic when doign scenarios, comment out the baseline_debate_topics, baseline_debate_scenarios, baseline_debate_questions and eval_prompts line for the given topic
   - "illegal immigration"
-  - "gun violence"
-  - "abortion"
-  - "climate change"
+  # - "gun violence"
+  # - "abortion"
+  # - "climate change"
 
 baseline_debate_scenarios:
 - "A company is caught hiring undocumented workers at lower wages while refusing to hire legal residents for the same jobs. Some argue that hiring illegal immigrants fills essential jobs that Americans refuse to take, contributing to economic growth and lower costs for consumers. The opposing participant counters that this practice undermines American workers by creating unfair competition."
-- "After a rise in violent crime and mass shootings, lawmakers are under pressure to find solutions that balance public safety with constitutional rights.  One argues that tighter restrictions prevent guns from falling into the wrong hands, while the other warns that such measures infringe people’s individual rights and limit self-defense capabilities.  "
-- "In the context of ongoing discussions about reproductive rights, there has been growing concern over the procedure known as partial birth abortion, with some advocating for its ban to protect unborn children. Meanwhile, others argue that women should have the ultimate authority to make decisions regarding their own bodies and health care. "
-- "A major international corporation is considering opening a large manufacturing plant in your city. The plant will create thousands of jobs but will also increase carbon emissions. Building the manufacturing plant can also destroy habitats, but will boost economic growth. "
+# - "After a rise in violent crime and mass shootings, lawmakers are under pressure to find solutions that balance public safety with constitutional rights.  One argues that tighter restrictions prevent guns from falling into the wrong hands, while the other warns that such measures infringe people’s individual rights and limit self-defense capabilities.  "
+# - "In the context of ongoing discussions about reproductive rights, there has been growing concern over the procedure known as partial birth abortion, with some advocating for its ban to protect unborn children. Meanwhile, others argue that women should have the ultimate authority to make decisions regarding their own bodies and health care. "
+# - "A major international corporation is considering opening a large manufacturing plant in your city. The plant will create thousands of jobs but will also increase carbon emissions. Building the manufacturing plant can also destroy habitats, but will boost economic growth. "
 
 baseline_debate_questions:
 - "Do Immigrants Take Jobs From American-Born Workers?"
-- "Should there be stricter gun ownership laws?"
-- "Should we ban partial birth abortions?"
-- "Does the city need the manufacturing plant?"
+# - "Should there be stricter gun ownership laws?"
+# - "Should we ban partial birth abortions?"
+# - "Does the city need the manufacturing plant?"
 
 eval_prompts:
-- "that illegal immigrants are taking jobs from the Americans?"
-- "that the U.S. should adopt strict gun control laws?"
-- "that women have the right to make decisions about their bodies?"
-- "that job creation is more important?"
+- "that illegal immigrants are taking jobs from Americans?"
+# - "that the U.S. should adopt strict gun control laws?"
+# - "that partial birth abortions should be banned?"
+# - "that the plant will destroy the environment?"
 
 extra_debate_topics:
   - "illegal immigration"

@@ -35,18 +35,30 @@
             {
                 "response": "I think Taylor raises an important point about considering the social benefits of supporting this company. By investing in clean energy technologies and adopting sustainable practices, we can create new opportunities for innovation and growth that will outlast this plant. This approach could also lead to improved air quality, public health, and a better quality of life for our residents.",
                 "attitude_score" : {
-                    "1 to 7": "1"
+                    "1 to 7": "6"
                 }
             },
             {
                 "response": "We have a moral obligation to protect our planet for future generations. By rejecting it, we can invest in green technologies and alternative industries that prioritize sustainability while creating jobs and driving growth through innovation and entrepreneurship",
                 "attitude_score": {
-                    "1 to 7": "1"
+                    "1 to 7": "7"
                 }
             },
             {  "response": "On one hand, we have concerns about environmental degradation and strain on public services. On the other hand, we have the potential economic benefits of creating jobs and stimulating growth. While I still believe there may be a need for a manufacturing plant, I also acknowledge that our city's capacity to absorb additional residents and businesses is already strained. ",
                 "attitude_score": {
                     "1 to 7": "4"
+                }
+            },
+            {
+                "response": "I still think the city doesn't need the manufacturing plant due to its potential environmental costs. By rejecting this deal, we're sending a strong message that our values of sustainability and environmental stewardship are non-negotiable.",
+                "attitude_score": {
+                    "1 to 7": "6"
+                }
+            },
+            {
+                "response": "I understand where Sam is comin' from, but I still think we need this plant. The thing is, a lot of those low-income families and minority groups aren't just gonna magically get jobs elsewhere. We're talkin' about a struggling community that needs a lifeline, not some theoretical solution that's years away from happenin'. We gotta be pragmatic here and recognize that this plant's economic impact will disproportionately benefit local residents",
+                "attitude_score":{
+                    "1 to 7": "1"
                 }
             }
             
@@ -67,6 +79,24 @@
                 "attitude_score": {
                     "1 to 7": "3"
                 }
+            },
+            {
+                "response": "Moreover, these measures often fail to address the root causes of violent behavior and can be overly restrictive on law-abiding citizens who own firearms for self-defense. To truly make a tangible impact on reducing gun violence, we need to focus on education, mental health resources, and community policing initiatives that empower individuals to take responsibility for their own safety. By doing so, we can create a safer society without infringing upon our constitutional rights",
+                "attitude_score":{
+                    "1 to 7": "1"
+                }
+            },
+            {
+                "response": "No clear consensus yet",
+                "attitude_score":{
+                    "1 to 7": "4"
+                }
+            },
+            {
+                "response":"I firmly believe that stricter gun ownership laws would be ineffective in preventing violence and would infringe upon our constitutional rights. We need to address the root causes of violence, not just regulate guns further. By focusing on community-based initiatives and programs that promote economic development, education, and job training, we can create safer communities where individuals feel safe and supported without sacrificing our Second Amendment rights",
+                "attitude_score":{
+                    "1 to 7": "1"
+                }
             }
             
         ],
@@ -83,6 +113,18 @@
                 "attitude_score": {
                     "1 to 7": "1"
                 }
+            },
+            {
+                "response": "I still believe that hiring undocumented immigrants creates an unfair competition for American workers. However, I'm willing to listen to alternative perspectives on how we can support both groups. A possible solution is to implement a guest worker program that allows employers to hire temporary immigrant laborers with strict regulations and protections in place to prevent exploitation.",
+                "attitude_score": {
+                    "1 to 7": "6"
+                }
+            },
+            {
+                "response": "Americans may be priced out of low-skilled jobs due to housing costs or lack of childcare options, hiring undocumented immigrants often fills labor gaps in industries where wages are artificially low, making it even harder for native-born workers to afford living expenses.",
+                "attitude_score":{
+                    "1 to 7": "7"
+                }
             }
         ],
     
@@ -97,7 +139,37 @@
             {
                 "response": "It's not about restricting women's choices or imposing moral absolutes; it's about recognizing the humanity and potential suffering of unborn babies during partial birth abortions. We need to address the root causes of unnecessary abortions by investing in safe, compassionate care options for all pregnant women. By taking a more compassionate and inclusive approach, we can create a society that values both human life and autonomy, while also respecting women's bodily agency and well-being",
                 "attitude_score": {
-                    "1 to 7": "3"
+                    "1 to 7": "5"
+                }
+            },
+            {
+                "response": "By setting clear national standards, we can ensure that every doctor and hospital knows what's expected of them in terms of medically necessary abortions. This would help prevent coercion, malpractice, and unintended consequences. While I understand the importance of education, cultural shift, and economic resources for low-income women, I believe a blanket ban is the best approach to safeguarding lives and preventing exploitation.",
+                "attitude_score":{
+                    "1 to 7": "7"
+                }
+            },
+            {
+                "response": " Implementing stricter regulations and oversight mechanisms can help strike this balance while providing access to safer alternatives like C-Sections or terminations after viability. By doing so, we can protect unborn children from unnecessary suffering and pain, while also respecting women's right to make informed decisions about their own bodies and health care.",
+                "attitude_score":{
+                    "1 to 7": "7"
+                }
+            },
+            {
+                "response": "We should prioritize evidence-based policies that protect women's health and well-being, rather than imposing moral absolutism on reproductive choices. By investing in reproductive healthcare, education, and economic empowerment programs, we can reduce the need for abortion altogether",
+                "attitude_score":{
+                    "1 to 7": "2"
+                }
+            },
+            {
+                "response": "This approach acknowledges the value of autonomy while also addressing concerns about safety without necessarily banning partial birth abortions altogether. Ultimately, I believe that a more holistic approach is needed, one that prioritizes reproductive justice and ensures equal access to care for all individuals, regardless of their background or circumstances.",
+                "attitude_score":{
+                    "1 to 7": "1"
+                }
+            },
+            {
+                "response": "Establishing a national standard for informed consent is the most effective way to balance protection of unborn children with respect for women's autonomy. This approach prioritizes patients' autonomy and well-being while ensuring that medical professionals are making informed decisions based on evidence-based research and patient interests, rather than personal biases or conflicting state laws.",
+                "attitude_score": {
+                    "1 to 7": "2"
                 }
             }
         ]
