@@ -175,7 +175,7 @@ class DebateEvaluator:
     def _compute_metrics(self, scores, topic):
         # We want to compute a number of different scores
 
-        metrics_df = pd.DataFrame(columns=["agent","mean_first_round", "mean_last_round", "delta", "mean_iqr", "gradient"])
+        metrics_df = pd.DataFrame(columns=["agent","mean_first_round", "mean_last_round", "delta", "mean_iqr", "gradient", "attitude_reversion_ratio"])
 
         for agent, rounds in scores.items():
             rounds_array = np.array(rounds)
@@ -198,12 +198,20 @@ class DebateEvaluator:
             X = np.arange(rounds_array.shape[1]).reshape(-1, 1)  # Rounds as X
             Y = np.mean(rounds_array, axis=0)  # Mean scores as Y
 
+            # Compute Attitude Reversion Ratio using penultimate and final rounds:
+            penultimate_round_mean = round(np.mean(rounds_array[:, -2]), 3)
+            denom = penultimate_round_mean - mean_first_round
+            if denom != 0:
+                att_reversion_ratio = round((penultimate_round_mean - mean_last_round) / denom, 3)
+            else:
+                att_reversion_ratio = np.nan
+
             model = LinearRegression()
             model.fit(X, Y)
             gradient = round(model.coef_[0],5)
 
             # Store metrics in DataFrame
-            metrics_df.loc[agent] = [agent, mean_first_round, mean_last_round, delta, mean_iqr, gradient]
+            metrics_df.loc[agent] = [agent, mean_first_round, mean_last_round, delta, mean_iqr, gradient, att_reversion_ratio]
 
         save_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic.replace(' ', '_')}", "evaluation")
         os.makedirs(save_dir, exist_ok=True)
