@@ -175,7 +175,7 @@ class DebateEvaluator:
     def _compute_metrics(self, scores, topic):
         # We want to compute a number of different scores
 
-        metrics_df = pd.DataFrame(columns=["agent","mean_first_round", "mean_last_round", "delta", "mean_iqr", "gradient", "attitude_reversion_ratio"])
+        metrics_df = pd.DataFrame(columns=["agent","mean_first_round", "mean_last_round", "delta", "mean_iqr", "gradient", "penultimate_attitude_reversion_ratio", "mean_attitude_reversion_ratio", "median_attitude_reversion_ratio"])
 
         for agent, rounds in scores.items():
             rounds_array = np.array(rounds)
@@ -198,7 +198,7 @@ class DebateEvaluator:
             X = np.arange(rounds_array.shape[1]).reshape(-1, 1)  # Rounds as X
             Y = np.mean(rounds_array, axis=0)  # Mean scores as Y
 
-            # Compute Attitude Reversion Ratio using penultimate and final rounds:
+            # Compute Penultimate Attitude Reversion Ratio using penultimate and final rounds:
             penultimate_round_mean = round(np.mean(rounds_array[:, -2]), 3)
             denom = penultimate_round_mean - mean_first_round
             if denom != 0:
@@ -206,12 +206,37 @@ class DebateEvaluator:
             else:
                 att_reversion_ratio = np.nan
 
+            # Compute Mean Attitude Reversion Ratio (using the average of intermediary rounds)
+            # Intermediary rounds: all rounds except the first and final rounds
+            if rounds_array.shape[1] > 2:
+                mean_intermediary = round(np.mean(rounds_array[:, 1:-1]), 3)
+                denom_mean = mean_intermediary - mean_first_round
+                if denom_mean != 0:
+                    mean_att_reversion_ratio = round((mean_intermediary - mean_last_round) / denom_mean, 3)
+                else:
+                    mean_att_reversion_ratio = np.nan
+            else:
+                mean_att_reversion_ratio = np.nan
+
+            # Median Attitude Reversion Ratio using median of intermediary rounds (all rounds except first and final)
+            if rounds_array.shape[1] > 2:
+                median_first_round = round(np.median(rounds_array[:, 0]), 3)
+                median_last_round = round(np.median(rounds_array[:, -1]), 3)
+                median_intermediary = round(np.median(rounds_array[:, 1:-1]), 3)
+                denom_median = median_intermediary - median_first_round
+                if denom_median != 0:
+                    median_att_reversion_ratio = round((median_intermediary - median_last_round) / denom_median, 3)
+                else:
+                    median_att_reversion_ratio = np.nan
+            else:
+                median_att_reversion_ratio = np.nan
+
             model = LinearRegression()
             model.fit(X, Y)
             gradient = round(model.coef_[0],5)
 
             # Store metrics in DataFrame
-            metrics_df.loc[agent] = [agent, mean_first_round, mean_last_round, delta, mean_iqr, gradient, att_reversion_ratio]
+            metrics_df.loc[agent] = [agent, mean_first_round, mean_last_round, delta, mean_iqr, gradient, att_reversion_ratio, mean_att_reversion_ratio, median_att_reversion_ratio]
 
         save_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic.replace(' ', '_')}", "evaluation")
         os.makedirs(save_dir, exist_ok=True)
