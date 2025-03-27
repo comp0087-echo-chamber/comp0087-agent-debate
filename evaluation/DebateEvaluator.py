@@ -8,6 +8,13 @@ import numpy as np
 import pandas as pd
 import scipy
 from sklearn.linear_model import LinearRegression
+from openai import OpenAI
+from dotenv import load_dotenv
+load_dotenv()
+
+api_key = os.getenv("OPENAI_API_KEY")
+
+client = OpenAI(api_key=api_key)
 
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -87,7 +94,9 @@ class DebateEvaluator:
             for debate, transcript in enumerate(transcript_list):  # Loop through each transcript
                 transcript_path = os.path.join(debate_transcripts_path, topic, transcript)  # Get full path
                 scores = self.evaluate_transcript(transcript_path)  # Evaluate transcript
-        
+                eval_prompt = None
+                if self.scale == '1 to 3' or self.scale == '1 to 7':
+                    scores, eval_prompt = scores
                 if self.scale == '1 to 3' or self.scale == '1 to 7':
                     for agent in self.debate_group:
                         all_scores[agent][debate] = scores[agent]
@@ -99,7 +108,7 @@ class DebateEvaluator:
 
             if self.scale == "1 to 7" or self.scale == "-3 to 3":
                 self._compute_metrics(all_scores, topic)
-                self._generate_attitude_box_plot(all_scores, topic)
+                self._generate_attitude_box_plot(all_scores, topic, eval_prompt)
             elif self.scale == "binary_agreement":
                 self._generate_binary_agreement_box_plot(all_scores, topic)
             else:
@@ -173,7 +182,7 @@ class DebateEvaluator:
     def _compute_metrics(self, scores, topic):
         # We want to compute a number of different scores
 
-        metrics_df = pd.DataFrame(columns=["agent","mean_first_round", "mean_last_round", "delta", "mean_iqr", "gradient"])
+        metrics_df = pd.DataFrame(columns=["agent","mean_first_round", "mean_last_round", "delta", "mean_iqr", "gradient", "penultimate_attitude_reversion_ratio", "mean_attitude_reversion_ratio", "median_attitude_reversion_ratio"])
 
         for agent, rounds in scores.items():
             rounds_array = np.array(rounds)
@@ -196,12 +205,45 @@ class DebateEvaluator:
             X = np.arange(rounds_array.shape[1]).reshape(-1, 1)  # Rounds as X
             Y = np.mean(rounds_array, axis=0)  # Mean scores as Y
 
+            # Compute Penultimate Attitude Reversion Ratio using penultimate and final rounds:
+            penultimate_round_mean = round(np.mean(rounds_array[:, -2]), 3)
+            denom = penultimate_round_mean - mean_first_round
+            if denom != 0:
+                att_reversion_ratio = round((penultimate_round_mean - mean_last_round) / denom, 3)
+            else:
+                att_reversion_ratio = np.nan
+
+            # Compute Mean Attitude Reversion Ratio (using the average of intermediary rounds)
+            # Intermediary rounds: all rounds except the first and final rounds
+            if rounds_array.shape[1] > 2:
+                mean_intermediary = round(np.mean(rounds_array[:, 1:-1]), 3)
+                denom_mean = mean_intermediary - mean_first_round
+                if denom_mean != 0:
+                    mean_att_reversion_ratio = round((mean_intermediary - mean_last_round) / denom_mean, 3)
+                else:
+                    mean_att_reversion_ratio = np.nan
+            else:
+                mean_att_reversion_ratio = np.nan
+
+            # Median Attitude Reversion Ratio using median of intermediary rounds (all rounds except first and final)
+            if rounds_array.shape[1] > 2:
+                median_first_round = round(np.median(rounds_array[:, 0]), 3)
+                median_last_round = round(np.median(rounds_array[:, -1]), 3)
+                median_intermediary = round(np.median(rounds_array[:, 1:-1]), 3)
+                denom_median = median_intermediary - median_first_round
+                if denom_median != 0:
+                    median_att_reversion_ratio = round((median_intermediary - median_last_round) / denom_median, 3)
+                else:
+                    median_att_reversion_ratio = np.nan
+            else:
+                median_att_reversion_ratio = np.nan
+
             model = LinearRegression()
             model.fit(X, Y)
             gradient = round(model.coef_[0],5)
 
             # Store metrics in DataFrame
-            metrics_df.loc[agent] = [agent, mean_first_round, mean_last_round, delta, mean_iqr, gradient]
+            metrics_df.loc[agent] = [agent, mean_first_round, mean_last_round, delta, mean_iqr, gradient, att_reversion_ratio, mean_att_reversion_ratio, median_att_reversion_ratio]
 
         save_dir = self.get_relative_path(f"attitude_{'_'.join(self.debate_group)}/{self.debate_structure}/{topic.replace(' ', '_')}", "evaluation")
         os.makedirs(save_dir, exist_ok=True)
@@ -212,7 +254,7 @@ class DebateEvaluator:
 
 
 
-    def _generate_attitude_box_plot(self, scores, topic_name):  
+    def _generate_attitude_box_plot(self, scores, topic_name, eval_prompt):  
         turns = np.array(range(1, self.num_rounds + 1), dtype=np.float32)
 
         # Read the metrics CSV
@@ -281,7 +323,7 @@ class DebateEvaluator:
         plt.xlabel("Debate Turns")
         plt.ylabel(f"Attitude Score")
         
-        plt.title(f"Attitude Shift Over Debate: {topic_name.replace('_', ' ')}")
+        plt.title(f"Attitude Shift: How strongly they agree that {eval_prompt}")
         plt.legend()
         plt.grid(True)
 
@@ -331,7 +373,7 @@ class DebateEvaluator:
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(transcript, f, indent=4)
 
-        return scores
+        return scores, eval_prompt
     
     def _generate_binary_agreement_box_plot(self, binary_scores, topic_name):
         turns = np.array(range(2, self.num_rounds), dtype=np.float32)
@@ -434,18 +476,19 @@ class DebateEvaluator:
         for _ in range(self.num_model_calls):
             prompt = self._generate_prompt(response, topic_name, agent_type, eval_prompt=eval_prompt)
             try:
-
-                if "gpt" in self.model: 
-                    result = client.chat.completions.create(
-                    model="gpt-4o-mini",
-                    store=False,
-                    messages=[{"role": "user", "content": prompt}]
+                if self.model == "gpt":
+                    completion = client.chat.completions.create(
+                        model="gpt-4o-mini",
+                        store=True,
+                        messages=[
+                            {"role": "user", "content": prompt}
+                        ],
                     )
-                    content = result.choices[0].message.content.strip()
-                    score = self._parse_score({"message": {"content": content}})
+                    result = completion.choices[0].message.content
+
                 else:
-                    result = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt}], options={"temperature": 0})
-                    score = self._parse_score(result)
+                    result = ollama.generate(options={"temperature":0.0}, model=self.model, prompt=prompt)
+                score = self._parse_score(result)
                 if score is not None:
                     scores.append(score)
             except Exception as e:
@@ -489,7 +532,7 @@ class DebateEvaluator:
             for i, ex in enumerate(examples):
                 score = ex['attitude_score']['-3 to 3'] if self.scale == '-3 to 3' else ex['attitude_score']['1 to 7']
                 example_texts.append(
-                    f"### Example {i}###\n"
+                    f"### Example {i + 1}###\n"
                     f"Debate Response: {ex['response']}\n"
                     f"Score on Likert scale: {score}\n"
                 )
@@ -506,13 +549,18 @@ class DebateEvaluator:
 
         prompt_topic = eval_prompt if self.use_scenarios else f"with {topic_name}"
         final_prompt = (
-            f"Your task is to evaluate the attitude expressed by an agent in a debate to see how STRONGLY they AGREE {prompt_topic}"
+            f"Your task is to evaluate the attitude expressed by an agent in a debate to see how STRONGLY they BELIEVE {prompt_topic}"
             f"\n\n{scale_descriptions[self.scale]}"
             f"\n\nReturn ONLY the NUMERIC SCORE. Do not provide any explanation or additional text."
             f"\n\n" + "\n".join(example_texts) +
             f"\n\n### Now evaluate the following response. ###"
+<<<<<<< HEAD
             f"\nDebate Topic: {topic_name}"
             f"\nAgent: {agent_type.title()}"
+=======
+            # f"\nDebate Topic: {topic_name}"
+            # f"\nAgent: {agent_type.title()}"
+>>>>>>> b33704159861a35e877da788683deca2c0416a55
             f"\nDebate Response: {response}"
             f"\nScore on Likert scale:"
         )
@@ -522,12 +570,16 @@ class DebateEvaluator:
 
     def _parse_score(self, result):
         try:
-            digit = re.findall(r'\d', result["message"]["content"].strip())
+            if self.model == "gpt":
+                digit = re.findall(r'\d', result.strip())
+            else:
+                digit = re.findall(r'\d', result["response"].strip())
             score = int(digit[0])
             # score = int(result["message"]["content"].strip())
             min_score, max_score = self.scale_mapping[self.scale]
             return max(min_score, min(max_score, score))
-        except ValueError:
+        except Exception as e:
+            print(f"Error occurred: {e}")
             print(f"Unable to parse model response on the attitude score. Response:\n{result}")
             return None
 
@@ -584,7 +636,11 @@ class DebateEvaluator:
             prompt = self._generate_prompt_binary_agreement_metric(responses, topic_name)
 
             try:
+<<<<<<< HEAD
                 result = ollama.generate(model=self.model, prompt=self.prompt)
+=======
+                result = ollama.generate(model=self.model, prompt=prompt)
+>>>>>>> b33704159861a35e877da788683deca2c0416a55
                 
                 score = self._parse_score(result)
 
@@ -621,8 +677,8 @@ class DebateEvaluator:
             prompt_neutral_democrat = self._generate_prompt_agreement_metric(responses, topic_name)
 
             try:
-                res_neutral_republican = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt_neutral_republican}])
-                res_neutral_democrat = ollama.chat(model=self.model, messages=[{"role": "user", "content": prompt_neutral_democrat}])
+                res_neutral_republican = ollama.generate(model=self.model, prompt=prompt_neutral_republican)
+                res_neutral_democrat = ollama.generate(model=self.model, prompt=prompt_neutral_democrat)
               
                 score_neutral_democrat = self._parse_score(res_neutral_democrat)
                 score_neutral_republican = self._parse_score(res_neutral_republican)
@@ -684,9 +740,9 @@ class DebateEvaluator:
     #     plt.grid(True)
     #     plt.ylim(0, len(self.debate_group))
 
-        plot_dir = os.path.join(f"plots_{'_'.join(self.debate_group)}", topic_name)
-        os.makedirs(plot_dir, exist_ok=True)
-        plot_path = os.path.join(plot_dir, f"cumulative_plot_{topic_name}.png")
-        plt.savefig(plot_path)
-        #plt.show()
-        plt.close()
+        # plot_dir = os.path.join(f"plots_{'_'.join(self.debate_group)}", topic_name)
+        # os.makedirs(plot_dir, exist_ok=True)
+        # plot_path = os.path.join(plot_dir, f"cumulative_plot_{topic_name}.png")
+        # plt.savefig(plot_path)
+        # #plt.show()
+        # plt.close()

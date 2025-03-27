@@ -25,10 +25,10 @@ baseline_debate_questions:
 - "Does the city need the manufacturing plant?"
 
 eval_prompts:
-- "that 'illegal immigrants are taking jobs from the Americans?'"
-- "that 'the U.S. should adopt strict gun control laws?'"
-- "that 'women have the right to make decisions about their bodies?'"
-- "that 'the benefits of job creation outweight the environmental damage'"
+- "that illegal immigrants are taking jobs from Americans?"
+- "that the U.S. should adopt strict gun control laws?"
+- "that partial birth abortions should be banned?"
+- "that the plant will destroy the environment?"
 
 extra_debate_topics:
   - "illegal immigration"

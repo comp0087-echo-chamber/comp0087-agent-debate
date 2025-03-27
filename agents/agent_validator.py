@@ -13,7 +13,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from agents.DebateAgent import DebateAgent
 
 MODELS = ["gemma:7b", "llama3.2:3b", "qwen2.5:7b", "deepseek-r1:7b", "gpt-4o-mini"]
-AGENT_NAMES = {"neutral": "Sam", "republican": "Alex", "democrat": "Taylor"}
+AGENT_NAMES = {"neutral": "Sam", "republican": "Alex", "democrat": "Taylor", "republican2": "Riley", "republican3": "Morgan", "democrat2": "Quinn", "democrat3": "Drew"}
 
 
 INTERVIEW_QUESTIONS = {
@@ -115,13 +115,19 @@ def load_personas(filename):
 def create_agents(personas, models, agent_names):
     agents = []
     for affiliation, configs in personas.items():
-        agent_name = agent_names[affiliation]
-        for model in models:
-            agents.append(DebateAgent(name=agent_name, model=model, affiliation={"leaning": None, "party": affiliation}, age=None, gender=None, word_limit=75))
-            for gender in configs["gender"]:
-                agents.append(DebateAgent(name=agent_name, model=model, affiliation={"leaning": None, "party": affiliation}, age=None, gender=gender, word_limit=75))
-            for age in configs["age"]:
-                agents.append(DebateAgent(name=agent_name, model=model, affiliation={"leaning": None, "party": affiliation}, age=age, gender=None, word_limit=75))
+        if affiliation not in ["democrat2", "democrat3", "republican2", "republican3"]:
+            agent_name = agent_names[affiliation]
+            for model in models:
+                agents.append(DebateAgent(name=agent_name, identifier=affiliation, model=model, affiliation={"leaning": None, "party": affiliation.title()}, age=None, gender=None, word_limit=75, temperature=1))
+                gender = configs.get("gender", None)
+                age = configs.get("age", None)
+
+                if gender:
+                    for gender in configs.get("gender", None):
+                        agents.append(DebateAgent(name=agent_name, identifier=affiliation, model=model, affiliation={"leaning": None, "party": affiliation.title()}, age=None, gender=gender, word_limit=75, temperature=1))
+                if age:
+                    for age in configs.get("age", None):
+                        agents.append(DebateAgent(name=agent_name, identifier=affiliation, model=model, affiliation={"leaning": None, "party": affiliation.title()}, age=age, gender=None, word_limit=75, temperature=1))
     return agents
 
 
@@ -287,11 +293,15 @@ def visualise_evaluation():
 
     df["Persona Category"] = df.apply(get_demographic_category, axis=1)
 
+    df = df.dropna(how="all")
+
     summary = (
         df.groupby(["Affiliation", "Persona Category", "Model"])["Evaluation"]
         .apply(lambda x: (x.str.lower() == "aligned").mean() * 100)
         .reset_index()
     )
+
+    print(summary)
 
     heatmap_data = summary.pivot(index=["Affiliation", "Persona Category"], columns="Model", values="Evaluation")
 
@@ -299,11 +309,15 @@ def visualise_evaluation():
     for affiliation in df["Affiliation"].unique():
         for category in expected_categories:
             if (affiliation, category) not in heatmap_data.index:
-                heatmap_data.loc[(affiliation, category), :] = None  # Fill missing categories with NaN
+                heatmap_data.loc[(affiliation, category), :] = None  # fill missing categories
+
 
     affiliation_order = ["neutral", "democrat", "republican"]
     persona_order = ["baseline", "gender", "age"]
     heatmap_data = heatmap_data.reindex(pd.MultiIndex.from_product([affiliation_order, persona_order], names=["Affiliation", "Persona Category"]))
+
+    # heatmap_data = heatmap_data.astype(float)  # Ensure numeric data
+    # heatmap_data = heatmap_data.fillna(0)
 
     plt.figure(figsize=(12, 6))
     sns.heatmap(heatmap_data, annot=True, cmap="RdYlGn", linewidths=0.5, fmt=".1f")

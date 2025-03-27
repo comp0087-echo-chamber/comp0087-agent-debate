@@ -115,17 +115,17 @@ class DebateAgent:
             return response
         
         else:
-            response = ollama.chat(
+            response = ollama.generate(
                 model=self.model,
                 options={"num_ctx": 8192, "temperature": self.temperature},
-                messages=[{"role": "user", "content": f"{self.prompt} \n{debate_phase_prompt if debate_phase_prompt != None else ''} \n{conversation}"}]  # TODO: Say Conversation History?
+                prompt=f"{self.prompt} \n{debate_phase_prompt if debate_phase_prompt != None else ''} \n{conversation}"  # TODO: Say Conversation History?
             )
         
         if "deepseek-r1" in self.model:
             response = re.sub(r"<think>.*?</think>", "", response["message"]["content"].split("My response:")[-1].strip(), flags=re.DOTALL).strip()
             return self.reduce_response_size(response)
 
-        return self.reduce_response_size(response["message"]["content"])
+        return self.reduce_response_size(response["response"])
     
     def reduce_response_size(self,response):
         words = re.findall(r'\S+', response)  # Split response into words while preserving punctuation
