@@ -554,13 +554,8 @@ class DebateEvaluator:
             f"\n\nReturn ONLY the NUMERIC SCORE. Do not provide any explanation or additional text."
             f"\n\n" + "\n".join(example_texts) +
             f"\n\n### Now evaluate the following response. ###"
-<<<<<<< HEAD
-            f"\nDebate Topic: {topic_name}"
-            f"\nAgent: {agent_type.title()}"
-=======
             # f"\nDebate Topic: {topic_name}"
             # f"\nAgent: {agent_type.title()}"
->>>>>>> b33704159861a35e877da788683deca2c0416a55
             f"\nDebate Response: {response}"
             f"\nScore on Likert scale:"
         )

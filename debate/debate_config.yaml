@@ -53,7 +53,7 @@ use_multiprocessing: False
 num_debates: 5
 num_rounds: 10
 word_limit: 75
-temperature: 0.25
+temperature: 0.4
 
 # model examples - model: "gpt", "llama3.2:3b","mistral:7b", among others
 agents:
