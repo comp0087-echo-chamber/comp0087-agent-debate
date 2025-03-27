@@ -8,7 +8,7 @@ debate_structure: "structured"  # options: "structured", "unstructured"
 scale: "1 to 7"  # Likert scale options: "1 to 7" or "-3 to 3"; "agreement" for disagreement/agreement metric; "binary_agreement" for neutral agreement metric
 num_rounds: 10 # All debates in the chosen directory should have same number of rounds.
 num_debates: 10 # Run evaluation on the recent 10 debates/transcripts only
-evaluate_again: True  # run evaluation on transcripts again, even if evaluated. 
+evaluate_again: False  # run evaluation on transcripts again, even if evaluated. 
 
 use_scenarios: True
 
