@@ -7,8 +7,8 @@ use_scenarios: True
 use_extended_personas: True  # if false, uses personas we've been using so far
 
 baseline_debate_topics: # If you want to not do a certain topic when doign scenarios, comment out the baseline_debate_topics, baseline_debate_scenarios, baseline_debate_questions and eval_prompts line for the given topic
- # - "illegal immigration"
-  #- "gun violence"
+  - "illegal immigration"
+  - "gun violence"
   - "abortion"
   - "climate change"
 
