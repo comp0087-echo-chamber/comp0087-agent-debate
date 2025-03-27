@@ -16,6 +16,13 @@ api_key = os.getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=api_key)
 
+from openai import OpenAI
+from dotenv import load_dotenv
+load_dotenv()  
+api_key = os.getenv("OPENAI_API_KEY")
+
+client = OpenAI(api_key=api_key)
+
 
 # Add the project root to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -314,9 +321,13 @@ class DebateEvaluator:
         plt.legend(loc="best")
 
         plt.xlabel("Debate Turns")
-        plt.ylabel(f"Attitude Score")
-        
-        plt.title(f"Attitude Shift: How strongly they agree that {eval_prompt}")
+        plt.ylabel(f"<- Disagree | Agree ->")
+        eval_prompt = eval_prompt[5:]
+        if len(eval_prompt.split(" ")) > 10:
+            tokenised = eval_prompt.split(" ")
+            plt.title(f"Attitude Shift: How strongly agents agree that '{' '.join(tokenised[:10])}\n {' '.join(tokenised[10:])}'")
+        else:
+            plt.title(f"Attitude Shift: How strongly agents agree that '{eval_prompt}")
         plt.legend()
         plt.grid(True)
 
@@ -343,12 +354,11 @@ class DebateEvaluator:
         score_key = self.scale
         scores =  transcript.get(score_key, None)
         if scores is not None and not self.evaluate_again:
-            return scores
+            return (scores, transcript.get("eval_prompt", None))
         
         topic = transcript["topic"]
         eval_prompt = transcript["eval_prompt"]
-        
-        # TODO: This needs updating - im a bit confused whats going on here with the difference in evaluation of using or not using scenarios
+    
 
         num_agents = len(self.debate_group)
         if num_agents not in [2, 3, 4]:
@@ -480,7 +490,8 @@ class DebateEvaluator:
                     result = completion.choices[0].message.content
 
                 else:
-                    result = ollama.generate(options={"temperature":0.0}, model=self.model, prompt=prompt)
+    
+                    result = ollama.generate(options={"temperature":0.01}, model=self.model, prompt=prompt)
                 score = self._parse_score(result)
                 if score is not None:
                     scores.append(score)
