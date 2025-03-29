@@ -60,16 +60,16 @@ agents:
   neutral:
     age: null  # options: "21", "35", "67"
     gender: null  # options: "male", "female"
-    model: "llama3.2:3b"
+    model: "deepseek-r1:7b"
 
   republican:
     age: null
     gender: null
-    model: "llama3.2:3b"
+    model: "deepseek-r1:7b"
   democrat:
     age: null
     gender: null
-    model: "llama3.2:3b"
+    model: "deepseek-r1:7b"
 
   republican2:
     age: null

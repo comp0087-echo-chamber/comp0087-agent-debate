@@ -122,9 +122,15 @@ class DebateAgent:
             )
         
         if "deepseek-r1" in self.model:
-            response = re.sub(r"<think>.*?</think>", "", response["message"]["content"].split("My response:")[-1].strip(), flags=re.DOTALL).strip()
-            return self.reduce_response_size(response)
-
+            raw_response = response.response
+            cleaned_response = re.sub(
+                r"<think>.*?</think>",
+                "",
+                raw_response.split("My response:")[-1].strip(),
+                flags=re.DOTALL
+            ).strip()
+            return self.reduce_response_size(cleaned_response)
+        
         return self.reduce_response_size(response["response"])
     
     def reduce_response_size(self,response):
