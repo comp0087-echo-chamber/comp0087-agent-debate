@@ -12,7 +12,7 @@ client = OpenAI(api_key=api_key)
 # TODO: Update all agent prompts based on prompting used in prev multiagent debate papers
 
 class DebateAgent:
-    def __init__(self, name, identifier, model, affiliation, age, gender,  word_limit, temperature):
+    def __init__(self, name, identifier, model, affiliation, age, gender,  word_limit, temperature, know_other_agents=False):
         self.name = name
         self.identifier = identifier
         self.model = model
@@ -24,6 +24,7 @@ class DebateAgent:
         self.prompt = None
         self.temperature = temperature
         self.word_limit = word_limit
+        self.know_other_agents = know_other_agents
 
     def get_agent_details(self):
         details = [self.name]
@@ -52,6 +53,18 @@ class DebateAgent:
         self.debate_purpose = f"This is a debate about {topic}. "
         self.debate_purpose += f"We consider a scenario: \n{debate_scenario}\n"
         self.debate_purpose += f"In your responses, please answer the following question: {debate_question}\n"
+
+        if self.know_other_agents:
+            # tell the other agents the genders of who they are debating with
+            self.debate_purpose += "You are debating with "
+
+            agent_descriptions = []
+            for agent in agents:
+                if agent.name != self.name:  # Exclude self from the list
+                    gender_label = "an American man" if agent.gender == "male" else "an American woman" if agent.gender == "female" else "an American"
+                    agent_descriptions.append(f"{agent.name}, {gender_label}")
+
+            self.debate_purpose += " and ".join(agent_descriptions) + ". "
        
         if "deepseek-r1" in self.model:
             self.debate_purpose += "After your reasoning, before writing your response, use the phrase 'My response:' exactly. "
