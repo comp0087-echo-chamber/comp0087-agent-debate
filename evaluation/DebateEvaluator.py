@@ -109,6 +109,7 @@ class DebateEvaluator:
             if self.scale == "1 to 7" or self.scale == "-3 to 3":
                 self._compute_metrics(all_scores, topic)
                 self._generate_attitude_box_plot(all_scores, topic, eval_prompt)
+                self._generate_other_plots(all_scores, topic, eval_prompt)
             elif self.scale == "binary_agreement":
                 self._generate_binary_agreement_box_plot(all_scores, topic)
             else:
@@ -327,7 +328,7 @@ class DebateEvaluator:
             tokenised = eval_prompt.split(" ")
             plt.title(f"Attitude Shift: How strongly agents agree that '{' '.join(tokenised[:10])}\n {' '.join(tokenised[10:])}'")
         else:
-            plt.title(f"Attitude Shift: How strongly agents agree that '{eval_prompt}")
+            plt.title(f"Attitude Shift: How strongly agents agree that '{eval_prompt}'")
         plt.legend()
         plt.grid(True)
 
@@ -345,6 +346,11 @@ class DebateEvaluator:
         #plt.show()
         print(f"Generated plot: {plot_path}")
         plt.close()
+
+    def _generate_other_plots(self, scores, topic_name, eval_prompt):
+
+        # Generate plot of mean difference between 2 specified agents
+        pass
 
 
     def evaluate_transcript(self, filename):

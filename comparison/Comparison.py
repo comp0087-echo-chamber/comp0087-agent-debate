@@ -33,7 +33,7 @@ def generate_evaluations(topic_path, num_debates):
             evaluations[topic] = {}
 
         # Process attitude scores for each agent type
-        for group, scores in data["attitude_scores"].items():
+        for group, scores in data["1 to 7"].items():
             if group not in evaluations[topic]:
                 evaluations[topic][group] = {"round_means": [], "round_scores": []}
 

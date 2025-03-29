@@ -46,7 +46,42 @@ def run_debate_for_topic(topic, debate_scenario=None, debate_question=None, eval
         agents = [
             agent1,
             DebateAgent(name="Alex", identifier="republican", model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"], know_other_agents=config["know_other_agents"]),
-            DebateAgent(name="Taylor", identifier="democrat", model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"], know_other_agents=config["know_other_agents"])
+            DebateAgent(name="Taylor", identifier="democrat", model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"], know_other_agents=config["know_other_agents"]),
+        ]
+
+    elif config["debate_group"] == "neutral_democrat_republican":
+        agents = [
+            agent1,
+            DebateAgent(name="Taylor", identifier="democrat", model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"]),
+            DebateAgent(name="Alex", identifier="republican", model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"]),
+        ]
+
+    elif config["debate_group"] == "democrat_neutral_republican":
+        agents = [
+            DebateAgent(name="Taylor", identifier="democrat", model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"]),
+            agent1,
+            DebateAgent(name="Alex", identifier="republican", model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"]),
+        ]
+
+    elif config["debate_group"] == "democrat_republican_neutral":
+        agents = [
+            DebateAgent(name="Taylor", identifier="democrat", model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"]),
+            DebateAgent(name="Alex", identifier="republican", model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"]),
+            agent1,
+        ]
+
+    elif config["debate_group"] == "republican_neutral_democrat":
+        agents = [
+            DebateAgent(name="Alex", identifier="republican", model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"]),
+            agent1,
+            DebateAgent(name="Taylor", identifier="democrat", model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"]),
+        ]
+
+    elif config["debate_group"] == "republican_democrat_neutral":
+        agents = [
+            DebateAgent(name="Alex", identifier="republican", model=config["agents"]["republican"]["model"], affiliation={"leaning": "conservative", "party": "Republican"}, age=config["agents"]["republican"]["age"], gender=config["agents"]["republican"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"]),
+            DebateAgent(name="Taylor", identifier="democrat", model=config["agents"]["democrat"]["model"], affiliation={"leaning": "liberal", "party": "Democrat"}, age=config["agents"]["democrat"]["age"], gender=config["agents"]["democrat"]["gender"], word_limit=config["word_limit"], temperature=config["temperature"]),
+            agent1,
         ]
 
     elif config["debate_group"] == "republican_republican2":
