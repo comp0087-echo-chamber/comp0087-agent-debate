@@ -57,7 +57,6 @@ class DebateEvaluator:
         self.num_debates = num_debates
         self.evaluate_again = evaluate_again
         self.use_scenarios = use_scenarios
-        self.
 
     def _load_transcript(self, filename):
         self.transcript_filename = filename
@@ -110,7 +109,7 @@ class DebateEvaluator:
             if self.scale == "1 to 7" or self.scale == "-3 to 3":
                 self._compute_metrics(all_scores, topic)
                 self._generate_attitude_box_plot(all_scores, topic, eval_prompt)
-                self._generate_other_plots(all_scores, topic, eval_prompt, self.visualisation_agents)
+                self._generate_other_plots(all_scores, topic, eval_prompt)
             elif self.scale == "binary_agreement":
                 self._generate_binary_agreement_box_plot(all_scores, topic)
             else:
@@ -348,7 +347,7 @@ class DebateEvaluator:
         print(f"Generated plot: {plot_path}")
         plt.close()
 
-    def _generate_other_plots(self, scores, topic_name, eval_prompt, agents):
+    def _generate_other_plots(self, scores, topic_name, eval_prompt):
 
         # Generate plot of mean difference between 2 specified agents
         pass
