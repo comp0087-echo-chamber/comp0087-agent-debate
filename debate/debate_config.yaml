@@ -56,21 +56,23 @@ word_limit: 75
 temperature: 0.35
 know_other_agents: False
 
+announce_final_round: True
+
 # model examples - model: "gpt", "llama3.2:3b","mistral:7b", among others
 agents:
   neutral:
     age: null  # options: "21", "35", "67"
     gender: null  # options: "male", "female"
-    model: "deepseek-r1:7b"
+    model: "llama3.2:3b"
 
   republican:
     age: null
     gender: null
-    model: "deepseek-r1:7b"
+    model: "llama3.2:3b"
   democrat:
     age: null
     gender: null
-    model: "deepseek-r1:7b"
+    model: "llama3.2:3b"
 
   republican2:
     age: null

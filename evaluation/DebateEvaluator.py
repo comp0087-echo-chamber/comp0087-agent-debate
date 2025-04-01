@@ -187,7 +187,6 @@ class DebateEvaluator:
 
         for agent, rounds in scores.items():
             rounds_array = np.array(rounds)
-
             print(f"Agent: {agent}, First Round Scores: {rounds_array[:, 0]}, Last Round Scores: {rounds_array[:, -1]}")
             # Mean in the first round
             mean_first_round = round(np.mean(rounds_array[:, 0]),3)

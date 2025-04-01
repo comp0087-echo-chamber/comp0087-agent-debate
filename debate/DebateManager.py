@@ -10,7 +10,7 @@ from datetime import datetime
 
 class DebateManager:
 
-    def __init__(self, agents, topic, debate_scenario, debate_question, eval_prompt, rounds, debate_structure, debate_group, use_extended_personas):
+    def __init__(self, agents, topic, debate_scenario, debate_question, eval_prompt, rounds, debate_structure, debate_group, use_extended_personas, announce_final_round):
         self.topic = topic
         self.debate_scenario = debate_scenario
         self.debate_question = debate_question
@@ -20,6 +20,7 @@ class DebateManager:
         self.debate_structure = debate_structure
         self.debate_group = debate_group  # used for filenames when saving files
         self.use_extended_personas = use_extended_personas
+        self.announce_final_round = announce_final_round
 
         self.data_for_evaluation = {  # used for evaluation
             "topic": self.topic,
@@ -75,7 +76,6 @@ class DebateManager:
 
 
     def debate_round(self, agent, debate_phase_prompt=None):
-
         conversation = "\n".join(self.ordered_conversation_history)
         response = agent.respond(debate_phase_prompt, conversation)
         self._print_response(agent.get_agent_details(), response)
@@ -148,10 +148,16 @@ class DebateManager:
                 # self.debate_round("Please rebut the other agent's opinions and continue to argue your own.", agent)
                 self.debate_round(agent, "Complete your next reply.")  # NOTE: This takes the prompt used in baseline paper
 
-        if self.rounds > 1: 
-            for agent in self.agents:
-                # self.debate_round(agent, "Please rebut the other agent's opinions, and give closing arguments. If you wish to change your position to align or diverge with your fellow agents, please do so.")
-                self.debate_round(agent, "Give your closing arguments on the topic within 50 words.")
+        if self.rounds > 1:
+            if self.announce_final_round == True: 
+                for agent in self.agents:
+                    # self.debate_round(agent, "Please rebut the other agent's opinions, and give closing arguments. If you wish to change your position to align or diverge with your fellow agents, please do so.")
+                    self.debate_round(agent, "Give your closing arguments on the topic within 50 words.")
+            else:
+                for agent in self.agents:
+                    # self.debate_round(agent, "Please rebut the other agent's opinions, and give closing arguments. If you wish to change your position to align or diverge with your fellow agents, please do so.")
+                    self.debate_round(agent, "Complete your next reply.")  # NOTE: This takes the prompt used in baseline paper
+
 
 
     def start_unstructured_debate(self):
